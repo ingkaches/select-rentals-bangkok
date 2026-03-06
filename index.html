@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select Rentals Bangkok — Bangkok's Sansiri Property Specialist</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A96E; --gold-light: #E8D5B0; --gold-dim: #8A6D3E;
+    --dark: #0A0A08; --dark2: #111110; --dark3: #1A1A18; --dark4: #222220;
+    --white: #F5F2EC; --muted: #7A7870; --green: #4A7C59; --green-light: #6FCF97;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--dark); color: var(--white); font-family: 'DM Sans', sans-serif; font-weight: 300; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: 0.4; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 24px 48px; display: flex; align-items: center; justify-content: space-between; transition: all 0.4s; }
+  .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; }
+  .nav-logo span { color: var(--white); font-weight: 300; }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta { background: transparent; border: 1px solid var(--gold-dim); color: var(--gold); padding: 10px 24px; font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; }
+  .nav-cta:hover { background: var(--gold); color: var(--dark); }
+
+  /* HERO */
+  .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; position: relative; overflow: hidden; }
+  .hero-left { display: flex; flex-direction: column; justify-content: center; padding: 140px 64px 80px; position: relative; z-index: 2; }
+  .hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; opacity: 0; animation: fadeUp 0.8s ease 0.2s forwards; }
+  .hero-trust { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; opacity: 0; animation: fadeUp 0.8s ease 0.35s forwards; }
+  .trust-badge { background: rgba(201,169,110,0.1); border: 1px solid rgba(201,169,110,0.25); padding: 6px 14px; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-light); display: flex; align-items: center; gap: 8px; }
+  .trust-badge::before { content: '✓'; font-size: 11px; color: var(--green-light); }
+  .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(48px, 5vw, 82px); font-weight: 300; line-height: 1.05; margin-bottom: 32px; opacity: 0; animation: fadeUp 0.8s ease 0.4s forwards; }
+  .hero-title em { font-style: italic; color: var(--gold); }
+  .hero-subtitle { font-size: 14px; color: var(--muted); line-height: 1.8; max-width: 420px; margin-bottom: 48px; opacity: 0; animation: fadeUp 0.8s ease 0.6s forwards; }
+  .hero-subtitle strong { color: var(--white); font-weight: 400; }
+  .hero-actions { display: flex; gap: 16px; align-items: center; opacity: 0; animation: fadeUp 0.8s ease 0.8s forwards; }
+  .btn-primary { background: var(--gold); color: var(--dark); border: none; padding: 16px 36px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,169,110,0.2); }
+  .btn-secondary { background: transparent; color: var(--white); border: none; padding: 16px 0; font-family: 'DM Sans', sans-serif; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: color 0.3s; }
+  .btn-secondary::after { content: '→'; transition: transform 0.3s; }
+  .btn-secondary:hover { color: var(--gold); }
+  .btn-secondary:hover::after { transform: translateX(6px); }
+  .hero-stats { display: flex; gap: 40px; margin-top: 56px; padding-top: 40px; border-top: 1px solid rgba(201,169,110,0.15); opacity: 0; animation: fadeUp 0.8s ease 1s forwards; }
+  .stat-number { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--gold); line-height: 1; margin-bottom: 6px; }
+  .stat-label { font-size: 10px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
+
+  /* HERO RIGHT */
+  .hero-right { position: relative; overflow: hidden; }
+  .hero-img-main { position: absolute; inset: 0; background: linear-gradient(135deg, #1a1a18 0%, #0f1a12 50%, #1a150a 100%); }
+  .hero-img-main::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 70% 40%, rgba(201,169,110,0.08) 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 30% 70%, rgba(74,124,89,0.06) 0%, transparent 60%); }
+  .skyline { position: absolute; bottom: 0; left: 0; right: 0; height: 65%; display: flex; align-items: flex-end; gap: 3px; padding: 0 20px; opacity: 0.12; }
+  .building { background: var(--gold); flex: 1; border-radius: 2px 2px 0 0; position: relative; }
+  .building::before { content: ''; position: absolute; top: 15%; left: 10%; right: 10%; bottom: 0; background: repeating-linear-gradient(to bottom, transparent 0px, transparent 6px, rgba(0,0,0,0.4) 6px, rgba(0,0,0,0.4) 8px); }
+  .hero-line { position: absolute; top: 50%; left: 0; width: 1px; height: 120px; background: linear-gradient(to bottom, transparent, var(--gold), transparent); transform: translateY(-50%); }
+
+  /* FLOATING CARDS */
+  .floating-card { position: absolute; background: rgba(15,15,13,0.94); border: 1px solid rgba(201,169,110,0.2); backdrop-filter: blur(16px); padding: 20px 24px; border-radius: 2px; animation: float 6s ease-in-out infinite; transition: border-color 0.3s; }
+  .floating-card:hover { border-color: rgba(201,169,110,0.5); }
+  .floating-card:nth-child(2) { top: 18%; right: 6%; width: 230px; animation-delay: 0s; }
+  .floating-card:nth-child(3) { top: 50%; left: 5%; width: 210px; animation-delay: -2s; }
+  .floating-card:nth-child(4) { bottom: 16%; right: 10%; width: 200px; animation-delay: -4s; }
+  .card-tag { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--green-light); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .card-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-light); animation: pulse 2s ease infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+  .card-name { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 400; color: var(--white); margin-bottom: 4px; }
+  .card-detail { font-size: 11px; color: var(--muted); margin-bottom: 12px; }
+  .card-footer { display: flex; justify-content: space-between; align-items: center; }
+  .card-price { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--gold); }
+  .card-units { font-size: 9px; color: var(--green-light); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+  /* MARQUEE */
+  .marquee-wrap { background: var(--gold); padding: 13px 0; overflow: hidden; }
+  .marquee-track { display: flex; animation: marquee 28s linear infinite; white-space: nowrap; }
+  .marquee-item { color: var(--dark); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; padding: 0 28px; display: flex; align-items: center; gap: 14px; }
+  .marquee-item::after { content: '◆'; font-size: 6px; opacity: 0.6; }
+  @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  /* TRUST BAR */
+  .trust-bar { background: var(--dark2); padding: 32px 64px; display: flex; justify-content: center; gap: 64px; border-bottom: 1px solid rgba(201,169,110,0.08); }
+  .trust-item { display: flex; align-items: center; gap: 14px; }
+  .trust-icon { font-size: 20px; opacity: 0.8; }
+  .trust-text { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .trust-text strong { display: block; color: var(--white); font-weight: 400; font-size: 13px; margin-bottom: 2px; }
+
+  /* SECTIONS */
+  section { padding: 110px 64px; }
+  .section-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; margin-bottom: 20px; }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px, 3.2vw, 54px); font-weight: 300; line-height: 1.1; margin-bottom: 20px; }
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  /* LISTINGS */
+  .listings { background: var(--dark); }
+  .listings-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 48px; }
+  .filter-tabs { display: flex; gap: 4px; }
+  .filter-tab { background: var(--dark3); border: none; color: var(--muted); padding: 10px 20px; font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+  .filter-tab.active, .filter-tab:hover { background: var(--gold); color: var(--dark); }
+  .properties-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .property-card { background: var(--dark3); position: relative; overflow: hidden; cursor: pointer; transition: transform 0.35s, box-shadow 0.35s; }
+  .property-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(0,0,0,0.5); }
+  .property-card:hover .property-overlay { opacity: 1; }
+  .property-card:hover .property-img-bg { transform: scale(1.05); }
+  .property-img { height: 230px; position: relative; overflow: hidden; }
+  .property-img-bg { position: absolute; inset: 0; transition: transform 0.5s ease; }
+  .property-card:nth-child(1) .property-img-bg { background: linear-gradient(135deg, #1a2a1a, #0a1a2a); }
+  .property-card:nth-child(2) .property-img-bg { background: linear-gradient(135deg, #1a1a2a, #2a1a1a); }
+  .property-card:nth-child(3) .property-img-bg { background: linear-gradient(135deg, #2a1a0a, #1a2a1a); }
+  .property-card:nth-child(4) .property-img-bg { background: linear-gradient(135deg, #0a2a2a, #1a1a0a); }
+  .property-card:nth-child(5) .property-img-bg { background: linear-gradient(135deg, #2a0a1a, #0a2a0a); }
+  .property-card:nth-child(6) .property-img-bg { background: linear-gradient(135deg, #1a2a2a, #2a2a1a); }
+  .property-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,10,8,0.85) 0%, transparent 55%); z-index: 1; }
+  .property-overlay { position: absolute; inset: 0; background: rgba(201,169,110,0.1); opacity: 0; transition: opacity 0.3s; z-index: 2; display: flex; align-items: center; justify-content: center; }
+  .overlay-btn { background: var(--gold); color: var(--dark); border: none; padding: 12px 28px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; font-weight: 500; }
+  .property-badge { position: absolute; top: 16px; left: 16px; background: var(--green); color: var(--white); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; padding: 5px 12px; z-index: 3; display: flex; align-items: center; gap: 6px; }
+  .badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green-light); animation: pulse 2s ease infinite; }
+  .property-floor-tag { position: absolute; bottom: 16px; right: 16px; background: rgba(10,10,8,0.8); border: 1px solid rgba(201,169,110,0.2); color: var(--gold); font-family: 'DM Mono', monospace; font-size: 10px; padding: 4px 10px; z-index: 3; }
+  .property-info { padding: 24px 28px 28px; }
+  .property-building { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 6px; }
+  .property-name { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 400; margin-bottom: 12px; line-height: 1.2; }
+  .property-specs { display: flex; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
+  .spec { font-size: 11px; color: var(--muted); background: var(--dark4); padding: 4px 10px; }
+  .property-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.05); }
+  .property-price { font-family: 'Cormorant Garamond', serif; font-size: 25px; font-weight: 300; color: var(--gold); }
+  .property-price span { font-family: 'DM Sans', sans-serif; font-size: 11px; color: var(--muted); font-weight: 300; }
+  .property-avail { font-size: 10px; color: var(--green-light); letter-spacing: 0.1em; text-transform: uppercase; }
+  .view-all { text-align: center; margin-top: 48px; }
+
+  /* HOW */
+  .how { background: var(--dark2); display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start; }
+  .how-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .step { background: var(--dark3); padding: 36px 30px; position: relative; transition: background 0.3s; overflow: hidden; }
+  .step:hover { background: var(--dark4); }
+  .step-num { font-family: 'Cormorant Garamond', serif; font-size: 56px; font-weight: 300; color: rgba(201,169,110,0.1); line-height: 1; margin-bottom: 18px; }
+  .step-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; margin-bottom: 10px; color: var(--gold-light); }
+  .step-desc { font-size: 12px; color: var(--muted); line-height: 1.7; }
+  .step-accent { position: absolute; top: 0; left: 0; width: 3px; height: 0; background: var(--gold); transition: height 0.4s ease; }
+  .step:hover .step-accent { height: 100%; }
+
+  /* WHY */
+  .why { background: var(--dark); display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
+  .why-visual { position: relative; height: 480px; }
+  .why-box { position: absolute; background: var(--dark3); border: 1px solid rgba(201,169,110,0.1); padding: 30px; transition: border-color 0.3s; }
+  .why-box:hover { border-color: rgba(201,169,110,0.3); }
+  .why-box:nth-child(1) { top: 0; left: 0; right: 15%; }
+  .why-box:nth-child(2) { top: 46%; left: 15%; right: 0; bottom: 0; }
+  .why-box-icon { font-size: 26px; margin-bottom: 14px; }
+  .why-box-title { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 400; color: var(--gold-light); margin-bottom: 10px; }
+  .why-box-text { font-size: 12px; color: var(--muted); line-height: 1.7; }
+  .why-points { display: flex; flex-direction: column; gap: 28px; margin-top: 44px; }
+  .why-point { display: flex; gap: 22px; align-items: flex-start; padding: 20px; background: var(--dark2); border-left: 2px solid transparent; transition: border-color 0.3s; }
+  .why-point:hover { border-color: var(--gold); }
+  .why-point-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gold-dim); min-width: 24px; padding-top: 3px; }
+  .why-point-title { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 400; margin-bottom: 6px; }
+  .why-point-text { font-size: 12px; color: var(--muted); line-height: 1.7; }
+
+  /* CONTACT */
+  .contact { background: var(--dark2); display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; border-top: 1px solid rgba(201,169,110,0.1); }
+  .contact-form { display: flex; flex-direction: column; gap: 14px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 8px; }
+  .form-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+  .form-input, .form-select, .form-textarea { background: var(--dark3); border: 1px solid rgba(255,255,255,0.06); color: var(--white); padding: 13px 16px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 300; transition: border-color 0.2s; outline: none; appearance: none; }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: rgba(201,169,110,0.4); }
+  .form-input::placeholder, .form-textarea::placeholder { color: var(--muted); }
+  .form-textarea { resize: none; height: 90px; }
+  .form-submit { background: var(--gold); color: var(--dark); border: none; padding: 17px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; margin-top: 6px; }
+  .form-submit:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,169,110,0.2); }
+  .contact-tagline { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 300; line-height: 1.15; margin-bottom: 24px; }
+  .contact-tagline em { font-style: italic; color: var(--gold); }
+  .contact-channels { display: flex; flex-direction: column; gap: 12px; margin-top: 36px; }
+  .channel { display: flex; align-items: center; gap: 18px; padding: 18px 22px; background: var(--dark3); border: 1px solid rgba(255,255,255,0.04); transition: all 0.2s; cursor: pointer; }
+  .channel:hover { border-color: rgba(201,169,110,0.25); transform: translateX(4px); }
+  .channel-icon { width: 38px; height: 38px; background: rgba(201,169,110,0.1); display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+  .channel-label { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+  .channel-value { font-size: 13px; color: var(--white); }
+
+  /* FOOTER */
+  footer { background: var(--dark); padding: 44px 64px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.04); }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 400; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; }
+  .footer-text { font-size: 11px; color: var(--muted); }
+  .footer-links { display: flex; gap: 28px; }
+  .footer-links a { font-size: 11px; color: var(--muted); text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--gold); }
+
+  /* REVEAL */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-logo">Select <span>Rentals</span> Bangkok</div>
+  <ul class="nav-links">
+    <li><a href="#listings">Listings</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Find My Home</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Bangkok's Sansiri Property Specialist</p>
+    <div class="hero-trust">
+      <div class="trust-badge">Direct Developer Partnership</div>
+      <div class="trust-badge">No Service Fee</div>
+    </div>
+    <h1 class="hero-title">
+      Find Your<br>
+      Perfect Home<br>
+      <em>In Bangkok</em>
+    </h1>
+    <p class="hero-subtitle">
+      We work <strong>directly with Sansiri</strong> — Thailand's #1 property developer — giving you access to verified listings, transparent pricing, and a fully managed rental experience. <strong>No service fees for tenants, ever.</strong>
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('listings').scrollIntoView({behavior:'smooth'})">Browse Listings</button>
+      <button class="btn-secondary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Talk to an Agent</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-number">46<span style="font-size:18px">+</span></div>
+        <div class="stat-label">Buildings</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">5<span style="font-size:18px">★</span></div>
+        <div class="stat-label">Service</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" style="font-size:22px;padding-top:6px">Same Day</div>
+        <div class="stat-label">Response</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-img-main">
+      <div class="skyline">
+        <div class="building" style="height:45%"></div><div class="building" style="height:70%"></div>
+        <div class="building" style="height:55%"></div><div class="building" style="height:85%"></div>
+        <div class="building" style="height:60%"></div><div class="building" style="height:75%"></div>
+        <div class="building" style="height:50%"></div><div class="building" style="height:90%"></div>
+        <div class="building" style="height:65%"></div><div class="building" style="height:78%"></div>
+        <div class="building" style="height:48%"></div><div class="building" style="height:40%"></div>
+      </div>
+    </div>
+    <div class="floating-card">
+      <div class="card-tag"><div class="card-dot"></div>Available Now</div>
+      <div class="card-name">XT Phayathai</div>
+      <div class="card-detail">1 Bed · 42 sqm · Floor 18 · West</div>
+      <div class="card-footer">
+        <div class="card-price">฿22,000 / mo</div>
+        <div class="card-units">3 units left</div>
+      </div>
+    </div>
+    <div class="floating-card">
+      <div class="card-tag"><div class="card-dot"></div>Available Now</div>
+      <div class="card-name">98 Wireless</div>
+      <div class="card-detail">2 Bed · 132 sqm · Floor 6</div>
+      <div class="card-footer">
+        <div class="card-price">฿230,000 / mo</div>
+        <div class="card-units">1 unit left</div>
+      </div>
+    </div>
+    <div class="floating-card">
+      <div class="card-tag"><div class="card-dot"></div>New Listing</div>
+      <div class="card-name">The Base Height CM</div>
+      <div class="card-detail">1 Bed · 34 sqm · Floor 10</div>
+      <div class="card-footer">
+        <div class="card-price">฿16,000 / mo</div>
+        <div class="card-units">5 units left</div>
+      </div>
+    </div>
+    <div class="hero-line"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">Sukhumvit</div><div class="marquee-item">Sathorn</div><div class="marquee-item">Phayathai</div><div class="marquee-item">Huai Khwang</div><div class="marquee-item">Ekkamai</div><div class="marquee-item">Rama 9</div><div class="marquee-item">Chiang Mai</div><div class="marquee-item">No Service Fee</div><div class="marquee-item">Direct Developer</div><div class="marquee-item">Sansiri Specialist</div><div class="marquee-item">Same-Day Response</div>
+    <div class="marquee-item">Sukhumvit</div><div class="marquee-item">Sathorn</div><div class="marquee-item">Phayathai</div><div class="marquee-item">Huai Khwang</div><div class="marquee-item">Ekkamai</div><div class="marquee-item">Rama 9</div><div class="marquee-item">Chiang Mai</div><div class="marquee-item">No Service Fee</div><div class="marquee-item">Direct Developer</div><div class="marquee-item">Sansiri Specialist</div><div class="marquee-item">Same-Day Response</div>
+  </div>
+</div>
+
+<!-- TRUST BAR -->
+<div class="trust-bar reveal">
+  <div class="trust-item"><div class="trust-icon">🤝</div><div class="trust-text"><strong>Direct Developer Partnership</strong>Deals contracted directly with Sansiri</div></div>
+  <div class="trust-item"><div class="trust-icon">🔒</div><div class="trust-text"><strong>Verified Listings Only</strong>Every unit confirmed available before listing</div></div>
+  <div class="trust-item"><div class="trust-icon">💬</div><div class="trust-text"><strong>Same-Day Response</strong>LINE · WhatsApp · Facebook</div></div>
+  <div class="trust-item"><div class="trust-icon">🎯</div><div class="trust-text"><strong>No Service Fee</strong>100% free for tenants</div></div>
+</div>
+
+<!-- LISTINGS -->
+<section class="listings reveal" id="listings">
+  <div class="listings-header">
+    <div>
+      <p class="section-eyebrow">Available Now</p>
+      <h2 class="section-title">Featured <em>Properties</em></h2>
+    </div>
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="setFilter(this)">All</button>
+      <button class="filter-tab" onclick="setFilter(this)">1 Bed</button>
+      <button class="filter-tab" onclick="setFilter(this)">2 Bed</button>
+      <button class="filter-tab" onclick="setFilter(this)">Luxury</button>
+    </div>
+  </div>
+  <div class="properties-grid">
+    <div class="property-card reveal reveal-delay-1">
+      <div class="property-img"><div class="property-img-bg"></div><div class="property-overlay"><button class="overlay-btn">View Details</button></div><div class="property-badge"><div class="badge-dot"></div>Available</div><div class="property-floor-tag">FL. 18</div></div>
+      <div class="property-info"><div class="property-building">XT Phayathai · Phayathai BTS</div><div class="property-name">High Floor 1BR City View</div><div class="property-specs"><span class="spec">42 sqm</span><span class="spec">1B/1B</span><span class="spec">West View</span></div><div class="property-footer"><div class="property-price">฿22,000 <span>/ mo</span></div><div class="property-avail">3 units</div></div></div>
+    </div>
+    <div class="property-card reveal reveal-delay-2">
+      <div class="property-img"><div class="property-img-bg"></div><div class="property-overlay"><button class="overlay-btn">View Details</button></div><div class="property-badge"><div class="badge-dot"></div>Available</div><div class="property-floor-tag">FL. 18</div></div>
+      <div class="property-info"><div class="property-building">Base Urban Rama 9 · MRT Rama 9</div><div class="property-name">Modern 1BR, Urgent Move-In</div><div class="property-specs"><span class="spec">35 sqm</span><span class="spec">1B/1B</span><span class="spec">Ready Now</span></div><div class="property-footer"><div class="property-price">฿23,000 <span>/ mo</span></div><div class="property-avail">2 units</div></div></div>
+    </div>
+    <div class="property-card reveal reveal-delay-3">
+      <div class="property-img"><div class="property-img-bg"></div><div class="property-overlay"><button class="overlay-btn">View Details</button></div><div class="property-badge"><div class="badge-dot"></div>Available</div><div class="property-floor-tag">FL. 7</div></div>
+      <div class="property-info"><div class="property-building">The Muve 107 · On Nut BTS</div><div class="property-name">Cozy 1BR Great Value</div><div class="property-specs"><span class="spec">25.75 sqm</span><span class="spec">1B/1B</span><span class="spec">South</span></div><div class="property-footer"><div class="property-price">฿10,000 <span>/ mo</span></div><div class="property-avail">4 units</div></div></div>
+    </div>
+    <div class="property-card reveal reveal-delay-1">
+      <div class="property-img"><div class="property-img-bg"></div><div class="property-overlay"><button class="overlay-btn">View Details</button></div><div class="property-badge"><div class="badge-dot"></div>Available</div><div class="property-floor-tag">FL. 6</div></div>
+      <div class="property-info"><div class="property-building">98 Wireless · Phloen Chit BTS</div><div class="property-name">Ultra-Luxury 2BR Flagship</div><div class="property-specs"><span class="spec">132 sqm</span><span class="spec">2B/3B</span><span class="spec">Premium</span></div><div class="property-footer"><div class="property-price">฿230,000 <span>/ mo</span></div><div class="property-avail">1 unit</div></div></div>
+    </div>
+    <div class="property-card reveal reveal-delay-2">
+      <div class="property-img"><div class="property-img-bg"></div><div class="property-overlay"><button class="overlay-btn">View Details</button></div><div class="property-badge"><div class="badge-dot"></div>Available</div><div class="property-floor-tag">FL. 22</div></div>
+      <div class="property-info"><div class="property-building">WYNE Sukhumvit · Phra Khanong BTS</div><div class="property-name">Spacious 2BR, Negotiable</div><div class="property-specs"><span class="spec">68.6 sqm</span><span class="spec">2B/2B</span><span class="spec">Negotiable</span></div><div class="property-footer"><div class="property-price">฿35,000 <span>/ mo</span></div><div class="property-avail">1 unit</div></div></div>
+    </div>
+    <div class="property-card reveal reveal-delay-3">
+      <div class="property-img"><div class="property-img-bg"></div><div class="property-overlay"><button class="overlay-btn">View Details</button></div><div class="property-badge"><div class="badge-dot"></div>Available</div><div class="property-floor-tag">FL. 11</div></div>
+      <div class="property-info"><div class="property-building">Khun by Yoo · Thonglor BTS</div><div class="property-name">Designer 1BR Iconic Address</div><div class="property-specs"><span class="spec">48.75 sqm</span><span class="spec">1B/1B</span><span class="spec">West View</span></div><div class="property-footer"><div class="property-price">฿65,000 <span>/ mo</span></div><div class="property-avail">1 unit</div></div></div>
+    </div>
+  </div>
+  <div class="view-all"><button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Request Full Listings</button></div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how reveal" id="how">
+  <div>
+    <p class="section-eyebrow">The Process</p>
+    <h2 class="section-title">Simple.<br><em>Seamless.</em><br>Settled.</h2>
+    <p style="font-size:13px;color:var(--muted);line-height:1.8;margin-top:20px;max-width:300px">From your first message to getting your keys. We handle everything — at no cost to you.</p>
+  </div>
+  <div class="how-steps">
+    <div class="step"><div class="step-accent"></div><div class="step-num">01</div><div class="step-title">Tell Us What You Need</div><p class="step-desc">Budget, bedrooms, area. We listen and match — no generic listings.</p></div>
+    <div class="step"><div class="step-accent"></div><div class="step-num">02</div><div class="step-title">Curated Shortlist</div><p class="step-desc">Personalised selection of verified available units within hours.</p></div>
+    <div class="step"><div class="step-accent"></div><div class="step-num">03</div><div class="step-title">View & Decide</div><p class="step-desc">We arrange viewings at your convenience. Virtual tours available.</p></div>
+    <div class="step"><div class="step-accent"></div><div class="step-num">04</div><div class="step-title">Move In</div><p class="step-desc">Contract, key handover, utility setup. We stay with you to move-in day.</p></div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why reveal" id="why">
+  <div class="why-visual">
+    <div class="why-box"><div class="why-box-icon">🔄</div><div class="why-box-title">Live Data, Updated Daily</div><p class="why-box-text">Listings sync from Sansiri's database every evening. You see what's actually available — not last month's listings.</p></div>
+    <div class="why-box"><div class="why-box-icon">🌏</div><div class="why-box-title">Built for Expats</div><p class="why-box-text">English-first. We understand what international tenants need and make Bangkok rental genuinely easy.</p></div>
+  </div>
+  <div>
+    <p class="section-eyebrow">Why Select Rentals</p>
+    <h2 class="section-title">An Advantage<br>You <em>Can Feel</em></h2>
+    <div class="why-points">
+      <div class="why-point"><div class="why-point-num">01</div><div><div class="why-point-title">Direct Sansiri Partnership</div><p class="why-point-text">We deal directly with Thailand's #1 developer. Every listing is verified, contracted, and legit — giving you peace of mind from day one.</p></div></div>
+      <div class="why-point"><div class="why-point-num">02</div><div><div class="why-point-title">Zero Cost to Tenants</div><p class="why-point-text">You pay absolutely nothing for our service. Owner pays on successful rental. No hidden fees, no surprises.</p></div></div>
+      <div class="why-point"><div class="why-point-num">03</div><div><div class="why-point-title">Real-time Availability</div><p class="why-point-text">Automated daily sync means we know about new listings and changes before most agents do.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact reveal" id="contact">
+  <div>
+    <p class="section-eyebrow">Get In Touch</p>
+    <div class="contact-tagline">Ready to find<br>your <em>perfect</em><br>Bangkok home?</div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.8;max-width:340px">Tell us your requirements and we'll respond with a personalised shortlist — same day, every time.</p>
+    <div class="contact-channels">
+      <div class="channel"><div class="channel-icon">💬</div><div><div class="channel-label">LINE</div><div class="channel-value">@SelectRentalsBKK</div></div></div>
+      <div class="channel"><div class="channel-icon">📘</div><div><div class="channel-label">Facebook</div><div class="channel-value">Select Rentals Bangkok</div></div></div>
+      <div class="channel"><div class="channel-icon">📧</div><div><div class="channel-label">Email</div><div class="channel-value">hello@selectrentalsbkk.com</div></div></div>
+    </div>
+  </div>
+  <div class="contact-form">
+    <p style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;margin-bottom:6px;color:var(--gold-light)">Send an Enquiry</p>
+    <p style="font-size:11px;color:var(--muted);margin-bottom:20px;letter-spacing:0.05em">We respond same day · No service fee for tenants</p>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">First Name</label><input class="form-input" type="text" placeholder="James"></div>
+      <div class="form-group"><label class="form-label">Nationality</label><input class="form-input" type="text" placeholder="British"></div>
+    </div>
+    <div class="form-group"><label class="form-label">LINE ID / WhatsApp</label><input class="form-input" type="text" placeholder="@yourlineid"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Budget (฿/mo)</label><input class="form-input" type="text" placeholder="25,000"></div>
+      <div class="form-group"><label class="form-label">Bedrooms</label><select class="form-select"><option value="" disabled selected>Select</option><option>Studio</option><option>1 Bedroom</option><option>2 Bedrooms</option><option>3+ Bedrooms</option></select></div>
+    </div>
+    <div class="form-group"><label class="form-label">Preferred Area</label><input class="form-input" type="text" placeholder="Sukhumvit, Phayathai, Sathorn..."></div>
+    <div class="form-group"><label class="form-label">Additional Requirements</label><textarea class="form-textarea" placeholder="Pet-friendly, high floor, near BTS, move-in date..."></textarea></div>
+    <button class="form-submit">Submit Enquiry — No Fee →</button>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Select Rentals Bangkok</div>
+  <div class="footer-text">© 2025 Select Rentals Bangkok · Sansiri Property Specialist</div>
+  <div class="footer-links"><a href="#listings">Listings</a><a href="#how">Process</a><a href="#why">Why Us</a><a href="#contact">Contact</a></div>
+</footer>
+
+<script>
+  function setFilter(el) {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    if (window.scrollY > 60) {
+      nav.style.background = 'rgba(10,10,8,0.97)';
+      nav.style.backdropFilter = 'blur(16px)';
+      nav.style.boxShadow = '0 1px 0 rgba(201,169,110,0.1)';
+    } else {
+      nav.style.background = '';
+      nav.style.backdropFilter = 'blur(2px)';
+      nav.style.boxShadow = '';
+    }
+  });
+</script>
+</body>
+</html>
