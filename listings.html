@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Listings — Select Rentals Bangkok</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A96E; --gold-light: #E8D5B0; --gold-dim: #8A6D3E;
+    --dark: #0A0A08; --dark2: #111110; --dark3: #1A1A18; --dark4: #222220;
+    --white: #F5F2EC; --muted: #7A7870; --green: #4A7C59; --green-light: #6FCF97;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--dark); color: var(--white); font-family: 'DM Sans', sans-serif; font-weight: 300; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: 0.4; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 24px 48px; display: flex; align-items: center; justify-content: space-between; transition: all 0.4s; background: rgba(10,10,8,0.97); backdrop-filter: blur(16px); box-shadow: 0 1px 0 rgba(201,169,110,0.1); }
+  .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; text-decoration: none; }
+  .nav-logo span { color: var(--white); font-weight: 300; }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta { background: transparent; border: 1px solid var(--gold-dim); color: var(--gold); padding: 10px 24px; font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-block; }
+  .nav-cta:hover { background: var(--gold); color: var(--dark); }
+
+  /* PAGE HEADER */
+  .page-header { padding: 140px 64px 64px; background: var(--dark2); border-bottom: 1px solid rgba(201,169,110,0.1); }
+  .page-header-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+  .page-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; }
+  .page-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 4vw, 60px); font-weight: 300; line-height: 1.1; }
+  .page-title em { font-style: italic; color: var(--gold); }
+  .page-meta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .count-badge { background: rgba(201,169,110,0.1); border: 1px solid rgba(201,169,110,0.25); color: var(--gold-light); font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.1em; padding: 8px 18px; }
+  .back-link { color: var(--muted); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: color 0.3s; }
+  .back-link::before { content: '←'; transition: transform 0.3s; }
+  .back-link:hover { color: var(--gold); }
+  .back-link:hover::before { transform: translateX(-4px); }
+
+  /* LISTINGS TOOLBAR */
+  .listings-toolbar { padding: 28px 64px; background: var(--dark); border-bottom: 1px solid rgba(255,255,255,0.04); position: sticky; top: 73px; z-index: 90; backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+  .filter-tabs { display: flex; gap: 4px; }
+  .filter-tab { background: var(--dark3); border: none; color: var(--muted); padding: 10px 20px; font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+  .filter-tab.active, .filter-tab:hover { background: var(--gold); color: var(--dark); }
+  .filter-count { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; }
+
+  /* PROPERTIES GRID */
+  .listings-body { padding: 48px 64px 100px; }
+  .properties-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+
+  /* PROPERTY CARD */
+  .property-card { background: var(--dark3); position: relative; overflow: hidden; cursor: pointer; transition: transform 0.35s, box-shadow 0.35s; }
+  .property-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(0,0,0,0.5); }
+  .property-card:hover .property-overlay { opacity: 1; }
+  .property-card:hover .property-img-bg { transform: scale(1.05); }
+  .property-img { height: 230px; position: relative; overflow: hidden; }
+  .property-img-bg { position: absolute; inset: 0; transition: transform 0.5s ease; }
+  .property-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,10,8,0.85) 0%, transparent 55%); z-index: 1; }
+  .property-overlay { position: absolute; inset: 0; background: rgba(201,169,110,0.1); opacity: 0; transition: opacity 0.3s; z-index: 2; display: flex; align-items: center; justify-content: center; }
+  .overlay-btn { background: var(--gold); color: var(--dark); border: none; padding: 12px 28px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; font-weight: 500; }
+  .property-badge { position: absolute; top: 16px; left: 16px; background: var(--green); color: var(--white); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; padding: 5px 12px; z-index: 3; display: flex; align-items: center; gap: 6px; }
+  .badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green-light); animation: pulse 2s ease infinite; }
+  .property-floor-tag { position: absolute; bottom: 16px; right: 16px; background: rgba(10,10,8,0.8); border: 1px solid rgba(201,169,110,0.2); color: var(--gold); font-family: 'DM Mono', monospace; font-size: 10px; padding: 4px 10px; z-index: 3; }
+  .property-info { padding: 24px 28px 28px; }
+  .property-building { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 6px; }
+  .property-name { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 400; margin-bottom: 12px; line-height: 1.2; }
+  .property-specs { display: flex; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
+  .spec { font-size: 11px; color: var(--muted); background: var(--dark4); padding: 4px 10px; }
+  .property-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.05); }
+  .property-price { font-family: 'Cormorant Garamond', serif; font-size: 25px; font-weight: 300; color: var(--gold); }
+  .property-price span { font-family: 'DM Sans', sans-serif; font-size: 11px; color: var(--muted); font-weight: 300; }
+  .property-avail { font-size: 10px; color: var(--green-light); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* STATES */
+  .listings-loading, .listings-empty, .listings-error { grid-column: 1 / -1; padding: 80px 40px; text-align: center; color: var(--muted); font-size: 14px; }
+  .listings-loading { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .ls-spinner { width: 36px; height: 36px; border: 2px solid rgba(201,169,110,0.15); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  .listings-empty a, .listings-error a { color: var(--gold); text-decoration: none; }
+
+  /* FOOTER */
+  footer { background: var(--dark); padding: 44px 64px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.04); }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 400; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; }
+  .footer-text { font-size: 11px; color: var(--muted); }
+  .footer-links { display: flex; gap: 28px; }
+  .footer-links a { font-size: 11px; color: var(--muted); text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--gold); }
+
+  /* ANIMATIONS */
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes cardIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+  .card-anim { animation: cardIn 0.55s ease both; }
+
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    .page-header { padding: 110px 24px 48px; }
+    .listings-toolbar { padding: 20px 24px; top: 65px; }
+    .listings-body { padding: 32px 24px 80px; }
+    .properties-grid { grid-template-columns: 1fr 1fr; }
+    footer { padding: 32px 24px; flex-direction: column; gap: 16px; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+  }
+  @media (max-width: 600px) {
+    .properties-grid { grid-template-columns: 1fr; }
+    .filter-tabs { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a class="nav-logo" href="index.html">Select <span>Rentals</span> Bangkok</a>
+  <ul class="nav-links">
+    <li><a href="index.html#listings">Featured</a></li>
+    <li><a href="index.html#how">How It Works</a></li>
+    <li><a href="index.html#why">Why Us</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <a class="nav-cta" href="index.html#contact">Find My Home</a>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div>
+      <p class="page-eyebrow">Sansiri Portfolio · Bangkok</p>
+      <h1 class="page-title">All <em>Available</em><br>Properties</h1>
+    </div>
+    <div class="page-meta">
+      <div class="count-badge" id="countBadge">Loading…</div>
+      <a class="back-link" href="index.html">Back to Home</a>
+    </div>
+  </div>
+</div>
+
+<!-- STICKY TOOLBAR -->
+<div class="listings-toolbar">
+  <div class="filter-tabs">
+    <button class="filter-tab active" onclick="setFilter(this,'all')">All</button>
+    <button class="filter-tab" onclick="setFilter(this,'1-bed')">1 Bed</button>
+    <button class="filter-tab" onclick="setFilter(this,'2-bed')">2 Bed</button>
+    <button class="filter-tab" onclick="setFilter(this,'luxury')">Luxury ฿50k+</button>
+  </div>
+  <span class="filter-count" id="filterCount"></span>
+</div>
+
+<!-- LISTINGS GRID -->
+<div class="listings-body">
+  <div class="properties-grid" id="propertiesGrid">
+    <div class="listings-loading">
+      <div class="ls-spinner"></div>
+      <p>Loading properties…</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">Select Rentals Bangkok</div>
+  <div class="footer-text">© 2025 Select Rentals Bangkok · Sansiri Property Specialist</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="index.html#how">Process</a>
+    <a href="index.html#why">Why Us</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+  const SHEET_ID   = '1oeQCvObGuY3SB5_ozDJDJkA0YqPzRHE_uaqrR3mu7JA';
+  const SHEET_NAME = '📋 Master Listings';
+
+  async function fetchProperties() {
+    const url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID +
+                '/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent(SHEET_NAME);
+    const res  = await fetch(url);
+    const text = await res.text();
+    const match = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/);
+    if (!match) throw new Error('Unexpected gviz format');
+    const { table } = JSON.parse(match[1]);
+
+    function v(cells, i) {
+      return (cells && cells[i] != null && cells[i].v != null) ? cells[i].v : '';
+    }
+
+    return (table.rows || [])
+      .map(r => r.c || [])
+      .filter(c => String(v(c, 13)).trim() === 'Available')
+      .map(c => ({
+        project:   String(v(c,  1)).trim(),
+        unit:      String(v(c,  2)).trim(),
+        floor:     String(v(c,  3)).trim(),
+        unitType:  String(v(c,  6)).trim(),
+        area:      v(c,  7),
+        direction: String(v(c,  8)).trim(),
+        price:     v(c,  9),
+      }));
+  }
+
+  const BG = [
+    'linear-gradient(135deg,#1a2a1a,#0a1a2a)',
+    'linear-gradient(135deg,#1a1a2a,#2a1a1a)',
+    'linear-gradient(135deg,#2a1a0a,#1a2a1a)',
+    'linear-gradient(135deg,#0a2a2a,#1a1a0a)',
+    'linear-gradient(135deg,#2a0a1a,#0a2a0a)',
+    'linear-gradient(135deg,#1a2a2a,#2a2a1a)',
+  ];
+
+  function cardFilterTypes(prop) {
+    const tags = ['all'];
+    const ut   = prop.unitType.toLowerCase();
+    if (ut === 'studio' || /^1b/.test(ut)) tags.push('1-bed');
+    else if (/^\d+b/.test(ut))            tags.push('2-bed');
+    if (Number(prop.price) >= 50000)      tags.push('luxury');
+    return tags.join(' ');
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function unitLabel(ut) {
+    const l = ut.toLowerCase();
+    if (!l || l === 'n/a') return 'Unit';
+    if (l === 'studio') return 'Studio';
+    const m = l.match(/^(\d+)b/);
+    return m ? m[1] + ' Bedroom' : ut;
+  }
+
+  function makeCard(prop, i) {
+    const card     = document.createElement('div');
+    card.className = 'property-card card-anim';
+    card.style.animationDelay = (i % 3 * 0.08) + 's';
+    card.dataset.filter = cardFilterTypes(prop);
+    const price    = Number(prop.price);
+    const priceStr = price ? '฿' + price.toLocaleString('th-TH') : '—';
+    card.innerHTML =
+      '<div class="property-img">' +
+        '<div class="property-img-bg" style="background:' + BG[i % BG.length] + '"></div>' +
+        '<div class="property-overlay"><button class="overlay-btn" onclick="window.location.href=\'index.html#contact\'">Enquire</button></div>' +
+        '<div class="property-badge"><div class="badge-dot"></div>Available</div>' +
+        (prop.floor && Number(prop.floor) > 0 && Number(prop.floor) <= 150 ? '<div class="property-floor-tag">FL. ' + esc(prop.floor) + '</div>' : '') +
+      '</div>' +
+      '<div class="property-info">' +
+        '<div class="property-building">' + esc(prop.project) + '</div>' +
+        '<div class="property-name">' + esc(unitLabel(prop.unitType)) + '</div>' +
+        '<div class="property-specs">' +
+          (prop.area      ? '<span class="spec">' + prop.area + ' sqm</span>' : '') +
+          (prop.unitType  ? '<span class="spec">' + esc(prop.unitType) + '</span>' : '') +
+          (prop.direction ? '<span class="spec">' + esc(prop.direction) + '</span>' : '') +
+        '</div>' +
+        '<div class="property-footer">' +
+          '<div class="property-price">' + priceStr + ' <span>/ mo</span></div>' +
+          '<div class="property-avail">Available</div>' +
+        '</div>' +
+      '</div>';
+    return card;
+  }
+
+  let allCards = [];
+  let activeFilter = 'all';
+
+  function setFilter(el, type) {
+    activeFilter = type;
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    let visible = 0;
+    document.querySelectorAll('#propertiesGrid .property-card').forEach(card => {
+      const show = (card.dataset.filter || '').split(' ').includes(activeFilter);
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    const fc = document.getElementById('filterCount');
+    if (fc) fc.textContent = visible + ' properties';
+  }
+
+  async function initListings() {
+    const grid = document.getElementById('propertiesGrid');
+    try {
+      const props = await fetchProperties();
+      grid.innerHTML = '';
+
+      const countBadge = document.getElementById('countBadge');
+      if (countBadge) countBadge.textContent = props.length + ' Available';
+
+      if (!props.length) {
+        grid.innerHTML =
+          '<div class="listings-empty"><p>No available properties right now. ' +
+          '<a href="index.html#contact">Contact us</a> for the latest listings.</p></div>';
+        return;
+      }
+
+      props.forEach((p, i) => {
+        grid.appendChild(makeCard(p, i));
+      });
+
+      const fc = document.getElementById('filterCount');
+      if (fc) fc.textContent = props.length + ' properties';
+
+    } catch (err) {
+      console.error('Listings fetch error:', err);
+      const grid2 = document.getElementById('propertiesGrid');
+      grid2.innerHTML =
+        '<div class="listings-error"><p>Couldn\'t load listings. Please ' +
+        '<a href="index.html#contact">contact us directly</a>.</p></div>';
+    }
+  }
+
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    if (!nav) return;
+    if (window.scrollY > 60) {
+      nav.style.background     = 'rgba(10,10,8,0.97)';
+      nav.style.backdropFilter = 'blur(16px)';
+      nav.style.boxShadow      = '0 1px 0 rgba(201,169,110,0.1)';
+    }
+  });
+
+  initListings();
+</script>
+</body>
+</html>

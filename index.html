@@ -194,6 +194,17 @@
   .reveal-delay-1 { transition-delay: 0.1s; }
   .reveal-delay-2 { transition-delay: 0.2s; }
   .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* LISTINGS STATES */
+  .listings-loading, .listings-empty, .listings-error { grid-column: 1 / -1; padding: 80px 40px; text-align: center; color: var(--muted); font-size: 14px; }
+  .listings-loading { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .ls-spinner { width: 36px; height: 36px; border: 2px solid rgba(201,169,110,0.15); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .listings-empty a, .listings-error a { color: var(--gold); text-decoration: none; }
+  .listings-empty a:hover, .listings-error a:hover { text-decoration: underline; }
+  /* Card entrance animation (replaces reveal for dynamic cards) */
+  @keyframes cardIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+  .card-anim { animation: cardIn 0.55s ease both; }
 </style>
 </head>
 <body>
@@ -304,46 +315,21 @@
 </div>
 
 <!-- LISTINGS -->
-<section class="listings reveal" id="listings">
+<section class="listings" id="listings">
   <div class="listings-header">
     <div>
       <p class="section-eyebrow">Available Now</p>
       <h2 class="section-title">Featured <em>Properties</em></h2>
     </div>
     <div class="filter-tabs">
-      <button class="filter-tab active" onclick="setFilter(this)">All</button>
-      <button class="filter-tab" onclick="setFilter(this)">1 Bed</button>
-      <button class="filter-tab" onclick="setFilter(this)">2 Bed</button>
-      <button class="filter-tab" onclick="setFilter(this)">Luxury</button>
+      <button class="filter-tab active" onclick="setFilter(this,'all')">All</button>
+      <button class="filter-tab" onclick="setFilter(this,'1-bed')">1 Bed</button>
+      <button class="filter-tab" onclick="setFilter(this,'2-bed')">2 Bed</button>
+      <button class="filter-tab" onclick="setFilter(this,'luxury')">Luxury</button>
     </div>
   </div>
-  <div class="properties-grid">
-    <div class="property-card reveal reveal-delay-1">
-      <div class="property-img"><div class="property-img-bg"></div><div class="property-overlay"><button class="overlay-btn">View Details</button></div><div class="property-badge"><div class="badge-dot"></div>Available</div><div class="property-floor-tag">FL. 18</div></div>
-      <div class="property-info"><div class="property-building">XT Phayathai · Phayathai BTS</div><div class="property-name">High Floor 1BR City View</div><div class="property-specs"><span class="spec">42 sqm</span><span class="spec">1B/1B</span><span class="spec">West View</span></div><div class="property-footer"><div class="property-price">฿22,000 <span>/ mo</span></div><div class="property-avail">3 units</div></div></div>
-    </div>
-    <div class="property-card reveal reveal-delay-2">
-      <div class="property-img"><div class="property-img-bg"></div><div class="property-overlay"><button class="overlay-btn">View Details</button></div><div class="property-badge"><div class="badge-dot"></div>Available</div><div class="property-floor-tag">FL. 18</div></div>
-      <div class="property-info"><div class="property-building">Base Urban Rama 9 · MRT Rama 9</div><div class="property-name">Modern 1BR, Urgent Move-In</div><div class="property-specs"><span class="spec">35 sqm</span><span class="spec">1B/1B</span><span class="spec">Ready Now</span></div><div class="property-footer"><div class="property-price">฿23,000 <span>/ mo</span></div><div class="property-avail">2 units</div></div></div>
-    </div>
-    <div class="property-card reveal reveal-delay-3">
-      <div class="property-img"><div class="property-img-bg"></div><div class="property-overlay"><button class="overlay-btn">View Details</button></div><div class="property-badge"><div class="badge-dot"></div>Available</div><div class="property-floor-tag">FL. 7</div></div>
-      <div class="property-info"><div class="property-building">The Muve 107 · On Nut BTS</div><div class="property-name">Cozy 1BR Great Value</div><div class="property-specs"><span class="spec">25.75 sqm</span><span class="spec">1B/1B</span><span class="spec">South</span></div><div class="property-footer"><div class="property-price">฿10,000 <span>/ mo</span></div><div class="property-avail">4 units</div></div></div>
-    </div>
-    <div class="property-card reveal reveal-delay-1">
-      <div class="property-img"><div class="property-img-bg"></div><div class="property-overlay"><button class="overlay-btn">View Details</button></div><div class="property-badge"><div class="badge-dot"></div>Available</div><div class="property-floor-tag">FL. 6</div></div>
-      <div class="property-info"><div class="property-building">98 Wireless · Phloen Chit BTS</div><div class="property-name">Ultra-Luxury 2BR Flagship</div><div class="property-specs"><span class="spec">132 sqm</span><span class="spec">2B/3B</span><span class="spec">Premium</span></div><div class="property-footer"><div class="property-price">฿230,000 <span>/ mo</span></div><div class="property-avail">1 unit</div></div></div>
-    </div>
-    <div class="property-card reveal reveal-delay-2">
-      <div class="property-img"><div class="property-img-bg"></div><div class="property-overlay"><button class="overlay-btn">View Details</button></div><div class="property-badge"><div class="badge-dot"></div>Available</div><div class="property-floor-tag">FL. 22</div></div>
-      <div class="property-info"><div class="property-building">WYNE Sukhumvit · Phra Khanong BTS</div><div class="property-name">Spacious 2BR, Negotiable</div><div class="property-specs"><span class="spec">68.6 sqm</span><span class="spec">2B/2B</span><span class="spec">Negotiable</span></div><div class="property-footer"><div class="property-price">฿35,000 <span>/ mo</span></div><div class="property-avail">1 unit</div></div></div>
-    </div>
-    <div class="property-card reveal reveal-delay-3">
-      <div class="property-img"><div class="property-img-bg"></div><div class="property-overlay"><button class="overlay-btn">View Details</button></div><div class="property-badge"><div class="badge-dot"></div>Available</div><div class="property-floor-tag">FL. 11</div></div>
-      <div class="property-info"><div class="property-building">Khun by Yoo · Thonglor BTS</div><div class="property-name">Designer 1BR Iconic Address</div><div class="property-specs"><span class="spec">48.75 sqm</span><span class="spec">1B/1B</span><span class="spec">West View</span></div><div class="property-footer"><div class="property-price">฿65,000 <span>/ mo</span></div><div class="property-avail">1 unit</div></div></div>
-    </div>
-  </div>
-  <div class="view-all"><button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Request Full Listings</button></div>
+  <div class="properties-grid" id="propertiesGrid"></div>
+  <div class="view-all"><button class="btn-primary" id="viewAllBtn" onclick="window.location.href='listings.html'">View All Listings →</button></div>
 </section>
 
 <!-- HOW IT WORKS -->
@@ -415,28 +401,181 @@
 </footer>
 
 <script>
-  function setFilter(el) {
-    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
+  // ─── Google Sheets Config ────────────────────────────────────
+  const SHEET_ID   = '1oeQCvObGuY3SB5_ozDJDJkA0YqPzRHE_uaqrR3mu7JA';
+  const SHEET_NAME = '📋 Master Listings';
+
+  async function fetchProperties() {
+    const url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID +
+                '/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent(SHEET_NAME);
+    const res  = await fetch(url);
+    const text = await res.text();
+    // Strip JSONP wrapper: google.visualization.Query.setResponse({...});
+    const match = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/);
+    if (!match) throw new Error('Unexpected gviz format');
+    const { table } = JSON.parse(match[1]);
+
+    function v(cells, i) {
+      return (cells && cells[i] != null && cells[i].v != null) ? cells[i].v : '';
+    }
+
+    // col indices (0-based, matching spreadsheet columns A=0, B=1, ...):
+    // B=1 Project, C=2 Unit, D=3 Floor, G=6 UnitType, H=7 Area, I=8 Direction, J=9 Price, N=13 Status
+    return (table.rows || [])
+      .map(r => r.c || [])
+      .filter(c => String(v(c, 13)).trim() === 'Available')
+      .map(c => ({
+        project:   String(v(c,  1)).trim(),
+        unit:      String(v(c,  2)).trim(),
+        floor:     String(v(c,  3)).trim(),
+        unitType:  String(v(c,  6)).trim(),
+        area:      v(c,  7),
+        direction: String(v(c,  8)).trim(),
+        price:     v(c,  9),
+      }));
   }
 
-  const observer = new IntersectionObserver((entries) => {
+  // ─── Card helpers ────────────────────────────────────────────
+  const BG = [
+    'linear-gradient(135deg,#1a2a1a,#0a1a2a)',
+    'linear-gradient(135deg,#1a1a2a,#2a1a1a)',
+    'linear-gradient(135deg,#2a1a0a,#1a2a1a)',
+    'linear-gradient(135deg,#0a2a2a,#1a1a0a)',
+    'linear-gradient(135deg,#2a0a1a,#0a2a0a)',
+    'linear-gradient(135deg,#1a2a2a,#2a2a1a)',
+  ];
+
+  function cardFilterTypes(prop) {
+    const tags = ['all'];
+    const ut   = prop.unitType.toLowerCase();
+    if (ut === 'studio' || /^1b/.test(ut)) tags.push('1-bed');
+    else if (/^\d+b/.test(ut))            tags.push('2-bed');
+    if (Number(prop.price) >= 50000)      tags.push('luxury');
+    return tags.join(' ');
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function unitLabel(ut) {
+    const l = ut.toLowerCase();
+    if (!l || l === 'n/a') return 'Unit';
+    if (l === 'studio') return 'Studio';
+    const m = l.match(/^(\d+)b/);
+    return m ? m[1] + ' Bedroom' : ut;
+  }
+
+  function makeCard(prop, i) {
+    const card     = document.createElement('div');
+    card.className = 'property-card card-anim';
+    card.style.animationDelay = (i % 3 * 0.08) + 's';
+    card.dataset.filter = cardFilterTypes(prop);
+    const price    = Number(prop.price);
+    const priceStr = price ? '฿' + price.toLocaleString('th-TH') : '—';
+    card.innerHTML =
+      '<div class="property-img">' +
+        '<div class="property-img-bg" style="background:' + BG[i % BG.length] + '"></div>' +
+        '<div class="property-overlay"><button class="overlay-btn" onclick="document.getElementById(\'contact\').scrollIntoView({behavior:\'smooth\'})">Enquire</button></div>' +
+        '<div class="property-badge"><div class="badge-dot"></div>Available</div>' +
+        (prop.floor && Number(prop.floor) > 0 && Number(prop.floor) <= 150 ? '<div class="property-floor-tag">FL. ' + esc(prop.floor) + '</div>' : '') +
+      '</div>' +
+      '<div class="property-info">' +
+        '<div class="property-building">' + esc(prop.project) + '</div>' +
+        '<div class="property-name">' + esc(unitLabel(prop.unitType)) + '</div>' +
+        '<div class="property-specs">' +
+          (prop.area      ? '<span class="spec">' + prop.area + ' sqm</span>' : '') +
+          (prop.unitType  ? '<span class="spec">' + esc(prop.unitType) + '</span>' : '') +
+          (prop.direction ? '<span class="spec">' + esc(prop.direction) + '</span>' : '') +
+        '</div>' +
+        '<div class="property-footer">' +
+          '<div class="property-price">' + priceStr + ' <span>/ mo</span></div>' +
+          '<div class="property-avail">Available</div>' +
+        '</div>' +
+      '</div>';
+    return card;
+  }
+
+  // ─── Filter ──────────────────────────────────────────────────
+  let activeFilter = 'all';
+
+  function setFilter(el, type) {
+    activeFilter = type;
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('#propertiesGrid .property-card').forEach(card => {
+      card.style.display = (card.dataset.filter || '').split(' ').includes(activeFilter) ? '' : 'none';
+    });
+  }
+
+  // ─── Reveal observer ─────────────────────────────────────────
+  const revealObserver = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.08 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
+  // ─── Nav scroll ──────────────────────────────────────────────
   window.addEventListener('scroll', () => {
     const nav = document.getElementById('navbar');
     if (window.scrollY > 60) {
-      nav.style.background = 'rgba(10,10,8,0.97)';
+      nav.style.background     = 'rgba(10,10,8,0.97)';
       nav.style.backdropFilter = 'blur(16px)';
-      nav.style.boxShadow = '0 1px 0 rgba(201,169,110,0.1)';
+      nav.style.boxShadow      = '0 1px 0 rgba(201,169,110,0.1)';
     } else {
-      nav.style.background = '';
+      nav.style.background     = '';
       nav.style.backdropFilter = 'blur(2px)';
-      nav.style.boxShadow = '';
+      nav.style.boxShadow      = '';
     }
   });
+
+  // ─── Pick one property per project (up to limit) ─────────────
+  function selectFeatured(all, limit) {
+    const seen = new Set();
+    const out  = [];
+    for (const p of all) {
+      if (!seen.has(p.project)) {
+        seen.add(p.project);
+        out.push(p);
+        if (out.length >= limit) break;
+      }
+    }
+    return out;
+  }
+
+  // ─── Load listings ───────────────────────────────────────────
+  async function initListings() {
+    const grid = document.getElementById('propertiesGrid');
+    grid.innerHTML =
+      '<div class="listings-loading">' +
+        '<div class="ls-spinner"></div>' +
+        '<p>Loading properties…</p>' +
+      '</div>';
+    try {
+      const all = await fetchProperties();
+      grid.innerHTML = '';
+      if (!all.length) {
+        grid.innerHTML =
+          '<div class="listings-empty"><p>No available properties right now. ' +
+          '<a href="#contact" onclick="document.getElementById(\'contact\').scrollIntoView({behavior:\'smooth\'});return false;">Contact us</a>' +
+          ' for the latest listings.</p></div>';
+        return;
+      }
+      const featured = selectFeatured(all, 9);
+      featured.forEach((p, i) => {
+        grid.appendChild(makeCard(p, i));
+      });
+      const btn = document.getElementById('viewAllBtn');
+      if (btn) btn.textContent = 'View All ' + all.length + ' Listings →';
+    } catch (err) {
+      console.error('Listings fetch error:', err);
+      grid.innerHTML =
+        '<div class="listings-error"><p>Couldn\'t load listings. Please ' +
+        '<a href="#contact" onclick="document.getElementById(\'contact\').scrollIntoView({behavior:\'smooth\'});return false;">contact us directly</a>.' +
+        '</p></div>';
+    }
+  }
+
+  initListings();
 </script>
 </body>
 </html>
