@@ -129,7 +129,15 @@
   .property-price { font-family: 'Cormorant Garamond', serif; font-size: 25px; font-weight: 300; color: var(--gold); }
   .property-price span { font-family: 'DM Sans', sans-serif; font-size: 11px; color: var(--muted); font-weight: 300; }
   .property-avail { font-size: 10px; color: var(--green-light); letter-spacing: 0.1em; text-transform: uppercase; }
-  .view-all { text-align: center; margin-top: 48px; }
+  .view-all { text-align: center; margin-top: 0; padding: 60px 0 80px; border-top: 1px solid rgba(201,169,110,0.12); }
+  .view-all-eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 18px; }
+  .view-all-count { font-family: 'Cormorant Garamond', serif; font-size: clamp(30px, 3vw, 46px); font-weight: 300; line-height: 1.1; margin-bottom: 10px; }
+  .view-all-count em { color: var(--gold); font-style: italic; }
+  .view-all-sub { font-size: 12px; color: var(--muted); letter-spacing: 0.04em; margin-bottom: 36px; }
+  .btn-primary { background: var(--gold); color: var(--dark); border: none; padding: 18px 52px; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,169,110,0.25); }
+  .view-all-secondary { display: block; margin-top: 18px; font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: color 0.2s; }
+  .view-all-secondary:hover { color: var(--gold); }
 
   /* HOW */
   .how { background: var(--dark2); display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start; }
@@ -212,7 +220,7 @@
 <nav id="navbar">
   <div class="nav-logo">Select <span>Rentals</span> Bangkok</div>
   <ul class="nav-links">
-    <li><a href="#listings">Listings</a></li>
+    <li><a href="listings.html">Listings</a></li>
     <li><a href="#how">How It Works</a></li>
     <li><a href="#why">Why Us</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -329,7 +337,13 @@
     </div>
   </div>
   <div class="properties-grid" id="propertiesGrid"></div>
-  <div class="view-all"><button class="btn-primary" id="viewAllBtn" onclick="window.location.href='listings.html'">View All Listings →</button></div>
+  <div class="view-all">
+    <div class="view-all-eyebrow">Full Inventory</div>
+    <div class="view-all-count" id="viewAllCount">— <em>Properties</em> Available</div>
+    <div class="view-all-sub">Verified, Sansiri-managed units across Bangkok's prime districts</div>
+    <button class="btn-primary" id="viewAllBtn" onclick="window.location.href='listings.html'">Browse All Listings →</button>
+    <a class="view-all-secondary" href="listings.html">View by building →</a>
+  </div>
 </section>
 
 <!-- HOW IT WORKS -->
@@ -397,7 +411,7 @@
 <footer>
   <div class="footer-logo">Select Rentals Bangkok</div>
   <div class="footer-text">© 2025 Select Rentals Bangkok · Sansiri Property Specialist</div>
-  <div class="footer-links"><a href="#listings">Listings</a><a href="#how">Process</a><a href="#why">Why Us</a><a href="#contact">Contact</a></div>
+  <div class="footer-links"><a href="listings.html">Listings</a><a href="#how">Process</a><a href="#why">Why Us</a><a href="#contact">Contact</a></div>
 </footer>
 
 <script>
@@ -447,10 +461,18 @@
 
   function cardFilterTypes(prop) {
     const tags = ['all'];
-    const ut   = prop.unitType.toLowerCase();
-    if (ut === 'studio' || /^1b/.test(ut)) tags.push('1-bed');
-    else if (/^\d+b/.test(ut))            tags.push('2-bed');
-    if (Number(prop.price) >= 50000)      tags.push('luxury');
+    const ut   = String(prop.unitType || '').toLowerCase().trim();
+    let beds   = 0;
+    if (ut && ut !== 'n/a') {
+      if (ut === 'studio') beds = 1;
+      else { const m = ut.match(/^(\d+)b/); if (m) beds = parseInt(m[1]); }
+    } else {
+      const d = parseInt(String(prop.unit || '').charAt(0));
+      if (!isNaN(d) && d >= 1) beds = d;
+    }
+    if (beds === 1) tags.push('1-bed');
+    else if (beds >= 2) tags.push('2-bed');
+    if (Number(prop.price) >= 50000) tags.push('luxury');
     return tags.join(' ');
   }
 
@@ -458,12 +480,21 @@
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
-  function unitLabel(ut) {
-    const l = ut.toLowerCase();
-    if (!l || l === 'n/a') return 'Unit';
-    if (l === 'studio') return 'Studio';
-    const m = l.match(/^(\d+)b/);
-    return m ? m[1] + ' Bedroom' : ut;
+  function unitLabel(ut, unit, area) {
+    const l = String(ut || '').toLowerCase().trim();
+    if (l && l !== 'n/a') {
+      if (l === 'studio') return 'Studio';
+      const m = l.match(/^(\d+)b/);
+      if (m) {
+        const n = parseInt(m[1]);
+        return n === 1 ? '1 Bedroom' : n + ' Bedrooms';
+      }
+      return ut;
+    }
+    const d = parseInt(String(unit || '').charAt(0));
+    if (d >= 1 && d <= 9) return d === 1 ? '1 Bedroom' : d + ' Bedrooms';
+    if (area) return area + ' sqm';
+    return 'Unit';
   }
 
   function makeCard(prop, i) {
@@ -476,13 +507,13 @@
     card.innerHTML =
       '<div class="property-img">' +
         '<div class="property-img-bg" style="background:' + BG[i % BG.length] + '"></div>' +
-        '<div class="property-overlay"><button class="overlay-btn" onclick="document.getElementById(\'contact\').scrollIntoView({behavior:\'smooth\'})">Enquire</button></div>' +
+        '<div class="property-overlay"><button class="overlay-btn">View Units →</button></div>' +
         '<div class="property-badge"><div class="badge-dot"></div>Available</div>' +
         (prop.floor && Number(prop.floor) > 0 && Number(prop.floor) <= 150 ? '<div class="property-floor-tag">FL. ' + esc(prop.floor) + '</div>' : '') +
       '</div>' +
       '<div class="property-info">' +
         '<div class="property-building">' + esc(prop.project) + '</div>' +
-        '<div class="property-name">' + esc(unitLabel(prop.unitType)) + '</div>' +
+        '<div class="property-name">' + esc(unitLabel(prop.unitType, prop.unit, prop.area)) + '</div>' +
         '<div class="property-specs">' +
           (prop.area      ? '<span class="spec">' + prop.area + ' sqm</span>' : '') +
           (prop.unitType  ? '<span class="spec">' + esc(prop.unitType) + '</span>' : '') +
@@ -493,19 +524,44 @@
           '<div class="property-avail">Available</div>' +
         '</div>' +
       '</div>';
+    card.addEventListener('click', function() {
+      window.location.href = 'listings.html#/building/' + encodeURIComponent(prop.project);
+    });
     return card;
   }
 
   // ─── Filter ──────────────────────────────────────────────────
-  let activeFilter = 'all';
+  let activeFilter  = 'all';
+  let allProperties = [];   // full dataset stored after fetch
 
   function setFilter(el, type) {
     activeFilter = type;
     document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
     el.classList.add('active');
-    document.querySelectorAll('#propertiesGrid .property-card').forEach(card => {
-      card.style.display = (card.dataset.filter || '').split(' ').includes(activeFilter) ? '' : 'none';
-    });
+
+    const grid = document.getElementById('propertiesGrid');
+    grid.innerHTML = '';
+
+    let pool;
+    if (type === 'all') {
+      // Default view: one card per project, up to 9
+      pool = selectFeatured(allProperties, 9);
+    } else {
+      // Filter from ALL units, then deduplicate by project so every
+      // building with a matching unit type shows up
+      const matching = allProperties.filter(p =>
+        cardFilterTypes(p).split(' ').includes(type)
+      );
+      pool = selectFeatured(matching, 50);
+    }
+
+    if (!pool.length) {
+      grid.innerHTML =
+        '<div class="listings-empty"><p>No properties match this filter. ' +
+        '<a href="listings.html">View all listings →</a></p></div>';
+      return;
+    }
+    pool.forEach((p, i) => grid.appendChild(makeCard(p, i)));
   }
 
   // ─── Reveal observer ─────────────────────────────────────────
@@ -552,6 +608,7 @@
       '</div>';
     try {
       const all = await fetchProperties();
+      allProperties = all;   // store for filter
       grid.innerHTML = '';
       if (!all.length) {
         grid.innerHTML =
@@ -565,7 +622,9 @@
         grid.appendChild(makeCard(p, i));
       });
       const btn = document.getElementById('viewAllBtn');
-      if (btn) btn.textContent = 'View All ' + all.length + ' Listings →';
+      if (btn) btn.textContent = 'Browse All ' + all.length + ' Listings →';
+      const countEl = document.getElementById('viewAllCount');
+      if (countEl) countEl.innerHTML = all.length + ' <em>Properties</em> Available';
     } catch (err) {
       console.error('Listings fetch error:', err);
       grid.innerHTML =

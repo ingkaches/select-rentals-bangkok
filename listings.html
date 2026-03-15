@@ -107,6 +107,119 @@
     .properties-grid { grid-template-columns: 1fr; }
     .filter-tabs { flex-wrap: wrap; }
   }
+
+  /* ── BUILDING PAGE VIEW ──────────────────────────────────────── */
+  .bldg-header { padding: 120px 64px 56px; background: var(--dark2); border-bottom: 1px solid rgba(201,169,110,0.1); }
+  .bldg-header-inner { max-width: 1400px; margin: 0 auto; }
+  .bldg-back { display: inline-flex; align-items: center; gap: 10px; background: none; border: none; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; padding: 0; margin-bottom: 44px; transition: color 0.3s; }
+  .bldg-back-arrow { display: inline-block; transition: transform 0.3s; }
+  .bldg-back:hover { color: var(--gold); }
+  .bldg-back:hover .bldg-back-arrow { transform: translateX(-4px); }
+  .bldg-header-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+  .bldg-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; margin-bottom: 14px; }
+  .bldg-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 4vw, 62px); font-weight: 300; line-height: 1.1; margin-bottom: 16px; }
+  .bldg-location-row { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .bldg-loc-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+  .bldg-loc-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold-dim); flex-shrink: 0; }
+  .bldg-units-box { background: rgba(201,169,110,0.06); border: 1px solid rgba(201,169,110,0.18); padding: 20px 32px; text-align: center; }
+  .bldg-units-num { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 300; color: var(--gold); line-height: 1; margin-bottom: 6px; }
+  .bldg-units-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+
+  /* ROOMS LIST */
+  .rooms-body { padding: 48px 64px 100px; }
+  .rooms-subhead { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .rooms-list { display: flex; flex-direction: column; gap: 2px; }
+  .room-row { background: var(--dark3); display: grid; grid-template-columns: 180px 1fr auto; align-items: stretch; overflow: hidden; transition: background 0.2s; }
+  .room-row:hover { background: var(--dark4); }
+  .room-row:hover .room-viewing-btn { border-color: rgba(201,169,110,0.6); color: var(--gold); }
+  .room-placeholder { position: relative; min-height: 116px; }
+  .room-placeholder-shimmer { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(201,169,110,0.04) 0%, rgba(74,124,89,0.03) 100%); }
+  .room-placeholder-label { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .room-placeholder-label svg { opacity: 0.1; }
+  .room-info { padding: 22px 28px; display: flex; flex-direction: column; justify-content: center; gap: 5px; }
+  .room-floor { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gold); letter-spacing: 0.12em; }
+  .room-type { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; line-height: 1.2; }
+  .room-specs { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+  .room-spec { font-size: 10px; color: var(--muted); background: var(--dark); padding: 3px 9px; letter-spacing: 0.04em; }
+  .room-mobile-footer { display: none; }
+  .room-right { padding: 22px 28px; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 14px; min-width: 200px; border-left: 1px solid rgba(255,255,255,0.03); }
+  .room-price { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; color: var(--gold); white-space: nowrap; }
+  .room-price span { font-family: 'DM Sans', sans-serif; font-size: 11px; color: var(--muted); font-weight: 300; }
+  .room-viewing-btn { background: transparent; border: 1px solid rgba(201,169,110,0.25); color: var(--muted); padding: 10px 22px; font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: 0.1em; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  .room-viewing-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--dark); }
+  .rooms-empty { padding: 80px 40px; text-align: center; color: var(--muted); font-size: 14px; }
+
+  /* ── VIEWING MODAL ──────────────────────────────────────────── */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 500; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+  .modal-overlay.active { opacity: 1; pointer-events: all; }
+  .modal { background: var(--dark2); width: 100%; max-width: 940px; max-height: 90vh; display: grid; grid-template-columns: 290px 1fr; position: relative; overflow: hidden; }
+  .modal-close { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.07); border: none; color: var(--muted); width: 32px; height: 32px; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: pointer; z-index: 10; transition: all 0.2s; }
+  .modal-close:hover { background: rgba(255,255,255,0.14); color: var(--white); }
+  /* Left column */
+  .modal-left { background: var(--dark3); display: flex; flex-direction: column; overflow-y: auto; }
+  .modal-prop-img { height: 180px; position: relative; flex-shrink: 0; }
+  .modal-prop-img-bg { position: absolute; inset: 0; }
+  .modal-prop-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,10,8,0.8) 0%, transparent 60%); }
+  .modal-prop-img-icon { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 1; }
+  .modal-prop-body { padding: 24px 24px 20px; flex: 1; display: flex; flex-direction: column; gap: 0; }
+  .modal-prop-building { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: var(--gold-dim); text-transform: uppercase; margin-bottom: 6px; }
+  .modal-prop-type { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 400; margin-bottom: 16px; line-height: 1.2; }
+  .modal-prop-specs { display: flex; flex-direction: column; }
+  .modal-spec-row { display: flex; justify-content: space-between; font-size: 11px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .modal-spec-row:last-child { border-bottom: none; }
+  .modal-spec-label { color: var(--muted); }
+  .modal-spec-val { color: var(--white); }
+  .modal-prop-price { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; color: var(--gold); margin-top: 18px; }
+  .modal-prop-price span { font-family: 'DM Sans', sans-serif; font-size: 11px; color: var(--muted); font-weight: 300; }
+  .modal-notice { margin-top: auto; padding: 14px 16px; background: rgba(201,169,110,0.04); border: 1px solid rgba(201,169,110,0.1); font-size: 11px; color: var(--muted); line-height: 1.7; }
+  .modal-notice strong { color: var(--gold-light); display: block; margin-bottom: 3px; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
+  /* Right column */
+  .modal-right { overflow-y: auto; padding: 36px 36px 40px; }
+  .modal-form-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; margin-bottom: 4px; }
+  .modal-form-sub { font-size: 11px; color: var(--muted); margin-bottom: 24px; letter-spacing: 0.04em; }
+  .vf { display: flex; flex-direction: column; gap: 12px; }
+  .vf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .vf-group { display: flex; flex-direction: column; gap: 5px; }
+  .vf-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+  .vf-input, .vf-select, .vf-textarea { background: var(--dark3); border: 1px solid rgba(255,255,255,0.07); color: var(--white); padding: 11px 14px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 300; outline: none; appearance: none; width: 100%; transition: border-color 0.2s; }
+  .vf-input:focus, .vf-select:focus, .vf-textarea:focus { border-color: rgba(201,169,110,0.4); }
+  .vf-input::placeholder, .vf-textarea::placeholder { color: rgba(122,120,112,0.65); }
+  .vf-textarea { resize: none; height: 78px; }
+  .vf-contact-row { display: flex; gap: 10px; align-items: flex-end; }
+  .vf-contact-row .vf-group:first-child { flex: 0 0 200px; }
+  .vf-contact-row .vf-group:last-child { flex: 1; }
+  .vf-toggle { display: flex; gap: 2px; }
+  .vf-toggle-btn { flex: 1; background: var(--dark3); border: 1px solid rgba(255,255,255,0.07); color: var(--muted); padding: 11px 10px; text-align: center; font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s; user-select: none; }
+  .vf-toggle-btn.on { background: rgba(201,169,110,0.1); border-color: rgba(201,169,110,0.35); color: var(--gold); }
+  .vf-submit { background: var(--gold); color: var(--dark); border: none; padding: 16px; width: 100%; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; margin-top: 6px; }
+  .vf-submit:hover { background: var(--gold-light); }
+  .vf-submit:disabled { background: var(--dark4); color: var(--muted); cursor: default; }
+  /* Success state */
+  .modal-success { padding: 60px 36px; text-align: center; }
+  .modal-success-check { width: 60px; height: 60px; border-radius: 50%; background: rgba(74,124,89,0.12); border: 1px solid rgba(111,207,151,0.25); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 24px; color: var(--green-light); }
+  .modal-success-title { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: var(--gold-light); margin-bottom: 16px; }
+  .modal-success-text { font-size: 13px; color: var(--muted); line-height: 1.85; max-width: 360px; margin: 0 auto; }
+  .modal-success-text strong { color: var(--white); font-weight: 400; }
+  @media (max-width: 700px) {
+    .modal { grid-template-columns: 1fr; max-height: 96vh; }
+    .modal-left { display: none; }
+    .modal-right { padding: 28px 20px 40px; }
+    .vf-row { grid-template-columns: 1fr; }
+    .vf-contact-row { flex-direction: column; }
+    .vf-contact-row .vf-group:first-child { flex: unset; width: 100%; }
+  }
+
+  @media (max-width: 900px) {
+    .bldg-header { padding: 100px 24px 44px; }
+    .rooms-body { padding: 32px 24px 80px; }
+    .room-row { grid-template-columns: 90px 1fr; }
+    .room-right { display: none; }
+    .room-mobile-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.04); margin-top: 6px; flex-wrap: wrap; }
+    .room-placeholder { min-height: 90px; }
+  }
+  @media (max-width: 600px) {
+    .room-row { grid-template-columns: 70px 1fr; }
+  }
 </style>
 </head>
 <body>
@@ -121,6 +234,9 @@
   </ul>
   <a class="nav-cta" href="index.html#contact">Find My Home</a>
 </nav>
+
+<!-- ══ LISTINGS VIEW ══════════════════════════════════════════════ -->
+<div id="listingsView">
 
 <!-- PAGE HEADER -->
 <div class="page-header">
@@ -157,6 +273,42 @@
   </div>
 </div>
 
+</div><!-- /#listingsView -->
+
+<!-- ══ BUILDING VIEW ═════════════════════════════════════════════ -->
+<div id="buildingView" style="display:none">
+
+  <!-- BUILDING HEADER -->
+  <div class="bldg-header">
+    <div class="bldg-header-inner">
+      <button class="bldg-back" onclick="goBack()">
+        <span class="bldg-back-arrow">←</span> Back to Listings
+      </button>
+      <div class="bldg-header-row">
+        <div>
+          <p class="bldg-eyebrow">Sansiri · Available Units</p>
+          <h1 class="bldg-name" id="bldgName">—</h1>
+          <div class="bldg-location-row">
+            <div class="bldg-loc-item"><span class="bldg-loc-dot"></span><span id="bldgArea">Bangkok</span></div>
+            <div class="bldg-loc-item"><span class="bldg-loc-dot"></span><span id="bldgBts">—</span></div>
+          </div>
+        </div>
+        <div class="bldg-units-box">
+          <div class="bldg-units-num" id="bldgUnitsNum">—</div>
+          <div class="bldg-units-label">Units Available</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROOMS LIST -->
+  <div class="rooms-body">
+    <p class="rooms-subhead" id="roomsSubhead">Available Units · Sorted by Floor</p>
+    <div class="rooms-list" id="roomsList"></div>
+  </div>
+
+</div><!-- /#buildingView -->
+
 <footer>
   <div class="footer-logo">Select Rentals Bangkok</div>
   <div class="footer-text">© 2025 Select Rentals Bangkok · Sansiri Property Specialist</div>
@@ -167,6 +319,133 @@
     <a href="index.html#contact">Contact</a>
   </div>
 </footer>
+
+<!-- ══ VIEWING MODAL ══════════════════════════════════════════════ -->
+<div id="viewingModal" class="modal-overlay" onclick="if(event.target===this)closeViewingModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeViewingModal()" aria-label="Close">✕</button>
+
+    <!-- LEFT: Property summary -->
+    <div class="modal-left">
+      <div class="modal-prop-img">
+        <div class="modal-prop-img-bg" id="modalPropImgBg"></div>
+        <div class="modal-prop-img-icon">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.8" style="color:var(--gold);opacity:0.15"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M9 21V9h6v12M3 9l9-6 9 6"/></svg>
+        </div>
+      </div>
+      <div class="modal-prop-body">
+        <div class="modal-prop-building" id="modalPropBuilding">—</div>
+        <div class="modal-prop-type" id="modalPropType">—</div>
+        <div class="modal-prop-specs">
+          <div class="modal-spec-row"><span class="modal-spec-label">Floor</span><span class="modal-spec-val" id="modalSpecFloor">—</span></div>
+          <div class="modal-spec-row"><span class="modal-spec-label">Size</span><span class="modal-spec-val" id="modalSpecArea">—</span></div>
+          <div class="modal-spec-row"><span class="modal-spec-label">Direction</span><span class="modal-spec-val" id="modalSpecDir">—</span></div>
+          <div class="modal-spec-row"><span class="modal-spec-label">Unit</span><span class="modal-spec-val" id="modalSpecUnit">—</span></div>
+        </div>
+        <div class="modal-prop-price" id="modalPropPrice">—</div>
+        <div class="modal-notice">
+          <strong>Booking confirmation</strong>
+          We'll check availability with our agent and confirm within <strong style="color:var(--gold-light);font-weight:400">1–2 hours</strong>. If the requested time isn't available, your agent will propose the next best slot.
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Form / Success -->
+    <div class="modal-right">
+      <div id="modalFormWrap">
+        <div class="modal-form-title">Book a Viewing</div>
+        <div class="modal-form-sub">Complete the form and we'll confirm your appointment · No fee for tenants</div>
+        <form class="vf" id="viewingForm" onsubmit="submitViewing(event)">
+          <div class="vf-row">
+            <div class="vf-group">
+              <label class="vf-label">Full Name *</label>
+              <input class="vf-input" type="text" name="name" placeholder="James Smith" required>
+            </div>
+            <div class="vf-group">
+              <label class="vf-label">Nationality *</label>
+              <input class="vf-input" type="text" name="nationality" placeholder="British" required>
+            </div>
+          </div>
+          <div class="vf-row">
+            <div class="vf-group">
+              <label class="vf-label">No. of Persons *</label>
+              <select class="vf-select" name="persons" required>
+                <option value="" disabled selected>Select</option>
+                <option value="1">1 Person</option>
+                <option value="2">2 People</option>
+                <option value="3">3 People</option>
+                <option value="4">4 People</option>
+                <option value="5+">5+ People</option>
+              </select>
+            </div>
+            <div class="vf-group">
+              <label class="vf-label">Lease Duration *</label>
+              <select class="vf-select" name="leaseDuration" required>
+                <option value="" disabled selected>Select</option>
+                <option value="6 months">6 Months</option>
+                <option value="12 months">12 Months</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="vf-row">
+            <div class="vf-group">
+              <label class="vf-label">Planned Move-in Date *</label>
+              <input class="vf-input" type="date" name="moveInDate" required>
+            </div>
+            <div class="vf-group">
+              <label class="vf-label">Phone Number *</label>
+              <input class="vf-input" type="tel" name="phone" placeholder="+66 81 234 5678" required>
+            </div>
+          </div>
+          <div class="vf-contact-row">
+            <div class="vf-group">
+              <label class="vf-label">Contact Via *</label>
+              <div class="vf-toggle" id="contactToggle">
+                <div class="vf-toggle-btn on" onclick="setContact(this,'WhatsApp')">WhatsApp</div>
+                <div class="vf-toggle-btn" onclick="setContact(this,'LINE')">LINE</div>
+              </div>
+              <input type="hidden" name="contactMethod" id="contactMethodHidden" value="WhatsApp">
+            </div>
+            <div class="vf-group">
+              <label class="vf-label" id="contactIdLabel">WhatsApp Number *</label>
+              <input class="vf-input" type="text" name="contactId" id="contactIdInput" placeholder="+66 81 234 5678" required>
+            </div>
+          </div>
+          <div class="vf-row">
+            <div class="vf-group">
+              <label class="vf-label">Preferred Viewing Date</label>
+              <input class="vf-input" type="date" name="viewingDate">
+            </div>
+            <div class="vf-group">
+              <label class="vf-label">Preferred Viewing Time</label>
+              <select class="vf-select" name="viewingTime">
+                <option value="">Any time works</option>
+                <option value="Morning 9:00-12:00">Morning · 9:00–12:00</option>
+                <option value="Afternoon 13:00-17:00">Afternoon · 13:00–17:00</option>
+                <option value="Evening 17:00-19:00">Evening · 17:00–19:00</option>
+              </select>
+            </div>
+          </div>
+          <div class="vf-group">
+            <label class="vf-label">Notes</label>
+            <textarea class="vf-textarea" name="notes" placeholder="Anything you'd like us to know — pets, parking, floor preference, move-in timeline…"></textarea>
+          </div>
+          <button type="submit" class="vf-submit" id="vfSubmitBtn">Confirm Viewing Request →</button>
+        </form>
+      </div>
+      <div id="modalSuccess" style="display:none" class="modal-success">
+        <div class="modal-success-check">✓</div>
+        <div class="modal-success-title">Request Sent</div>
+        <p class="modal-success-text">
+          Your viewing request has been received. Our agent will check availability and confirm back within <strong>1–2 hours</strong>.<br><br>
+          If your preferred time isn't available, we'll propose the next best slot.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none" title="form submission"></iframe>
 
 <script>
   const SHEET_ID   = '1oeQCvObGuY3SB5_ozDJDJkA0YqPzRHE_uaqrR3mu7JA';
@@ -210,10 +489,18 @@
 
   function cardFilterTypes(prop) {
     const tags = ['all'];
-    const ut   = prop.unitType.toLowerCase();
-    if (ut === 'studio' || /^1b/.test(ut)) tags.push('1-bed');
-    else if (/^\d+b/.test(ut))            tags.push('2-bed');
-    if (Number(prop.price) >= 50000)      tags.push('luxury');
+    const ut   = String(prop.unitType || '').toLowerCase().trim();
+    let beds   = 0;
+    if (ut && ut !== 'n/a') {
+      if (ut === 'studio') beds = 1;
+      else { const m = ut.match(/^(\d+)b/); if (m) beds = parseInt(m[1]); }
+    } else {
+      const d = parseInt(String(prop.unit || '').charAt(0));
+      if (!isNaN(d) && d >= 1) beds = d;
+    }
+    if (beds === 1) tags.push('1-bed');
+    else if (beds >= 2) tags.push('2-bed');
+    if (Number(prop.price) >= 50000) tags.push('luxury');
     return tags.join(' ');
   }
 
@@ -221,12 +508,24 @@
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
-  function unitLabel(ut) {
-    const l = ut.toLowerCase();
-    if (!l || l === 'n/a') return 'Unit';
-    if (l === 'studio') return 'Studio';
-    const m = l.match(/^(\d+)b/);
-    return m ? m[1] + ' Bedroom' : ut;
+  function unitLabel(ut, unit, area) {
+    const l = String(ut || '').toLowerCase().trim();
+    // Has valid unitType
+    if (l && l !== 'n/a') {
+      if (l === 'studio') return 'Studio';
+      const m = l.match(/^(\d+)b/);
+      if (m) {
+        const n = parseInt(m[1]);
+        return n === 1 ? '1 Bedroom' : n + ' Bedrooms';
+      }
+      return ut;
+    }
+    // No unitType — infer from unit code first digit
+    const d = parseInt(String(unit || '').charAt(0));
+    if (d >= 1 && d <= 9) return d === 1 ? '1 Bedroom' : d + ' Bedrooms';
+    // Last resort — show area
+    if (area) return area + ' sqm';
+    return 'Unit';
   }
 
   function makeCard(prop, i) {
@@ -239,13 +538,13 @@
     card.innerHTML =
       '<div class="property-img">' +
         '<div class="property-img-bg" style="background:' + BG[i % BG.length] + '"></div>' +
-        '<div class="property-overlay"><button class="overlay-btn" onclick="window.location.href=\'index.html#contact\'">Enquire</button></div>' +
+        '<div class="property-overlay"><button class="overlay-btn">View Units →</button></div>' +
         '<div class="property-badge"><div class="badge-dot"></div>Available</div>' +
         (prop.floor && Number(prop.floor) > 0 && Number(prop.floor) <= 150 ? '<div class="property-floor-tag">FL. ' + esc(prop.floor) + '</div>' : '') +
       '</div>' +
       '<div class="property-info">' +
         '<div class="property-building">' + esc(prop.project) + '</div>' +
-        '<div class="property-name">' + esc(unitLabel(prop.unitType)) + '</div>' +
+        '<div class="property-name">' + esc(unitLabel(prop.unitType, prop.unit, prop.area)) + '</div>' +
         '<div class="property-specs">' +
           (prop.area      ? '<span class="spec">' + prop.area + ' sqm</span>' : '') +
           (prop.unitType  ? '<span class="spec">' + esc(prop.unitType) + '</span>' : '') +
@@ -256,11 +555,20 @@
           '<div class="property-avail">Available</div>' +
         '</div>' +
       '</div>';
+    card.addEventListener('click', function() {
+      window.location.hash = '#/building/' + encodeURIComponent(prop.project);
+    });
     return card;
   }
 
+  // ─── Google Apps Script URL (paste after deploying) ──────────
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzlWZCoaWwSuSeVXrL-luYfuF2qwvVRO0aEuPa9U6eEJMOWqsmbqMvCVR0vVMrrSbvM/exec';
+
+  let allProps = [];
   let allCards = [];
   let activeFilter = 'all';
+  let currentBuildingRooms = [];
+  let currentViewingProp   = null;
 
   function setFilter(el, type) {
     activeFilter = type;
@@ -280,6 +588,7 @@
     const grid = document.getElementById('propertiesGrid');
     try {
       const props = await fetchProperties();
+      allProps = props;
       grid.innerHTML = '';
 
       const countBadge = document.getElementById('countBadge');
@@ -299,6 +608,10 @@
       const fc = document.getElementById('filterCount');
       if (fc) fc.textContent = props.length + ' properties';
 
+      // Handle initial hash route (e.g. navigated from index.html)
+      const m = window.location.hash.match(/^#\/building\/(.+)$/);
+      if (m) renderBuilding(decodeURIComponent(m[1]));
+
     } catch (err) {
       console.error('Listings fetch error:', err);
       const grid2 = document.getElementById('propertiesGrid');
@@ -315,6 +628,266 @@
       nav.style.background     = 'rgba(10,10,8,0.97)';
       nav.style.backdropFilter = 'blur(16px)';
       nav.style.boxShadow      = '0 1px 0 rgba(201,169,110,0.1)';
+    }
+  });
+
+  // ─── Building metadata lookup ─────────────────────────────────
+  const BLDG_META = {
+    // XT Series
+    'XT Huai Khwang':            { area: 'Huai Khwang',     bts: 'MRT Huai Khwang' },
+    'XT Phayathai':              { area: 'Phayathai',       bts: 'BTS Phayathai' },
+    'XT Ekkamai':                { area: 'Ekkamai',         bts: 'BTS Ekkamai' },
+    'XT Ratchathewi':            { area: 'Ratchathewi',     bts: 'BTS Ratchathewi' },
+    'XT Sainamphung':            { area: 'Chiang Mai',      bts: 'N/A' },
+    // IDEO Series
+    'IDEO Mobi Sukhumvit 66':    { area: 'Sukhumvit 66',    bts: 'BTS On Nut' },
+    'IDEO Mobi Sukhumvit 81':    { area: 'Sukhumvit 81',    bts: 'BTS On Nut' },
+    'IDEO Mobi Asoke':           { area: 'Asoke',           bts: 'BTS Asok / MRT Sukhumvit' },
+    'IDEO Mobi Rangnam':         { area: 'Rangnam',         bts: 'BTS Victory Monument' },
+    'IDEO Mobi Wongwian Yai':    { area: 'Wongwian Yai',    bts: 'BTS Wongwian Yai' },
+    'IDEO Mobi Rama 9':          { area: 'Rama 9',          bts: 'MRT Phra Ram 9' },
+    'IDEO Q Chula-Samyan':       { area: 'Samyan',          bts: 'MRT Samyan' },
+    'IDEO Q Phayathai':          { area: 'Phayathai',       bts: 'BTS Phayathai' },
+    'IDEO Q Victory':            { area: 'Victory Monument', bts: 'BTS Victory Monument' },
+    'IDEO Sathorn–Taksin':       { area: 'Sathorn',         bts: 'BTS Krung Thon Buri' },
+    'IDEO Blucove Sathorn':      { area: 'Sathorn',         bts: 'BTS Surasak' },
+    // The Base Series
+    'The Base Park East Sukhumvit 77': { area: 'Sukhumvit 77', bts: 'BTS On Nut' },
+    'The Base Park West Sukhumvit 77': { area: 'Sukhumvit 77', bts: 'BTS On Nut' },
+    'The Base Uptown Chiang Mai': { area: 'Chiang Mai',     bts: 'N/A' },
+    'The Base Height Chiang Mai': { area: 'Chiang Mai',     bts: 'N/A' },
+    // Premium
+    '98 Wireless':               { area: 'Lumpini',         bts: 'BTS Phloen Chit' },
+    'Nue Noble Ngamwongwan':      { area: 'Ngamwongwan',     bts: 'MRT Ministry of Public Health' },
+    'Nue District R9':            { area: 'Rama 9',          bts: 'MRT Phra Ram 9' },
+    'Nue Noble Ratchada-Lat Phrao': { area: 'Lat Phrao',    bts: 'MRT Lat Phrao' },
+    'The Line Sukhumvit 71':      { area: 'Sukhumvit 71',    bts: 'BTS Ekkamai' },
+    'The Line Phahon-Pradipat':   { area: 'Phahon Yothin',  bts: 'BTS Saphan Khwai' },
+    'The Line Jatujak-Mochit':    { area: 'Jatujak',        bts: 'BTS Mo Chit' },
+    // Others
+    'Oka Haus':                   { area: 'Thonglor',        bts: 'BTS Thong Lo' },
+    'Park Origin Phrom Phong':    { area: 'Phrom Phong',     bts: 'BTS Phrom Phong' },
+    'Park Origin Chula-Samyan':   { area: 'Samyan',          bts: 'MRT Samyan' },
+    'Park Origin Thonglor':       { area: 'Thonglor',        bts: 'BTS Thong Lo' },
+    'Celes Asoke':                { area: 'Asoke',           bts: 'BTS Asok' },
+    'Hasu Haus':                  { area: 'On Nut',          bts: 'BTS On Nut' },
+    'Nue Ora Bang Na':            { area: 'Bang Na',         bts: 'BTS Bang Na' },
+    'dcondo Campus Resort Chiang Mai': { area: 'Chiang Mai', bts: 'N/A' },
+    'dcondo Ping':                { area: 'Chiang Mai',      bts: 'N/A' },
+  };
+
+  function getBldgMeta(name) {
+    if (BLDG_META[name]) return BLDG_META[name];
+    // Partial match
+    const lower = name.toLowerCase();
+    for (const [k, v] of Object.entries(BLDG_META)) {
+      if (lower.includes(k.toLowerCase()) || k.toLowerCase().includes(lower)) return v;
+    }
+    // Keyword inference
+    if (/sukhumvit\s*(?:6[6-9]|7\d|8\d|9\d)/i.test(lower)) return { area: 'Sukhumvit', bts: 'BTS On Nut' };
+    if (/sukhumvit\s*(?:[1-5]\d|[1-5])/i.test(lower)) return { area: 'Sukhumvit', bts: 'BTS Asok' };
+    if (/sukhumvit/i.test(lower))  return { area: 'Sukhumvit',     bts: 'BTS Sukhumvit' };
+    if (/sathorn/i.test(lower))    return { area: 'Sathorn',       bts: 'BTS Surasak' };
+    if (/silom/i.test(lower))      return { area: 'Silom',         bts: 'BTS Sala Daeng' };
+    if (/phayathai/i.test(lower))  return { area: 'Phayathai',     bts: 'BTS Phayathai' };
+    if (/ekkamai/i.test(lower))    return { area: 'Ekkamai',       bts: 'BTS Ekkamai' };
+    if (/thonglor|thong lo/i.test(lower)) return { area: 'Thonglor',  bts: 'BTS Thong Lo' };
+    if (/asok[e]?/i.test(lower))   return { area: 'Asoke',         bts: 'BTS Asok' };
+    if (/huai khwang|huaikhwang/i.test(lower)) return { area: 'Huai Khwang', bts: 'MRT Huai Khwang' };
+    if (/rama\s*9|rama9/i.test(lower)) return { area: 'Rama 9',    bts: 'MRT Phra Ram 9' };
+    if (/wireless|phloen|lumpini/i.test(lower)) return { area: 'Lumpini', bts: 'BTS Phloen Chit' };
+    if (/ratchathewi|ratchadewi/i.test(lower)) return { area: 'Ratchathewi', bts: 'BTS Ratchathewi' };
+    if (/lat phrao|ladphrao/i.test(lower)) return { area: 'Lat Phrao', bts: 'MRT Lat Phrao' };
+    if (/phahon|pradipat|ari/i.test(lower)) return { area: 'Phahon Yothin', bts: 'BTS Ari' };
+    if (/victory|rangnam/i.test(lower)) return { area: 'Victory Monument', bts: 'BTS Victory Monument' };
+    if (/chiang mai|chiangmai|\bcm\b/i.test(lower)) return { area: 'Chiang Mai', bts: 'N/A' };
+    if (/jatujak|mo chit|mochit/i.test(lower)) return { area: 'Jatujak', bts: 'BTS Mo Chit' };
+    return { area: 'Bangkok', bts: '—' };
+  }
+
+  // ─── Building page render ─────────────────────────────────────
+  function renderBuilding(name) {
+    const rooms = allProps
+      .filter(p => p.project === name)
+      .sort((a, b) => (Number(a.floor) || 999) - (Number(b.floor) || 999));
+    currentBuildingRooms = rooms;
+
+    const meta = getBldgMeta(name);
+    document.getElementById('bldgName').textContent = name;
+    document.getElementById('bldgArea').textContent = meta.area;
+    document.getElementById('bldgBts').textContent  = meta.bts;
+    document.getElementById('bldgUnitsNum').textContent = rooms.length;
+    document.getElementById('roomsSubhead').textContent =
+      rooms.length + ' units available · sorted by floor';
+
+    const list = document.getElementById('roomsList');
+    list.innerHTML = '';
+    if (!rooms.length) {
+      list.innerHTML = '<div class="rooms-empty">No available units in this building at this time.</div>';
+    } else {
+      rooms.forEach((r, i) => list.appendChild(makeRoomRow(r, i)));
+    }
+
+    document.getElementById('listingsView').style.display = 'none';
+    document.getElementById('buildingView').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+
+  function makeRoomRow(r, i) {
+    const row = document.createElement('div');
+    row.className = 'room-row card-anim';
+    row.style.animationDelay = Math.min(i * 0.04, 0.4) + 's';
+    const price    = Number(r.price);
+    const priceStr = price ? '฿' + price.toLocaleString('th-TH') : '—';
+    const floorNum = Number(r.floor);
+    const floorStr = (floorNum > 0 && floorNum <= 150) ? 'FL. ' + r.floor : (r.floor || '—');
+    const encodedProject = esc(r.project);
+    const encodedUnit    = esc(r.unit);
+
+    row.innerHTML =
+      '<div class="room-placeholder" style="background:' + BG[i % BG.length] + '">' +
+        '<div class="room-placeholder-shimmer"></div>' +
+        '<div class="room-placeholder-label">' +
+          '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="color:var(--gold)">' +
+            '<rect x="3" y="3" width="18" height="18" rx="1"/>' +
+            '<path d="M9 21V9h6v12M3 9l9-6 9 6"/>' +
+          '</svg>' +
+        '</div>' +
+      '</div>' +
+      '<div class="room-info">' +
+        '<div class="room-floor">' + esc(floorStr) + '</div>' +
+        '<div class="room-type">' + esc(unitLabel(r.unitType, r.unit, r.area)) + '</div>' +
+        '<div class="room-specs">' +
+          (r.area       ? '<span class="room-spec">' + r.area + ' sqm</span>' : '') +
+          (r.direction  ? '<span class="room-spec">' + esc(r.direction) + '</span>' : '') +
+          (r.unitType   ? '<span class="room-spec">' + esc(r.unitType) + '</span>' : '') +
+          (r.unit       ? '<span class="room-spec">' + encodedUnit + '</span>' : '') +
+        '</div>' +
+        '<div class="room-mobile-footer">' +
+          '<div class="room-price">' + priceStr + ' <span>/ mo</span></div>' +
+          '<button class="room-viewing-btn" onclick="event.stopPropagation();openViewing(' + i + ')">Book a Viewing</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="room-right">' +
+        '<div class="room-price">' + priceStr + ' <span>/ mo</span></div>' +
+        '<button class="room-viewing-btn" onclick="event.stopPropagation();openViewing(' + i + ')">Book a Viewing</button>' +
+      '</div>';
+    return row;
+  }
+
+  // ─── Viewing Modal ────────────────────────────────────────────
+  function openViewing(idx) {
+    const r = currentBuildingRooms[idx];
+    if (!r) return;
+    currentViewingProp = r;
+
+    // Populate left panel
+    document.getElementById('modalPropImgBg').style.background = BG[idx % BG.length];
+    document.getElementById('modalPropBuilding').textContent = r.project;
+    document.getElementById('modalPropType').textContent = unitLabel(r.unitType, r.unit, r.area);
+    const fn = Number(r.floor);
+    document.getElementById('modalSpecFloor').textContent = (fn > 0 && fn <= 150) ? 'FL. ' + r.floor : (r.floor || '—');
+    document.getElementById('modalSpecArea').textContent  = r.area ? r.area + ' sqm' : '—';
+    document.getElementById('modalSpecDir').textContent   = r.direction || '—';
+    document.getElementById('modalSpecUnit').textContent  = r.unit || '—';
+    const price = Number(r.price);
+    document.getElementById('modalPropPrice').innerHTML = price
+      ? '฿' + price.toLocaleString('th-TH') + ' <span>/ month</span>'
+      : '—';
+
+    // Reset form
+    document.getElementById('viewingForm').reset();
+    document.getElementById('modalFormWrap').style.display = '';
+    document.getElementById('modalSuccess').style.display = 'none';
+    const btn = document.getElementById('vfSubmitBtn');
+    btn.disabled = false;
+    btn.textContent = 'Confirm Viewing Request →';
+    document.querySelectorAll('#contactToggle .vf-toggle-btn').forEach((b, i) => b.classList.toggle('on', i === 0));
+    document.getElementById('contactMethodHidden').value = 'WhatsApp';
+    document.getElementById('contactIdLabel').textContent = 'WhatsApp Number *';
+    document.getElementById('contactIdInput').placeholder = '+66 81 234 5678';
+
+    document.getElementById('viewingModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeViewingModal() {
+    document.getElementById('viewingModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function setContact(el, method) {
+    document.querySelectorAll('#contactToggle .vf-toggle-btn').forEach(b => b.classList.remove('on'));
+    el.classList.add('on');
+    document.getElementById('contactMethodHidden').value = method;
+    document.getElementById('contactIdLabel').textContent = method === 'WhatsApp' ? 'WhatsApp Number *' : 'LINE ID *';
+    document.getElementById('contactIdInput').placeholder = method === 'WhatsApp' ? '+66 81 234 5678' : '@yourlineid';
+  }
+
+  function submitViewing(e) {
+    e.preventDefault();
+    if (!currentViewingProp) return;
+    const r   = currentViewingProp;
+    const fd  = new FormData(e.target);
+    const btn = document.getElementById('vfSubmitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    const payload = {
+      timestamp:     new Date().toISOString(),
+      building:      r.project,
+      unit:          r.unit,
+      floor:         r.floor,
+      unitType:      r.unitType,
+      area:          String(r.area || ''),
+      price:         String(r.price || ''),
+      name:          fd.get('name'),
+      nationality:   fd.get('nationality'),
+      persons:       fd.get('persons'),
+      leaseDuration: fd.get('leaseDuration'),
+      moveInDate:    fd.get('moveInDate'),
+      phone:         fd.get('phone'),
+      contactMethod: fd.get('contactMethod'),
+      contactId:     fd.get('contactId'),
+      viewingDate:   fd.get('viewingDate') || '',
+      viewingTime:   fd.get('viewingTime') || '',
+      notes:         fd.get('notes') || '',
+      status:        'New Lead',
+    };
+
+    if (SCRIPT_URL) {
+      // Send as text/plain JSON — avoids CORS preflight and Apps Script redirect issues
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload),
+      }).catch(function(err) { console.error('Sheet submit error:', err); });
+    }
+
+    setTimeout(() => {
+      document.getElementById('modalFormWrap').style.display = 'none';
+      document.getElementById('modalSuccess').style.display = 'block';
+    }, 600);
+  }
+
+  window.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeViewingModal();
+  });
+
+  function goBack() {
+    window.location.hash = '';
+  }
+
+  // ─── Hash router ──────────────────────────────────────────────
+  window.addEventListener('hashchange', function() {
+    const m = window.location.hash.match(/^#\/building\/(.+)$/);
+    if (m && allProps.length) {
+      renderBuilding(decodeURIComponent(m[1]));
+    } else if (!m) {
+      document.getElementById('buildingView').style.display = 'none';
+      document.getElementById('listingsView').style.display = '';
+      window.scrollTo(0, 0);
     }
   });
 
