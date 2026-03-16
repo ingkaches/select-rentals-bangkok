@@ -4,302 +4,540 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Select Rentals Bangkok — Bangkok's Sansiri Property Specialist</title>
+<meta name="description" content="Find your perfect home in Bangkok with Select Rentals. We work directly with Sansiri - Thailand's #1 property developer. Verified listings, transparent pricing, no service fees for tenants.">
+<meta name="keywords" content="Bangkok rental, Sansiri property, Thonglor apartment, Ekkamai condo, Sukhumvit rent, property management Bangkok">
+<meta name="author" content="Select Rentals Bangkok">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://selectrentalsbkk.com/">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://selectrentalsbkk.com/">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Select Rentals Bangkok — Bangkok's Sansiri Property Specialist">
+<meta property="og:description" content="Find your perfect home in Bangkok with Select Rentals. Direct Sansiri partnership, verified listings, no service fees for tenants.">
+<meta property="og:image" content="https://selectrentalsbkk.com/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Select Rentals Bangkok — Bangkok's Sansiri Property Specialist">
+<meta name="twitter:description" content="Find your perfect home in Bangkok with Select Rentals. Direct Sansiri partnership, verified listings, no service fees.">
+<meta name="twitter:image" content="https://selectrentalsbkk.com/og-image.jpg">
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "RealEstateAgent",
+  "name": "Select Rentals Bangkok",
+  "description": "Bangkok's Sansiri Property Specialist - Find verified rental properties with transparent pricing and no service fees.",
+  "url": "https://selectrentalsbkk.com",
+  "telephone": "+66812345678",
+  "email": "hello@selectrentalsbkk.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Bangkok",
+    "addressCountry": "TH"
+  },
+  "areaServed": {
+    "@type": "GeoCircle",
+    "geoMidpoint": {
+      "@type": "GeoCoordinates",
+      "latitude": "13.7563",
+      "longitude": "100.5018"
+    },
+    "geoRadius": "20000"
+  },
+  "sameAs": [
+    "https://facebook.com/selectrentalsbkk",
+    "https://line.me/R/ti/p/@selectrentalsbkk"
+  ],
+  "serviceType": ["Rental", "Property Management"],
+  "priceRange": "฿฿"
+}
+</script>
+
+<!-- FAQ Schema for AEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What areas in Bangkok do you cover?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We cover all prime Bangkok districts including Thonglor, Ekkamai, Sukhumvit, Asoke, Rama 9, Sathorn, Phayathai, and more."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you charge service fees to tenants?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No, we never charge service fees to tenants. Our service is free for renters - the owner pays the commission on successful rental."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I schedule a viewing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Simply contact us via LINE @SelectRentalsBKK, WhatsApp, or fill out the enquiry form on our website. We respond same day and arrange viewings at your convenience."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are your listings verified?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, all our listings are verified directly with Sansiri. We sync with their database daily to ensure accuracy."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What documents do I need to rent?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Typically you need passport, proof of income or employment, and bank statement. We guide you through the entire process."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P4HQGXEWW9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-P4HQGXEWW9');
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --gold: #C9A96E; --gold-light: #E8D5B0; --gold-dim: #8A6D3E;
-    --dark: #0A0A08; --dark2: #111110; --dark3: #1A1A18; --dark4: #222220;
-    --white: #F5F2EC; --muted: #7A7870; --green: #4A7C59; --green-light: #6FCF97;
+    --primary: #1C1D1F; /* Dark slate */
+    --gold: #B48B5E;    /* Refined earthy gold */
+    --gold-dim: #D4BFA6;
+    --bg-main: #F9F8F6; /* Warm off-white */
+    --bg-card: #FFFFFF; /* Pure white */
+    --bg-alt: #F0EEE9;  /* Slightly darker cream */
+    --text-main: #2D2E30;
+    --text-muted: #6B6861;
+    --border: #E8E6E1;
+    --green: #4A7C59;
+    --green-light: #5BA872;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-  body { background: var(--dark); color: var(--white); font-family: 'DM Sans', sans-serif; font-weight: 300; overflow-x: hidden; }
-  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: 0.4; }
+  body { background: var(--bg-main); color: var(--text-main); font-family: 'DM Sans', sans-serif; font-weight: 300; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: 0.3; }
 
   /* NAV */
   nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 24px 48px; display: flex; align-items: center; justify-content: space-between; transition: all 0.4s; }
-  .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; }
-  .nav-logo span { color: var(--white); font-weight: 300; }
+  .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 600; letter-spacing: 0.15em; color: var(--primary); text-transform: uppercase; }
+  .nav-logo span { color: var(--gold); font-weight: 500; }
   .nav-links { display: flex; gap: 40px; list-style: none; }
-  .nav-links a { color: var(--muted); text-decoration: none; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+  .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; font-weight: 600; }
   .nav-links a:hover { color: var(--gold); }
-  .nav-cta { background: transparent; border: 1px solid var(--gold-dim); color: var(--gold); padding: 10px 24px; font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; }
-  .nav-cta:hover { background: var(--gold); color: var(--dark); }
+  .nav-cta { background: var(--primary); border: none; color: #fff; padding: 12px 28px; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; border-radius: 30px; }
+  .nav-cta:hover { background: var(--gold); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(180,139,94,0.3); }
+
+  .nav-right { display: flex; align-items: center; gap: 20px; }
+  .lang-selector { position: relative; }
+  .lang-btn { display: flex; align-items: center; gap: 6px; background: transparent; border: 1px solid var(--border); padding: 8px 14px; border-radius: 30px; cursor: pointer; transition: all 0.3s; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; color: var(--text-muted); }
+  .lang-btn:hover { border-color: var(--gold); color: var(--primary); }
+  .lang-flag { font-size: 14px; }
+  .lang-arrow { font-size: 6px; opacity: 0.6; }
+  .lang-dropdown { position: absolute; top: calc(100% + 8px); right: 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 12px 32px rgba(0,0,0,0.1); padding: 8px; min-width: 140px; opacity: 0; visibility: hidden; transform: translateY(-8px); transition: all 0.2s; z-index: 200; }
+  .lang-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0); }
+  .lang-option { display: flex; align-items: center; gap: 10px; width: 100%; background: transparent; border: none; padding: 10px 14px; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--text-muted); cursor: pointer; border-radius: 8px; transition: all 0.2s; text-align: left; }
+  .lang-option:hover { background: var(--bg-alt); color: var(--primary); }
+  .lang-option.active { background: rgba(180,139,94,0.1); color: var(--gold); }
 
   /* HERO */
   .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; position: relative; overflow: hidden; }
   .hero-left { display: flex; flex-direction: column; justify-content: center; padding: 140px 64px 80px; position: relative; z-index: 2; }
-  .hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; opacity: 0; animation: fadeUp 0.8s ease 0.2s forwards; }
+  .hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; font-weight: 500; opacity: 0; animation: fadeUp 0.8s ease 0.2s forwards; }
   .hero-trust { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; opacity: 0; animation: fadeUp 0.8s ease 0.35s forwards; }
-  .trust-badge { background: rgba(201,169,110,0.1); border: 1px solid rgba(201,169,110,0.25); padding: 6px 14px; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-light); display: flex; align-items: center; gap: 8px; }
-  .trust-badge::before { content: '✓'; font-size: 11px; color: var(--green-light); }
-  .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(48px, 5vw, 82px); font-weight: 300; line-height: 1.05; margin-bottom: 32px; opacity: 0; animation: fadeUp 0.8s ease 0.4s forwards; }
+  .trust-badge { background: #fff; border: 1px solid var(--border); padding: 8px 16px; font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--primary); display: flex; align-items: center; gap: 8px; border-radius: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+  .trust-badge::before { content: '✓'; font-size: 11px; color: var(--green-light); font-weight: bold; }
+  .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(48px, 5vw, 82px); font-weight: 400; line-height: 1.05; margin-bottom: 32px; color: var(--primary); opacity: 0; animation: fadeUp 0.8s ease 0.4s forwards; }
   .hero-title em { font-style: italic; color: var(--gold); }
-  .hero-subtitle { font-size: 14px; color: var(--muted); line-height: 1.8; max-width: 420px; margin-bottom: 48px; opacity: 0; animation: fadeUp 0.8s ease 0.6s forwards; }
-  .hero-subtitle strong { color: var(--white); font-weight: 400; }
+  .hero-subtitle { font-size: 15px; color: var(--text-muted); line-height: 1.8; max-width: 440px; margin-bottom: 48px; opacity: 0; animation: fadeUp 0.8s ease 0.6s forwards; }
+  .hero-subtitle strong { color: var(--primary); font-weight: 500; }
   .hero-actions { display: flex; gap: 16px; align-items: center; opacity: 0; animation: fadeUp 0.8s ease 0.8s forwards; }
-  .btn-primary { background: var(--gold); color: var(--dark); border: none; padding: 16px 36px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; }
-  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,169,110,0.2); }
-  .btn-secondary { background: transparent; color: var(--white); border: none; padding: 16px 0; font-family: 'DM Sans', sans-serif; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: color 0.3s; }
+  .btn-primary { background: var(--primary); color: #fff; border: none; padding: 18px 40px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; border-radius: 8px; }
+  .btn-primary:hover { background: var(--gold); transform: translateY(-4px); box-shadow: 0 12px 24px rgba(180,139,94,0.25); }
+  .btn-secondary { background: transparent; color: var(--primary); border: none; padding: 16px 0; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: color 0.3s; }
   .btn-secondary::after { content: '→'; transition: transform 0.3s; }
   .btn-secondary:hover { color: var(--gold); }
   .btn-secondary:hover::after { transform: translateX(6px); }
-  .hero-stats { display: flex; gap: 40px; margin-top: 56px; padding-top: 40px; border-top: 1px solid rgba(201,169,110,0.15); opacity: 0; animation: fadeUp 0.8s ease 1s forwards; }
-  .stat-number { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--gold); line-height: 1; margin-bottom: 6px; }
-  .stat-label { font-size: 10px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
+  
+  /* HERO AREA CHIPS */
+  .hero-areas { margin-top: 40px; opacity: 0; animation: fadeUp 0.8s ease 0.95s forwards; }
+  .hero-areas-label { font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 500; letter-spacing: 0.22em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px; }
+  .hero-area-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .hero-area-chip { display: inline-block; background: #fff; border: 1px solid var(--border); color: var(--text-main); padding: 8px 16px; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; border-radius: 30px; text-decoration: none; transition: all 0.2s; white-space: nowrap; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+  .hero-area-chip:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(180,139,94,0.1); }
+
+  .hero-stats { display: flex; gap: 48px; margin-top: 48px; padding-top: 48px; border-top: 1px solid var(--border); opacity: 0; animation: fadeUp 0.8s ease 1s forwards; }
+  .stat-number { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 500; color: var(--primary); line-height: 1; margin-bottom: 8px; }
+  .stat-label { font-size: 10px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
 
   /* HERO RIGHT */
-  .hero-right { position: relative; overflow: hidden; }
-  .hero-img-main { position: absolute; inset: 0; background: linear-gradient(135deg, #1a1a18 0%, #0f1a12 50%, #1a150a 100%); }
-  .hero-img-main::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 70% 40%, rgba(201,169,110,0.08) 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 30% 70%, rgba(74,124,89,0.06) 0%, transparent 60%); }
-  .skyline { position: absolute; bottom: 0; left: 0; right: 0; height: 65%; display: flex; align-items: flex-end; gap: 3px; padding: 0 20px; opacity: 0.12; }
-  .building { background: var(--gold); flex: 1; border-radius: 2px 2px 0 0; position: relative; }
-  .building::before { content: ''; position: absolute; top: 15%; left: 10%; right: 10%; bottom: 0; background: repeating-linear-gradient(to bottom, transparent 0px, transparent 6px, rgba(0,0,0,0.4) 6px, rgba(0,0,0,0.4) 8px); }
-  .hero-line { position: absolute; top: 50%; left: 0; width: 1px; height: 120px; background: linear-gradient(to bottom, transparent, var(--gold), transparent); transform: translateY(-50%); }
+  .hero-right { position: relative; overflow: hidden; background: #EAE6DF; }
+  .hero-img-main { position: absolute; inset: 0; }
+  .hero-img-layer { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 0.6s ease-in-out; }
+  .hero-img-layer.active { opacity: 1; z-index: 0; }
+  .hero-img-overlays { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+  .hero-img-overlays::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, var(--bg-main) 0%, transparent 15%, transparent 85%, var(--bg-main) 100%), linear-gradient(to top, var(--bg-main) -5%, transparent 30%); }
+  .hero-img-overlays::before { content: ''; position: absolute; inset: 0; background: rgba(249, 248, 246, 0.15); backdrop-filter: blur(2px) saturate(0.9); }
+  .hero-line { position: absolute; top: 50%; left: 0; width: 1px; height: 120px; background: linear-gradient(to bottom, transparent, var(--gold), transparent); transform: translateY(-50%); z-index: 2; }
 
   /* FLOATING CARDS */
-  .floating-card { position: absolute; background: rgba(15,15,13,0.94); border: 1px solid rgba(201,169,110,0.2); backdrop-filter: blur(16px); padding: 20px 24px; border-radius: 2px; animation: float 6s ease-in-out infinite; transition: border-color 0.3s; }
-  .floating-card:hover { border-color: rgba(201,169,110,0.5); }
+  .floating-card { position: absolute; z-index: 3; background: rgba(255,255,255,0.92); border: 1px solid rgba(255,255,255,1); backdrop-filter: blur(12px); padding: 20px 24px; border-radius: 16px; box-shadow: 0 16px 40px rgba(0,0,0,0.06); animation: float 6s ease-in-out infinite; transition: border-color 0.3s; }
+  .floating-card:hover { border-color: var(--gold); }
   .floating-card:nth-child(2) { top: 18%; right: 6%; width: 230px; animation-delay: 0s; }
   .floating-card:nth-child(3) { top: 50%; left: 5%; width: 210px; animation-delay: -2s; }
   .floating-card:nth-child(4) { bottom: 16%; right: 10%; width: 200px; animation-delay: -4s; }
-  .card-tag { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--green-light); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .card-tag { font-size: 9px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
   .card-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-light); animation: pulse 2s ease infinite; }
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
-  .card-name { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 400; color: var(--white); margin-bottom: 4px; }
-  .card-detail { font-size: 11px; color: var(--muted); margin-bottom: 12px; }
-  .card-footer { display: flex; justify-content: space-between; align-items: center; }
-  .card-price { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--gold); }
-  .card-units { font-size: 9px; color: var(--green-light); letter-spacing: 0.1em; text-transform: uppercase; }
+  .card-name { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 600; color: var(--primary); margin-bottom: 4px; }
+  .card-detail { font-size: 11px; font-weight: 500; color: var(--text-muted); margin-bottom: 16px; }
+  .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 12px; }
+  .card-price { font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 600; color: var(--primary); }
+  .card-units { font-size: 9px; font-weight: 700; color: var(--green-light); letter-spacing: 0.1em; text-transform: uppercase; }
 
   @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
   @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 
   /* MARQUEE */
-  .marquee-wrap { background: var(--gold); padding: 13px 0; overflow: hidden; }
-  .marquee-track { display: flex; animation: marquee 28s linear infinite; white-space: nowrap; }
-  .marquee-item { color: var(--dark); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; padding: 0 28px; display: flex; align-items: center; gap: 14px; }
-  .marquee-item::after { content: '◆'; font-size: 6px; opacity: 0.6; }
+  .marquee-wrap { background: var(--primary); padding: 14px 0; overflow: hidden; }
+  .marquee-track { display: flex; animation: marquee 30s linear infinite; white-space: nowrap; }
+  .marquee-item { color: #fff; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; padding: 0 28px; display: flex; align-items: center; gap: 14px; }
+  .marquee-item::after { content: '◆'; font-size: 7px; opacity: 0.4; color: var(--gold); }
   @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
   /* TRUST BAR */
-  .trust-bar { background: var(--dark2); padding: 32px 64px; display: flex; justify-content: center; gap: 64px; border-bottom: 1px solid rgba(201,169,110,0.08); }
-  .trust-item { display: flex; align-items: center; gap: 14px; }
-  .trust-icon { font-size: 20px; opacity: 0.8; }
-  .trust-text { font-size: 12px; color: var(--muted); line-height: 1.5; }
-  .trust-text strong { display: block; color: var(--white); font-weight: 400; font-size: 13px; margin-bottom: 2px; }
+  .trust-bar { background: var(--bg-card); padding: 40px 64px; display: flex; justify-content: center; gap: 64px; border-bottom: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
+  .trust-item { display: flex; align-items: center; gap: 16px; }
+  .trust-icon { font-size: 26px; }
+  .trust-text { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+  .trust-text strong { display: block; color: var(--primary); font-weight: 600; font-size: 14px; margin-bottom: 4px; }
 
   /* SECTIONS */
-  section { padding: 110px 64px; }
-  .section-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; margin-bottom: 20px; }
-  .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px, 3.2vw, 54px); font-weight: 300; line-height: 1.1; margin-bottom: 20px; }
+  section { padding: 120px 64px; }
+  .section-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; margin-bottom: 20px; }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px, 3.5vw, 56px); font-weight: 500; line-height: 1.1; margin-bottom: 20px; color: var(--primary); }
   .section-title em { font-style: italic; color: var(--gold); }
 
   /* LISTINGS */
-  .listings { background: var(--dark); }
-  .listings-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 48px; }
-  .filter-tabs { display: flex; gap: 4px; }
-  .filter-tab { background: var(--dark3); border: none; color: var(--muted); padding: 10px 20px; font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
-  .filter-tab.active, .filter-tab:hover { background: var(--gold); color: var(--dark); }
-  .properties-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
-  .property-card { background: var(--dark3); position: relative; overflow: hidden; cursor: pointer; transition: transform 0.35s, box-shadow 0.35s; }
-  .property-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(0,0,0,0.5); }
+  .listings { background: var(--bg-alt); }
+  .listings-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 56px; }
+  .filter-tabs { display: flex; gap: 8px; background: #E8E4D9; padding: 8px; border-radius: 12px; }
+  .filter-tab { background: transparent; border: none; color: var(--text-muted); padding: 12px 24px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; border-radius: 8px; }
+  .filter-tab.active, .filter-tab:hover { background: var(--bg-card); color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+  
+  .properties-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .property-card { background: var(--bg-card); position: relative; border-radius: 20px; overflow: hidden; cursor: pointer; box-shadow: 0 12px 32px rgba(0,0,0,0.04); border: 1px solid var(--border); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+  .property-card:hover { transform: translateY(-10px); box-shadow: 0 24px 60px rgba(0,0,0,0.08); border-color: rgba(180,139,94,0.3); }
   .property-card:hover .property-overlay { opacity: 1; }
-  .property-card:hover .property-img-bg { transform: scale(1.05); }
-  .property-img { height: 230px; position: relative; overflow: hidden; }
-  .property-img-bg { position: absolute; inset: 0; transition: transform 0.5s ease; }
-  .property-card:nth-child(1) .property-img-bg { background: linear-gradient(135deg, #1a2a1a, #0a1a2a); }
-  .property-card:nth-child(2) .property-img-bg { background: linear-gradient(135deg, #1a1a2a, #2a1a1a); }
-  .property-card:nth-child(3) .property-img-bg { background: linear-gradient(135deg, #2a1a0a, #1a2a1a); }
-  .property-card:nth-child(4) .property-img-bg { background: linear-gradient(135deg, #0a2a2a, #1a1a0a); }
-  .property-card:nth-child(5) .property-img-bg { background: linear-gradient(135deg, #2a0a1a, #0a2a0a); }
-  .property-card:nth-child(6) .property-img-bg { background: linear-gradient(135deg, #1a2a2a, #2a2a1a); }
-  .property-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,10,8,0.85) 0%, transparent 55%); z-index: 1; }
-  .property-overlay { position: absolute; inset: 0; background: rgba(201,169,110,0.1); opacity: 0; transition: opacity 0.3s; z-index: 2; display: flex; align-items: center; justify-content: center; }
-  .overlay-btn { background: var(--gold); color: var(--dark); border: none; padding: 12px 28px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; font-weight: 500; }
-  .property-badge { position: absolute; top: 16px; left: 16px; background: var(--green); color: var(--white); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; padding: 5px 12px; z-index: 3; display: flex; align-items: center; gap: 6px; }
-  .badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green-light); animation: pulse 2s ease infinite; }
-  .property-floor-tag { position: absolute; bottom: 16px; right: 16px; background: rgba(10,10,8,0.8); border: 1px solid rgba(201,169,110,0.2); color: var(--gold); font-family: 'DM Mono', monospace; font-size: 10px; padding: 4px 10px; z-index: 3; }
-  .property-info { padding: 24px 28px 28px; }
-  .property-building { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 6px; }
-  .property-name { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 400; margin-bottom: 12px; line-height: 1.2; }
-  .property-specs { display: flex; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
-  .spec { font-size: 11px; color: var(--muted); background: var(--dark4); padding: 4px 10px; }
-  .property-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.05); }
-  .property-price { font-family: 'Cormorant Garamond', serif; font-size: 25px; font-weight: 300; color: var(--gold); }
-  .property-price span { font-family: 'DM Sans', sans-serif; font-size: 11px; color: var(--muted); font-weight: 300; }
-  .property-avail { font-size: 10px; color: var(--green-light); letter-spacing: 0.1em; text-transform: uppercase; }
-  .view-all { text-align: center; margin-top: 0; padding: 60px 0 80px; border-top: 1px solid rgba(201,169,110,0.12); }
-  .view-all-eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 18px; }
-  .view-all-count { font-family: 'Cormorant Garamond', serif; font-size: clamp(30px, 3vw, 46px); font-weight: 300; line-height: 1.1; margin-bottom: 10px; }
+  .property-card:hover .property-img-bg { transform: scale(1.08); }
+  
+  .property-img { height: 260px; position: relative; overflow: hidden; border-radius: 20px 20px 0 0; }
+  .property-img-bg { position: absolute; inset: 0; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+  /* Light gradients for images until real images are used */
+  .property-card:nth-child(1) .property-img-bg { background: linear-gradient(135deg, #DFE2D8, #b6bdaf); }
+  .property-card:nth-child(2) .property-img-bg { background: linear-gradient(135deg, #E6DDD9, #CABDB6); }
+  .property-card:nth-child(3) .property-img-bg { background: linear-gradient(135deg, #DCE2E6, #B9C6CC); }
+  .property-card:nth-child(4) .property-img-bg { background: linear-gradient(135deg, #EAE6DF, #D1C9BD); }
+  .property-card:nth-child(5) .property-img-bg { background: linear-gradient(135deg, #E1E2E4, #C1C6C8); }
+  .property-card:nth-child(6) .property-img-bg { background: linear-gradient(135deg, #E7DED8, #CDBBB0); }
+  
+  .property-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 60%); z-index: 1; pointer-events: none; }
+  .property-overlay { position: absolute; inset: 0; background: rgba(28,29,31,0.25); backdrop-filter: blur(4px); opacity: 0; transition: opacity 0.4s; z-index: 2; display: flex; align-items: center; justify-content: center; }
+  .overlay-btn { background: #fff; color: var(--primary); border: none; padding: 16px 36px; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; border-radius: 30px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); transition: transform 0.2s; }
+  .overlay-btn:hover { transform: scale(1.05); }
+  
+  .property-badge { position: absolute; top: 16px; left: 16px; background: #fff; color: var(--primary); font-size: 9px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 8px 16px; border-radius: 30px; z-index: 3; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+  .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-light); animation: pulse 2s ease infinite; }
+  .property-floor-tag { position: absolute; bottom: 16px; right: 16px; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); color: var(--primary); font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 600; padding: 6px 14px; border-radius: 8px; z-index: 3; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+  
+  .property-info { padding: 32px; background: #fff; border-radius: 0 0 20px 20px; }
+  .property-building { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .property-name { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; color: var(--primary); margin-bottom: 16px; line-height: 1.2; }
+  .property-specs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  .spec { font-size: 12px; font-weight: 500; color: var(--text-muted); background: var(--bg-main); padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border); }
+  
+  .property-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; border-top: 1px solid var(--border); }
+  .property-price { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 500; color: var(--primary); }
+  .property-price span { font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text-muted); font-weight: 400; }
+  .property-avail { font-size: 10px; font-weight: 700; color: var(--green); letter-spacing: 0.1em; text-transform: uppercase; }
+  
+  .view-all { text-align: center; margin-top: 0; padding: 100px 0 60px; border-top: 1px solid var(--border); }
+  .view-all-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 18px; }
+  .view-all-count { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px, 3.5vw, 50px); font-weight: 500; color: var(--primary); line-height: 1.1; margin-bottom: 12px; }
   .view-all-count em { color: var(--gold); font-style: italic; }
-  .view-all-sub { font-size: 12px; color: var(--muted); letter-spacing: 0.04em; margin-bottom: 36px; }
-  .btn-primary { background: var(--gold); color: var(--dark); border: none; padding: 18px 52px; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; }
-  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,169,110,0.25); }
-  .view-all-secondary { display: block; margin-top: 18px; font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: color 0.2s; }
+  .view-all-sub { font-size: 15px; color: var(--text-muted); letter-spacing: 0.02em; margin-bottom: 48px; }
+  .view-all-secondary { display: inline-block; margin-top: 24px; font-size: 12px; font-weight: 700; color: var(--primary); letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: color 0.2s; }
   .view-all-secondary:hover { color: var(--gold); }
 
   /* HOW */
-  .how { background: var(--dark2); display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start; }
-  .how-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-  .step { background: var(--dark3); padding: 36px 30px; position: relative; transition: background 0.3s; overflow: hidden; }
-  .step:hover { background: var(--dark4); }
-  .step-num { font-family: 'Cormorant Garamond', serif; font-size: 56px; font-weight: 300; color: rgba(201,169,110,0.1); line-height: 1; margin-bottom: 18px; }
-  .step-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; margin-bottom: 10px; color: var(--gold-light); }
-  .step-desc { font-size: 12px; color: var(--muted); line-height: 1.7; }
-  .step-accent { position: absolute; top: 0; left: 0; width: 3px; height: 0; background: var(--gold); transition: height 0.4s ease; }
+  .how { background: var(--bg-main); display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start; }
+  .how-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .step { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 48px 40px; position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); overflow: hidden; box-shadow: 0 12px 32px rgba(0,0,0,0.03); }
+  .step:hover { transform: translateY(-8px); box-shadow: 0 24px 48px rgba(0,0,0,0.06); border-color: rgba(180,139,94,0.3); }
+  .step-num { font-family: 'Cormorant Garamond', serif; font-size: 56px; font-weight: 400; color: var(--gold); line-height: 1; margin-bottom: 20px; opacity: 0.9; }
+  .step-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 500; margin-bottom: 16px; color: var(--primary); }
+  .step-desc { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+  .step-accent { position: absolute; top: 0; left: 0; width: 6px; height: 0; background: var(--gold); transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
   .step:hover .step-accent { height: 100%; }
 
   /* WHY */
-  .why { background: var(--dark); display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
-  .why-visual { position: relative; height: 480px; }
-  .why-box { position: absolute; background: var(--dark3); border: 1px solid rgba(201,169,110,0.1); padding: 30px; transition: border-color 0.3s; }
-  .why-box:hover { border-color: rgba(201,169,110,0.3); }
-  .why-box:nth-child(1) { top: 0; left: 0; right: 15%; }
-  .why-box:nth-child(2) { top: 46%; left: 15%; right: 0; bottom: 0; }
-  .why-box-icon { font-size: 26px; margin-bottom: 14px; }
-  .why-box-title { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 400; color: var(--gold-light); margin-bottom: 10px; }
-  .why-box-text { font-size: 12px; color: var(--muted); line-height: 1.7; }
-  .why-points { display: flex; flex-direction: column; gap: 28px; margin-top: 44px; }
-  .why-point { display: flex; gap: 22px; align-items: flex-start; padding: 20px; background: var(--dark2); border-left: 2px solid transparent; transition: border-color 0.3s; }
-  .why-point:hover { border-color: var(--gold); }
-  .why-point-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gold-dim); min-width: 24px; padding-top: 3px; }
-  .why-point-title { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 400; margin-bottom: 6px; }
-  .why-point-text { font-size: 12px; color: var(--muted); line-height: 1.7; }
+  .why { background: var(--bg-alt); display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; padding: 100px 64px; }
+  .why-left { display: flex; flex-direction: column; }
+  .why-cards { display: flex; flex-direction: column; gap: 20px; margin-top: 48px; }
+  .why-card { display: flex; align-items: flex-start; gap: 20px; padding: 28px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+  .why-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(0,0,0,0.08); border-color: rgba(180,139,94,0.25); }
+  .why-card-icon { width: 56px; height: 56px; min-width: 56px; background: linear-gradient(135deg, rgba(180,139,94,0.12), rgba(180,139,94,0.05)); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--gold); transition: all 0.3s; }
+  .why-card:hover .why-card-icon { background: var(--gold); color: #fff; transform: scale(1.05); }
+  .why-card-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--primary); margin-bottom: 8px; line-height: 1.3; }
+  .why-card-text { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  
+  .why-right { display: flex; flex-direction: column; gap: 24px; }
+  .why-feature-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 36px; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 12px 32px rgba(0,0,0,0.04); position: relative; overflow: hidden; }
+  .why-feature-box::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--gold); opacity: 0.6; }
+  .why-feature-box-alt::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--gold); opacity: 1; }
+  .why-feature-box:hover { transform: translateY(-6px); box-shadow: 0 24px 56px rgba(0,0,0,0.1); border-color: rgba(180,139,94,0.3); }
+  .why-feature-box-alt { background: var(--bg-card); border-color: var(--gold); }
+  .why-feature-icon { width: 60px; height: 60px; background: rgba(180,139,94,0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--gold); margin-bottom: 24px; transition: all 0.3s; }
+  .why-feature-box:hover .why-feature-icon { transform: rotate(5deg) scale(1.05); }
+  .why-feature-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; color: var(--primary); margin-bottom: 12px; line-height: 1.3; }
+  .why-feature-box-alt .why-feature-title { color: var(--primary); }
+  .why-feature-text { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+  .why-feature-box-alt .why-feature-text { color: var(--text-muted); }
+  
+  @media (max-width: 900px) {
+    .why { grid-template-columns: 1fr; padding: 80px 32px; gap: 48px; }
+    .why-cards { margin-top: 32px; }
+    .why-right { flex-direction: row; }
+    .why-feature-box, .why-feature-box-alt { padding: 28px; }
+  }
+  @media (max-width: 600px) {
+    .why { padding: 60px 24px; }
+    .why-right { flex-direction: column; }
+    .why-card { flex-direction: column; gap: 16px; }
+    .why-card-icon { width: 48px; height: 48px; min-width: 48px; }
+  }
 
   /* CONTACT */
-  .contact { background: var(--dark2); display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; border-top: 1px solid rgba(201,169,110,0.1); }
-  .contact-form { display: flex; flex-direction: column; gap: 14px; }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .form-group { display: flex; flex-direction: column; gap: 8px; }
-  .form-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
-  .form-input, .form-select, .form-textarea { background: var(--dark3); border: 1px solid rgba(255,255,255,0.06); color: var(--white); padding: 13px 16px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 300; transition: border-color 0.2s; outline: none; appearance: none; }
-  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: rgba(201,169,110,0.4); }
-  .form-input::placeholder, .form-textarea::placeholder { color: var(--muted); }
-  .form-textarea { resize: none; height: 90px; }
-  .form-submit { background: var(--gold); color: var(--dark); border: none; padding: 17px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; margin-top: 6px; }
-  .form-submit:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,169,110,0.2); }
-  .contact-tagline { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 300; line-height: 1.15; margin-bottom: 24px; }
-  .contact-tagline em { font-style: italic; color: var(--gold); }
-  .contact-channels { display: flex; flex-direction: column; gap: 12px; margin-top: 36px; }
-  .channel { display: flex; align-items: center; gap: 18px; padding: 18px 22px; background: var(--dark3); border: 1px solid rgba(255,255,255,0.04); transition: all 0.2s; cursor: pointer; }
-  .channel:hover { border-color: rgba(201,169,110,0.25); transform: translateX(4px); }
-  .channel-icon { width: 38px; height: 38px; background: rgba(201,169,110,0.1); display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
-  .channel-label { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
-  .channel-value { font-size: 13px; color: var(--white); }
+  .contact { background: var(--bg-main); display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; border-top: 1px solid var(--border); }
+  .contact-form { display: flex; flex-direction: column; gap: 16px; background: var(--bg-card); padding: 56px; border-radius: 24px; border: 1px solid var(--border); box-shadow: 0 24px 80px rgba(0,0,0,0.06); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 10px; }
+  .form-label { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+  .form-input, .form-select, .form-textarea { background: var(--bg-main); border: 2px solid var(--border); color: var(--primary); padding: 16px 20px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; transition: all 0.2s; outline: none; appearance: none; border-radius: 10px; }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--gold); background: #fff; box-shadow: 0 0 0 4px rgba(180,139,94,0.1); }
+  .form-input::placeholder, .form-textarea::placeholder { color: #B0ACA3; font-weight: 400; }
+  .form-textarea { resize: vertical; height: 120px; }
+  .form-submit { background: var(--primary); color: #fff; border: none; padding: 20px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; margin-top: 16px; border-radius: 10px; }
+  .form-submit:hover { background: var(--gold); transform: translateY(-4px); box-shadow: 0 16px 32px rgba(180,139,94,0.2); }
+  
+  .contact-channels { display: flex; flex-direction: column; gap: 16px; margin-top: 48px; }
+  .channel { display: flex; align-items: center; gap: 24px; padding: 24px 32px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; transition: all 0.3s; cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,0.02); }
+  .channel:hover { border-color: var(--gold); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.06); }
+  .channel-icon { width: 48px; height: 48px; background: var(--bg-alt); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; color: var(--gold); transition: background 0.3s; }
+  .channel:hover .channel-icon { background: rgba(180,139,94,0.15); }
+  .channel-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+  .channel-value { font-size: 16px; font-weight: 600; color: var(--primary); }
+
+  /* FAQ */
+  .faq { background: var(--bg-main); padding: 100px 64px; border-top: 1px solid var(--border); }
+  .faq-header { text-align: center; margin-bottom: 56px; }
+  .faq-grid { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+  .faq-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: all 0.3s; }
+  .faq-item:hover { border-color: rgba(180,139,94,0.3); }
+  .faq-question { width: 100%; background: transparent; border: none; padding: 24px 28px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; color: var(--primary); text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; transition: all 0.2s; }
+  .faq-question:hover { color: var(--gold); }
+  .faq-icon { font-size: 20px; font-weight: 300; color: var(--gold); transition: transform 0.3s; }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; }
+  .faq-item.open .faq-answer { max-height: 200px; padding: 0 28px 24px; }
+  .faq-answer p { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
 
   /* FOOTER */
-  footer { background: var(--dark); padding: 44px 64px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.04); }
-  .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 400; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; }
-  .footer-text { font-size: 11px; color: var(--muted); }
-  .footer-links { display: flex; gap: 28px; }
-  .footer-links a { font-size: 11px; color: var(--muted); text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+  footer { background: var(--bg-card); padding: 56px 64px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; letter-spacing: 0.15em; color: var(--primary); text-transform: uppercase; }
+  .footer-text { font-size: 12px; font-weight: 500; color: var(--text-muted); }
+  .footer-links { display: flex; gap: 40px; }
+  .footer-links a { font-size: 11px; font-weight: 700; color: var(--text-muted); text-decoration: none; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.2s; }
   .footer-links a:hover { color: var(--gold); }
 
   /* REVEAL */
-  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
   .reveal.visible { opacity: 1; transform: translateY(0); }
   .reveal-delay-1 { transition-delay: 0.1s; }
   .reveal-delay-2 { transition-delay: 0.2s; }
   .reveal-delay-3 { transition-delay: 0.3s; }
 
   /* LISTINGS STATES */
-  .listings-loading, .listings-empty, .listings-error { grid-column: 1 / -1; padding: 80px 40px; text-align: center; color: var(--muted); font-size: 14px; }
-  .listings-loading { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-  .ls-spinner { width: 36px; height: 36px; border: 2px solid rgba(201,169,110,0.15); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  .listings-loading, .listings-empty, .listings-error { grid-column: 1 / -1; padding: 120px 40px; text-align: center; color: var(--text-muted); font-size: 15px; background: #fff; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 8px 32px rgba(0,0,0,0.02); }
+  .listings-loading { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+  .ls-spinner { width: 48px; height: 48px; border: 3px solid rgba(180,139,94,0.15); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .listings-empty a, .listings-error a { color: var(--gold); text-decoration: none; }
+  .listings-empty a, .listings-error a { color: var(--gold); text-decoration: none; font-weight: 600; }
   .listings-empty a:hover, .listings-error a:hover { text-decoration: underline; }
-  /* Card entrance animation (replaces reveal for dynamic cards) */
-  @keyframes cardIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
-  .card-anim { animation: cardIn 0.55s ease both; }
+  @keyframes cardIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  .card-anim { animation: cardIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  
+  /* OVERRIDES FOR INLINE STYLES */
+  p[style*='color:var(--muted)'] { color: var(--text-muted) !important; font-weight: 400 !important; }
+  p[style*='color:var(--gold-light)'] { color: var(--primary) !important; font-weight: 600 !important; }
 </style>
+
+<!-- Google Analytics 4 (Replace G-XXXXXXXXXX with your measurement ID) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+
+<!-- Facebook Pixel (Replace 1234567890123456 with your pixel ID) -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1234567890123456');
+  fbq('track', 'PageView');
+</script>
+
 </head>
 <body>
 
 <nav id="navbar">
   <div class="nav-logo">Select <span>Rentals</span> Bangkok</div>
   <ul class="nav-links">
-    <li><a href="listings.html">Listings</a></li>
-    <li><a href="#how">How It Works</a></li>
-    <li><a href="#why">Why Us</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="listings.html" data-i18n="nav_listings">Listings</a></li>
+    <li><a href="#how" data-i18n="nav_how">How It Works</a></li>
+    <li><a href="#why" data-i18n="nav_why">Why Us</a></li>
+    <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
   </ul>
-  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Find My Home</button>
+  <div class="nav-right">
+    <div class="lang-selector">
+      <button class="lang-btn" id="langBtn">
+        <span class="lang-flag">🌐</span>
+        <span class="lang-code" data-i18n="lang_en">EN</span>
+        <span class="lang-arrow">▼</span>
+      </button>
+      <div class="lang-dropdown" id="langDropdown">
+        <button class="lang-option active" data-lang="en"><span class="lang-flag">🇬🇧</span> English</button>
+        <button class="lang-option" data-lang="th"><span class="lang-flag">🇹🇭</span> ภาษาไทย</button>
+        <button class="lang-option" data-lang="zh"><span class="lang-flag">🇨🇳</span> 中文</button>
+      </div>
+    </div>
+    <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" data-i18n="nav_cta">Find My Home</button>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero" id="home">
   <div class="hero-left">
-    <p class="hero-eyebrow">Bangkok's Sansiri Property Specialist</p>
+    <p class="hero-eyebrow" data-i18n="hero_eyebrow">Bangkok's Sansiri Property Specialist</p>
     <div class="hero-trust">
-      <div class="trust-badge">Direct Developer Partnership</div>
-      <div class="trust-badge">No Service Fee</div>
+      <div class="trust-badge" data-i18n="hero_badge1">Direct Developer Partnership</div>
+      <div class="trust-badge" data-i18n="hero_badge2">No Service Fee</div>
     </div>
     <h1 class="hero-title">
-      Find Your<br>
-      Perfect Home<br>
-      <em>In Bangkok</em>
+      <span data-i18n="hero_title1">Find Your</span><br>
+      <span data-i18n="hero_title2">Perfect Home</span><br>
+      <em data-i18n="hero_title3">In Bangkok</em>
     </h1>
-    <p class="hero-subtitle">
+    <p class="hero-subtitle" data-i18n="hero_subtitle">
       We work <strong>directly with Sansiri</strong> — Thailand's #1 property developer — giving you access to verified listings, transparent pricing, and a fully managed rental experience. <strong>No service fees for tenants, ever.</strong>
     </p>
     <div class="hero-actions">
-      <button class="btn-primary" onclick="document.getElementById('listings').scrollIntoView({behavior:'smooth'})">Browse Listings</button>
-      <button class="btn-secondary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Talk to an Agent</button>
+      <button class="btn-primary" onclick="document.getElementById('listings').scrollIntoView({behavior:'smooth'})" data-i18n="hero_btn1">Browse Listings</button>
+      <button class="btn-secondary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" data-i18n="hero_btn2">Talk to an Agent</button>
     </div>
+    <div class="hero-areas">
+      <div class="hero-areas-label" data-i18n="hero_areas_label">Browse by Area</div>
+      <div class="hero-area-chips">
+        <a class="hero-area-chip" href="listings.html?area=Thonglor">Thonglor</a>
+        <a class="hero-area-chip" href="listings.html?area=Ekkamai">Ekkamai</a>
+        <a class="hero-area-chip" href="listings.html?area=On+Nut">On Nut</a>
+        <a class="hero-area-chip" href="listings.html?area=Sukhumvit">Sukhumvit</a>
+        <a class="hero-area-chip" href="listings.html?area=Asoke">Asoke</a>
+        <a class="hero-area-chip" href="listings.html?area=Rama+9">Rama 9</a>
+        <a class="hero-area-chip" href="listings.html?area=Lat+Phrao+%26+Chatuchak">Lat Phrao</a>
+        <a class="hero-area-chip" href="listings.html?area=Sathorn+%26+Riverside">Sathorn</a>
+      </div>
+    </div>
+
     <div class="hero-stats">
       <div class="stat-item">
         <div class="stat-number">46<span style="font-size:18px">+</span></div>
-        <div class="stat-label">Buildings</div>
+        <div class="stat-label" data-i18n="stat_buildings">Buildings</div>
       </div>
       <div class="stat-item">
         <div class="stat-number">5<span style="font-size:18px">★</span></div>
-        <div class="stat-label">Service</div>
+        <div class="stat-label" data-i18n="stat_service">Service</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number" style="font-size:22px;padding-top:6px">Same Day</div>
-        <div class="stat-label">Response</div>
+        <div class="stat-number" style="font-size:22px;padding-top:6px" data-i18n="stat_sameday">Same Day</div>
+        <div class="stat-label" data-i18n="stat_response">Response</div>
       </div>
     </div>
   </div>
 
   <div class="hero-right">
-    <div class="hero-img-main">
-      <div class="skyline">
-        <div class="building" style="height:45%"></div><div class="building" style="height:70%"></div>
-        <div class="building" style="height:55%"></div><div class="building" style="height:85%"></div>
-        <div class="building" style="height:60%"></div><div class="building" style="height:75%"></div>
-        <div class="building" style="height:50%"></div><div class="building" style="height:90%"></div>
-        <div class="building" style="height:65%"></div><div class="building" style="height:78%"></div>
-        <div class="building" style="height:48%"></div><div class="building" style="height:40%"></div>
-      </div>
+    <div class="hero-img-main" id="heroBgContainer">
+      <div class="hero-img-layer active" style="background-image: url('bg-skyline.png');" data-bg="default"></div>
+      <div class="hero-img-layer" style="background-image: url('bg-xt.png');" data-bg="xt"></div>
+      <div class="hero-img-layer" style="background-image: url('bg-98.png');" data-bg="98"></div>
+      <div class="hero-img-layer" style="background-image: url('bg-base.png');" data-bg="base"></div>
+      <div class="hero-img-overlays"></div>
     </div>
-    <div class="floating-card">
-      <div class="card-tag"><div class="card-dot"></div>Available Now</div>
+    <div class="floating-card" onmouseenter="setHeroBg('xt')" onmouseleave="setHeroBg('default')">
+      <div class="card-tag"><div class="card-dot"></div><span data-i18n="card_available">Available Now</span></div>
       <div class="card-name">XT Phayathai</div>
       <div class="card-detail">1 Bed · 42 sqm · Floor 18 · West</div>
       <div class="card-footer">
         <div class="card-price">฿22,000 / mo</div>
-        <div class="card-units">3 units left</div>
+        <div class="card-units"><span data-i18n="card_units3">3 units left</span></div>
       </div>
     </div>
-    <div class="floating-card">
-      <div class="card-tag"><div class="card-dot"></div>Available Now</div>
+    <div class="floating-card" onmouseenter="setHeroBg('98')" onmouseleave="setHeroBg('default')">
+      <div class="card-tag"><div class="card-dot"></div><span data-i18n="card_available">Available Now</span></div>
       <div class="card-name">98 Wireless</div>
       <div class="card-detail">2 Bed · 132 sqm · Floor 6</div>
       <div class="card-footer">
         <div class="card-price">฿230,000 / mo</div>
-        <div class="card-units">1 unit left</div>
+        <div class="card-units"><span data-i18n="card_units1">1 unit left</span></div>
       </div>
     </div>
-    <div class="floating-card">
-      <div class="card-tag"><div class="card-dot"></div>New Listing</div>
+    <div class="floating-card" onmouseenter="setHeroBg('base')" onmouseleave="setHeroBg('default')">
+      <div class="card-tag"><div class="card-dot"></div><span data-i18n="card_new">New Listing</span></div>
       <div class="card-name">The Base Height CM</div>
       <div class="card-detail">1 Bed · 34 sqm · Floor 10</div>
       <div class="card-footer">
         <div class="card-price">฿16,000 / mo</div>
-        <div class="card-units">5 units left</div>
+        <div class="card-units"><span data-i18n="card_units5">5 units left</span></div>
       </div>
     </div>
     <div class="hero-line"></div>
@@ -316,64 +554,94 @@
 
 <!-- TRUST BAR -->
 <div class="trust-bar reveal">
-  <div class="trust-item"><div class="trust-icon">🤝</div><div class="trust-text"><strong>Direct Developer Partnership</strong>Deals contracted directly with Sansiri</div></div>
-  <div class="trust-item"><div class="trust-icon">🔒</div><div class="trust-text"><strong>Verified Listings Only</strong>Every unit confirmed available before listing</div></div>
-  <div class="trust-item"><div class="trust-icon">💬</div><div class="trust-text"><strong>Same-Day Response</strong>LINE · WhatsApp · Facebook</div></div>
-  <div class="trust-item"><div class="trust-icon">🎯</div><div class="trust-text"><strong>No Service Fee</strong>100% free for tenants</div></div>
+  <div class="trust-item"><div class="trust-icon">🤝</div><div class="trust-text"><strong data-i18n="trust1_title">Direct Developer Partnership</strong><span data-i18n="trust1_desc">Deals contracted directly with Sansiri</span></div></div>
+  <div class="trust-item"><div class="trust-icon">🔒</div><div class="trust-text"><strong data-i18n="trust2_title">Verified Listings Only</strong><span data-i18n="trust2_desc">Every unit confirmed available before listing</span></div></div>
+  <div class="trust-item"><div class="trust-icon">💬</div><div class="trust-text"><strong data-i18n="trust3_title">Same-Day Response</strong><span data-i18n="trust3_desc">LINE · WhatsApp · Facebook</span></div></div>
+  <div class="trust-item"><div class="trust-icon">🎯</div><div class="trust-text"><strong data-i18n="trust4_title">No Service Fee</strong><span data-i18n="trust4_desc">100% free for tenants</span></div></div>
 </div>
 
 <!-- LISTINGS -->
 <section class="listings" id="listings">
   <div class="listings-header">
     <div>
-      <p class="section-eyebrow">Available Now</p>
-      <h2 class="section-title">Featured <em>Properties</em></h2>
+      <p class="section-eyebrow" data-i18n="listings_eyebrow">Available Now</p>
+      <h2 class="section-title"><span data-i18n="listings_title1">Featured</span> <em data-i18n="listings_title2">Properties</em></h2>
     </div>
     <div class="filter-tabs">
-      <button class="filter-tab active" onclick="setFilter(this,'all')">All</button>
-      <button class="filter-tab" onclick="setFilter(this,'1-bed')">1 Bed</button>
-      <button class="filter-tab" onclick="setFilter(this,'2-bed')">2 Bed</button>
-      <button class="filter-tab" onclick="setFilter(this,'luxury')">Luxury</button>
+      <button class="filter-tab active" onclick="setFilter(this,'all')" data-i18n="filter_all">All</button>
+      <button class="filter-tab" onclick="setFilter(this,'1-bed')" data-i18n="filter_1bed">1 Bed</button>
+      <button class="filter-tab" onclick="setFilter(this,'2-bed')" data-i18n="filter_2bed">2 Bed</button>
+      <button class="filter-tab" onclick="setFilter(this,'luxury')" data-i18n="filter_luxury">Luxury</button>
     </div>
   </div>
   <div class="properties-grid" id="propertiesGrid"></div>
   <div class="view-all">
-    <div class="view-all-eyebrow">Full Inventory</div>
-    <div class="view-all-count" id="viewAllCount">— <em>Properties</em> Available</div>
-    <div class="view-all-sub">Verified, Sansiri-managed units across Bangkok's prime districts</div>
-    <button class="btn-primary" id="viewAllBtn" onclick="window.location.href='listings.html'">Browse All Listings →</button>
-    <a class="view-all-secondary" href="listings.html">View by building →</a>
+    <div class="view-all-eyebrow" data-i18n="viewall_eyebrow">Full Inventory</div>
+    <div class="view-all-count" id="viewAllCount">— <em data-i18n="viewall_em">Properties</em> <span data-i18n="viewall_available">Available</span></div>
+    <div class="view-all-sub" data-i18n="viewall_sub">Verified, Sansiri-managed units across Bangkok's prime districts</div>
+    <button class="btn-primary" id="viewAllBtn" onclick="window.location.href='listings.html'" data-i18n="viewall_btn">Browse All Listings →</button>
+    <a class="view-all-secondary" href="listings.html" data-i18n="viewall_link">View by building →</a>
   </div>
 </section>
 
 <!-- HOW IT WORKS -->
 <section class="how reveal" id="how">
   <div>
-    <p class="section-eyebrow">The Process</p>
-    <h2 class="section-title">Simple.<br><em>Seamless.</em><br>Settled.</h2>
-    <p style="font-size:13px;color:var(--muted);line-height:1.8;margin-top:20px;max-width:300px">From your first message to getting your keys. We handle everything — at no cost to you.</p>
+    <p class="section-eyebrow" data-i18n="how_eyebrow">The Process</p>
+    <h2 class="section-title"><span data-i18n="how_title1">Simple.</span><br><em data-i18n="how_title2">Seamless.</em><br><span data-i18n="how_title3">Settled.</span></h2>
+    <p style="font-size:13px;color:var(--muted);line-height:1.8;margin-top:20px;max-width:300px" data-i18n="how_subtitle">From your first message to getting your keys. We handle everything — at no cost to you.</p>
   </div>
   <div class="how-steps">
-    <div class="step"><div class="step-accent"></div><div class="step-num">01</div><div class="step-title">Tell Us What You Need</div><p class="step-desc">Budget, bedrooms, area. We listen and match — no generic listings.</p></div>
-    <div class="step"><div class="step-accent"></div><div class="step-num">02</div><div class="step-title">Curated Shortlist</div><p class="step-desc">Personalised selection of verified available units within hours.</p></div>
-    <div class="step"><div class="step-accent"></div><div class="step-num">03</div><div class="step-title">View & Decide</div><p class="step-desc">We arrange viewings at your convenience. Virtual tours available.</p></div>
-    <div class="step"><div class="step-accent"></div><div class="step-num">04</div><div class="step-title">Move In</div><p class="step-desc">Contract, key handover, utility setup. We stay with you to move-in day.</p></div>
+    <div class="step"><div class="step-accent"></div><div class="step-num">1</div><div class="step-title" data-i18n="step1_title">Tell Us What You Need</div><p class="step-desc" data-i18n="step1_desc">Budget, bedrooms, area. We listen and match — no generic listings.</p></div>
+    <div class="step"><div class="step-accent"></div><div class="step-num">2</div><div class="step-title" data-i18n="step2_title">Curated Shortlist</div><p class="step-desc" data-i18n="step2_desc">Personalised selection of verified available units within hours.</p></div>
+    <div class="step"><div class="step-accent"></div><div class="step-num">3</div><div class="step-title" data-i18n="step3_title">View & Decide</div><p class="step-desc" data-i18n="step3_desc">We arrange viewings at your convenience. Virtual tours available.</p></div>
+    <div class="step"><div class="step-accent"></div><div class="step-num">4</div><div class="step-title" data-i18n="step4_title">Move In</div><p class="step-desc" data-i18n="step4_desc">Contract, key handover, utility setup. We stay with you to move-in day.</p></div>
   </div>
 </section>
 
 <!-- WHY US -->
 <section class="why reveal" id="why">
-  <div class="why-visual">
-    <div class="why-box"><div class="why-box-icon">🔄</div><div class="why-box-title">Live Data, Updated Daily</div><p class="why-box-text">Listings sync from Sansiri's database every evening. You see what's actually available — not last month's listings.</p></div>
-    <div class="why-box"><div class="why-box-icon">🌏</div><div class="why-box-title">Built for Expats</div><p class="why-box-text">English-first. We understand what international tenants need and make Bangkok rental genuinely easy.</p></div>
+  <div class="why-left">
+    <p class="section-eyebrow" data-i18n="why_eyebrow">Why Select Rentals</p>
+    <h2 class="section-title"><span data-i18n="why_title1">An Advantage</span><br>You <em data-i18n="why_title2">Can Feel</em></h2>
+    <div class="why-cards">
+      <div class="why-card">
+        <div class="why-card-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <div class="why-card-title" data-i18n="why_point1_title">Direct Sansiri Partnership</div>
+        <div class="why-card-text" data-i18n="why_point1_text">We deal directly with Thailand's #1 developer. Every listing is verified, contracted, and legit — giving you peace of mind from day one.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-card-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        </div>
+        <div class="why-card-title" data-i18n="why_point2_title">Zero Cost to Tenants</div>
+        <div class="why-card-text" data-i18n="why_point2_text">You pay absolutely nothing for our service. Owner pays on successful rental. No hidden fees, no surprises.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-card-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        </div>
+        <div class="why-card-title" data-i18n="why_point3_title">Real-time Availability</div>
+        <div class="why-card-text" data-i18n="why_point3_text">Automated daily sync means we know about new listings and changes before most agents do.</div>
+      </div>
+    </div>
   </div>
-  <div>
-    <p class="section-eyebrow">Why Select Rentals</p>
-    <h2 class="section-title">An Advantage<br>You <em>Can Feel</em></h2>
-    <div class="why-points">
-      <div class="why-point"><div class="why-point-num">01</div><div><div class="why-point-title">Direct Sansiri Partnership</div><p class="why-point-text">We deal directly with Thailand's #1 developer. Every listing is verified, contracted, and legit — giving you peace of mind from day one.</p></div></div>
-      <div class="why-point"><div class="why-point-num">02</div><div><div class="why-point-title">Zero Cost to Tenants</div><p class="why-point-text">You pay absolutely nothing for our service. Owner pays on successful rental. No hidden fees, no surprises.</p></div></div>
-      <div class="why-point"><div class="why-point-num">03</div><div><div class="why-point-title">Real-time Availability</div><p class="why-point-text">Automated daily sync means we know about new listings and changes before most agents do.</p></div></div>
+  <div class="why-right">
+    <div class="why-feature-box">
+      <div class="why-feature-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+      </div>
+      <div class="why-feature-title" data-i18n="why_box1_title">Live Data, Updated Daily</div>
+      <div class="why-feature-text" data-i18n="why_box1_text">Listings sync from Sansiri's database every evening. You see what's actually available — not last month's listings.</div>
+    </div>
+    <div class="why-feature-box why-feature-box-alt">
+      <div class="why-feature-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <div class="why-feature-title" data-i18n="why_box2_title">Built for Expats</div>
+      <div class="why-feature-text" data-i18n="why_box2_text">English-first. We understand what international tenants need and make Bangkok rental genuinely easy.</div>
     </div>
   </div>
 </section>
@@ -381,9 +649,9 @@
 <!-- CONTACT -->
 <section class="contact reveal" id="contact">
   <div>
-    <p class="section-eyebrow">Get In Touch</p>
-    <div class="contact-tagline">Ready to find<br>your <em>perfect</em><br>Bangkok home?</div>
-    <p style="font-size:13px;color:var(--muted);line-height:1.8;max-width:340px">Tell us your requirements and we'll respond with a personalised shortlist — same day, every time.</p>
+    <p class="section-eyebrow" data-i18n="contact_eyebrow">Get In Touch</p>
+    <div class="contact-tagline"><span data-i18n="contact_title1">Ready to find</span><br>your <em data-i18n="contact_title2">perfect</em><br><span data-i18n="contact_title3">Bangkok home?</span></div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.8;max-width:340px" data-i18n="contact_subtitle">Tell us your requirements and we'll respond with a personalised shortlist — same day, every time.</p>
     <div class="contact-channels">
       <div class="channel"><div class="channel-icon">💬</div><div><div class="channel-label">LINE</div><div class="channel-value">@SelectRentalsBKK</div></div></div>
       <div class="channel"><div class="channel-icon">📘</div><div><div class="channel-label">Facebook</div><div class="channel-value">Select Rentals Bangkok</div></div></div>
@@ -391,33 +659,214 @@
     </div>
   </div>
   <div class="contact-form">
-    <p style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;margin-bottom:6px;color:var(--gold-light)">Send an Enquiry</p>
-    <p style="font-size:11px;color:var(--muted);margin-bottom:20px;letter-spacing:0.05em">We respond same day · No service fee for tenants</p>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;margin-bottom:6px;color:var(--gold-light)" data-i18n="form_title">Send an Enquiry</p>
+    <p style="font-size:11px;color:var(--muted);margin-bottom:20px;letter-spacing:0.05em" data-i18n="form_subtitle">We respond same day · No service fee for tenants</p>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">First Name</label><input class="form-input" type="text" placeholder="James"></div>
-      <div class="form-group"><label class="form-label">Nationality</label><input class="form-input" type="text" placeholder="British"></div>
+      <div class="form-group"><label class="form-label" data-i18n="form_name">First Name</label><input class="form-input" type="text" placeholder="James"></div>
+      <div class="form-group"><label class="form-label" data-i18n="form_nationality">Nationality</label><input class="form-input" type="text" placeholder="British"></div>
     </div>
-    <div class="form-group"><label class="form-label">LINE ID / WhatsApp</label><input class="form-input" type="text" placeholder="@yourlineid"></div>
+    <div class="form-group"><label class="form-label" data-i18n="form_line">LINE ID / WhatsApp</label><input class="form-input" type="text" placeholder="@yourlineid"></div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Budget (฿/mo)</label><input class="form-input" type="text" placeholder="25,000"></div>
-      <div class="form-group"><label class="form-label">Bedrooms</label><select class="form-select"><option value="" disabled selected>Select</option><option>Studio</option><option>1 Bedroom</option><option>2 Bedrooms</option><option>3+ Bedrooms</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="form_budget">Budget (฿/mo)</label><input class="form-input" type="text" placeholder="25,000"></div>
+      <div class="form-group"><label class="form-label" data-i18n="form_bedroom">Bedrooms</label><select class="form-select"><option value="" disabled selected data-i18n="form_select">Select</option><option data-i18n="opt_studio">Studio</option><option data-i18n="opt_1bed">1 Bedroom</option><option data-i18n="opt_2bed">2 Bedrooms</option><option data-i18n="opt_3bed">3+ Bedrooms</option></select></div>
     </div>
-    <div class="form-group"><label class="form-label">Preferred Area</label><input class="form-input" type="text" placeholder="Sukhumvit, Phayathai, Sathorn..."></div>
-    <div class="form-group"><label class="form-label">Additional Requirements</label><textarea class="form-textarea" placeholder="Pet-friendly, high floor, near BTS, move-in date..."></textarea></div>
-    <button class="form-submit">Submit Enquiry — No Fee →</button>
+    <div class="form-group"><label class="form-label" data-i18n="form_area">Preferred Area</label><input class="form-input" type="text" placeholder="Sukhumvit, Phayathai, Sathorn..."></div>
+    <div class="form-group"><label class="form-label" data-i18n="form_requirements">Additional Requirements</label><textarea class="form-textarea" placeholder="Pet-friendly, high floor, near BTS, move-in date..."></textarea></div>
+    <button class="form-submit" data-i18n="form_submit">Submit Enquiry — No Fee →</button>
+  </div>
+</section>
+
+<!-- FAQ SECTION -->
+<section class="faq" id="faq">
+  <div class="faq-header">
+    <p class="section-eyebrow" data-i18n="faq_eyebrow">Questions</p>
+    <h2 class="section-title" data-i18n="faq_title">Frequently Asked <em>Questions</em></h2>
+  </div>
+  <div class="faq-grid">
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span data-i18n="faq_q1">What areas in Bangkok do you cover?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <p data-i18n="faq_a1">We cover all prime Bangkok districts including Thonglor, Ekkamai, Sukhumvit, Asoke, Rama 9, Sathorn, Phayathai, Huai Khwang, and more.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span data-i18n="faq_q2">Do you charge service fees to tenants?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <p data-i18n="faq_a2">No, we never charge service fees to tenants. Our service is completely free for renters - the owner pays the commission on successful rental.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span data-i18n="faq_q3">How do I schedule a viewing?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <p data-i18n="faq_a3">Simply contact us via LINE @SelectRentalsBKK, WhatsApp, or fill out the enquiry form on our website. We respond same day and arrange viewings at your convenience.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span data-i18n="faq_q4">Are your listings verified?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <p data-i18n="faq_a4">Yes, all our listings are verified directly with Sansiri. We sync with their database daily to ensure accuracy and availability.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span data-i18n="faq_q5">What documents do I need to rent?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <p data-i18n="faq_a5">Typically you need passport, proof of income or employment letter, and bank statement. We guide you through the entire process step by step.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span data-i18n="faq_q6">Can I rent with a pet?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <p data-i18n="faq_a6">Yes, some properties are pet-friendly. Tell us your requirements and we'll match you with suitable options.</p>
+      </div>
+    </div>
   </div>
 </section>
 
 <footer>
   <div class="footer-logo">Select Rentals Bangkok</div>
-  <div class="footer-text">© 2025 Select Rentals Bangkok · Sansiri Property Specialist</div>
-  <div class="footer-links"><a href="listings.html">Listings</a><a href="#how">Process</a><a href="#why">Why Us</a><a href="#contact">Contact</a></div>
+  <div class="footer-text" data-i18n="footer_copyright">© 2025 Select Rentals Bangkok · Sansiri Property Specialist</div>
+  <div class="footer-links"><a href="listings.html" data-i18n="footer_listings">Listings</a><a href="#how" data-i18n="footer_process">Process</a><a href="#why" data-i18n="footer_why">Why Us</a><a href="#contact" data-i18n="footer_contact">Contact</a></div>
 </footer>
 
 <script>
+  // ─── Language System ─────────────────────────────────────────
+  let translations = {};
+  
+  async function loadTranslations() {
+    try {
+      const response = await fetch('translations.json');
+      const data = await response.json();
+      translations = data.index || {};
+    } catch (e) {
+      console.error('Failed to load translations:', e);
+    }
+  }
+
+  let currentLang = localStorage.getItem('lang') || 'en';
+
+  function setLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('lang', lang);
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (translations[lang] && translations[lang][key]) {
+        el.innerHTML = translations[lang][key];
+      }
+    });
+    document.querySelectorAll('.lang-option').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+    document.querySelector('.lang-code').textContent = lang.toUpperCase();
+    document.getElementById('langDropdown').classList.remove('open');
+  }
+
+  document.getElementById('langBtn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    document.getElementById('langDropdown').classList.toggle('open');
+  });
+
+  document.addEventListener('click', () => {
+    document.getElementById('langDropdown').classList.remove('open');
+  });
+
+  document.querySelectorAll('.lang-option').forEach(btn => {
+    btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+  });
+
+  // Apply saved language on load
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadTranslations();
+    setLanguage(currentLang);
+  });
+
+  // ─── FAQ Toggle ────────────────────────────────────────────────
+  function toggleFaq(btn) {
+    const item = btn.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(faq => faq.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  }
+
+  // ─── Hero Background Swap ────────────────────────────────────
+  function setHeroBg(bgName) {
+    const layers = document.querySelectorAll('#heroBgContainer .hero-img-layer');
+    layers.forEach(layer => {
+      if (layer.dataset.bg === bgName) {
+        layer.classList.add('active');
+      } else {
+        layer.classList.remove('active');
+      }
+    });
+  }
+
   // ─── Google Sheets Config ────────────────────────────────────
   const SHEET_ID   = '1oeQCvObGuY3SB5_ozDJDJkA0YqPzRHE_uaqrR3mu7JA';
   const SHEET_NAME = '📋 Master Listings';
+  const SKIP_TABS  = ['Oka Haus', 'THE LINE SUKHUMVIT 101'];
+
+  const PROJECT_NAME_MAP = {
+    'TL AR':              'THE LINE Asoke-Ratchada',
+    'TL JJ':              'THE LINE Jatujak-Mochit',
+    'TL VIBE':            'THE LINE Vibe',
+    'TL RTW':             'THE LINE Ratchathewi',
+    'TL WSW':             'THE LINE Wongsawang',
+    'TL PDP':             'THE LINE Phahonyothin Park',
+    'TL PHP':             'THE LINE Phahon-Pradipat',
+    'TL SKV 71':          'THE LINE Sukhumvit 71',
+    'TB Petchaburi TL':   'The Base Phetchaburi-Thonglor',
+    'TB GD 9':            'The Base Garden Rama 9',
+    'TB Saphanmai':       'The Base Saphanmai',
+    'TB SKV50':           'The Base Sukhumvit 50',
+    'TBPKS':              'The Base Phetkasem',
+    'WYNE SKV':           'WYNE Sukhumvit',
+    'Taka':               'Taka Haus',
+    'Mori':               'Mori Haus',
+    'Kawa':               'Kawa Haus',
+    'Hasu':               'Hasu Haus',
+    'Oka Haus_':          'Oka Haus',
+    'D Shine':            'dcondo Shine',
+    'D Calm':             'dcondo Calm',
+    'D Hype':             'dcondo Hype',
+    'NYE':                'NYE by Sansiri',
+    'The Muve Ram22':     'The Muve Rama 22',
+    'Park West':          'The Base Park West Sukhumvit 77',
+    'Park East':          'The Base Park East Sukhumvit 77',
+    'Pynn':               'PYNN Soonvijai',
+    'Flo':                'Flo by Sansiri',
+    'TL SKV 101':         'THE LINE Sukhumvit 101',
+    'Base Urban Rama9':   'The Base Urban Rama 9',
+  };
+
+  function mapProjectName(raw) {
+    const trimmed = String(raw).trim();
+    return PROJECT_NAME_MAP[trimmed] || trimmed.replace(/_+$/, '');
+  }
+
+  function parseDirection(raw) {
+    if (!raw) return '';
+    var m = String(raw).trim().match(/^(NE|NW|SE|SW|N|S|E|W)\b/i);
+    if (!m) return '';
+    var map = { N:'North', S:'South', E:'East', W:'West', NE:'Northeast', NW:'Northwest', SE:'Southeast', SW:'Southwest' };
+    return (map[m[1].toUpperCase()] || m[1]) + ' Facing';
+  }
 
   async function fetchProperties() {
     const url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID +
@@ -438,13 +887,14 @@
     return (table.rows || [])
       .map(r => r.c || [])
       .filter(c => String(v(c, 13)).trim() === 'Available')
+      .filter(c => !SKIP_TABS.includes(String(v(c, 1)).trim()))
       .map(c => ({
-        project:   String(v(c,  1)).trim(),
+        project:   mapProjectName(v(c,  1)),
         unit:      String(v(c,  2)).trim(),
         floor:     String(v(c,  3)).trim(),
         unitType:  String(v(c,  6)).trim(),
         area:      v(c,  7),
-        direction: String(v(c,  8)).trim(),
+        direction: parseDirection(v(c,  8)),
         price:     v(c,  9),
       }));
   }
@@ -574,9 +1024,9 @@
   window.addEventListener('scroll', () => {
     const nav = document.getElementById('navbar');
     if (window.scrollY > 60) {
-      nav.style.background     = 'rgba(10,10,8,0.97)';
-      nav.style.backdropFilter = 'blur(16px)';
-      nav.style.boxShadow      = '0 1px 0 rgba(201,169,110,0.1)';
+      nav.style.background     = 'rgba(255,255,255,0.95)';
+      nav.style.backdropFilter = 'blur(20px)';
+      nav.style.boxShadow      = '0 4px 16px rgba(0,0,0,0.04)';
     } else {
       nav.style.background     = '';
       nav.style.backdropFilter = 'blur(2px)';
