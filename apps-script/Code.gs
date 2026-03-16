@@ -151,7 +151,36 @@ function doPost(e) {
 }
 
 function doGet(e) {
+  // Return Drive folder image list for unit photo galleries
+  if (e && e.parameter && e.parameter.action === 'images' && e.parameter.folder) {
+    return getFolderImages(e.parameter.folder);
+  }
   return ContentService
     .createTextOutput('Select Rentals Bangkok — Leads CRM endpoint is live.')
     .setMimeType(ContentService.MimeType.TEXT);
+}
+
+function getFolderImages(folderId) {
+  try {
+    var folder = DriveApp.getFolderById(folderId);
+    var files  = folder.getFiles();
+    var result = [];
+    while (files.hasNext()) {
+      var file = files.next();
+      var mime = file.getMimeType();
+      if (mime === 'image/jpeg' || mime === 'image/png' || mime === 'image/webp' || mime === 'image/gif') {
+        result.push({ id: file.getId(), name: file.getName() });
+      }
+    }
+    // Sort by filename for consistent ordering
+    result.sort(function(a, b) { return a.name.localeCompare(b.name); });
+    return ContentService
+      .createTextOutput(JSON.stringify({ files: result }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    Logger.log(err.toString());
+    return ContentService
+      .createTextOutput(JSON.stringify({ files: [], error: err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 }

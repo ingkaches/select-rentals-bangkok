@@ -349,6 +349,56 @@
     .room-row { grid-template-columns: 70px 1fr; }
     .bldg-hero-bottom { flex-direction: column; align-items: flex-start; gap: 16px; }
   }
+
+  /* ── UNIT DETAIL MODAL ──────────────────────────────────────── */
+  .unit-modal-overlay { position: fixed; inset: 0; background: rgba(28,29,31,0.82); z-index: 600; display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(6px); }
+  .unit-modal-overlay.active { opacity: 1; pointer-events: all; }
+  .unit-modal { background: var(--bg-card); width: 100%; max-width: 1100px; height: min(720px, 90vh); display: grid; grid-template-columns: 60fr 40fr; border-radius: 24px; overflow: hidden; box-shadow: 0 40px 100px rgba(0,0,0,0.3); position: relative; }
+  .unit-modal-close { position: absolute; top: 16px; right: 16px; z-index: 20; background: rgba(28,29,31,0.55); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; transition: background 0.2s; }
+  .unit-modal-close:hover { background: var(--primary); }
+  /* Gallery */
+  .unit-gallery { position: relative; background: #0d0d0d; height: 100%; overflow: hidden; }
+  .unit-gallery-main { position: relative; width: 100%; height: 100%; }
+  .unit-gallery-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.4s ease; }
+  .unit-gallery-slide.active { opacity: 1; }
+  .unit-gallery-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .unit-gallery-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; color: rgba(255,255,255,0.25); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; }
+  .unit-gallery-loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: #0d0d0d; }
+  .unit-gallery-spinner { width: 36px; height: 36px; border: 2px solid rgba(255,255,255,0.12); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  .unit-gallery-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18); color: #fff; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; cursor: pointer; z-index: 5; transition: background 0.2s; }
+  .unit-gallery-btn:hover { background: rgba(180,139,94,0.55); border-color: rgba(180,139,94,0.55); }
+  #unitGalleryPrev { left: 16px; }
+  #unitGalleryNext { right: 16px; }
+  .unit-gallery-counter { position: absolute; top: 14px; left: 16px; background: rgba(28,29,31,0.55); color: rgba(255,255,255,0.8); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; padding: 5px 12px; border-radius: 30px; z-index: 5; }
+  .unit-gallery-dots { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 5; }
+  .unit-gallery-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.38); cursor: pointer; border: none; padding: 0; transition: all 0.2s; }
+  .unit-gallery-dot.active { background: var(--gold); width: 20px; border-radius: 3px; }
+  /* Info panel */
+  .unit-info-panel { padding: 32px 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 18px; background: var(--bg-card); }
+  .unit-avail-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(74,124,89,0.08); border: 1px solid rgba(91,168,114,0.28); color: var(--green); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 6px 14px; border-radius: 30px; width: fit-content; }
+  .unit-avail-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s ease infinite; flex-shrink: 0; }
+  .unit-info-building { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; font-weight: 500; margin-bottom: 6px; }
+  .unit-info-type { font-family: 'Cormorant Garamond', serif; font-size: clamp(22px, 2.2vw, 30px); font-weight: 400; line-height: 1.15; color: var(--primary); }
+  .unit-spec-list { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .unit-spec-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 16px; font-size: 12px; border-bottom: 1px solid var(--border); }
+  .unit-spec-row:last-child { border-bottom: none; }
+  .unit-spec-label { color: var(--text-muted); }
+  .unit-spec-val { color: var(--primary); font-weight: 500; }
+  .unit-info-price { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 400; color: var(--primary); line-height: 1; }
+  .unit-info-price span { font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--text-muted); font-weight: 300; }
+  .unit-info-actions { display: flex; flex-direction: column; gap: 8px; margin-top: auto; padding-top: 8px; }
+  .unit-schedule-btn { background: var(--primary); color: #fff; border: none; padding: 17px 24px; width: 100%; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; border-radius: 10px; }
+  .unit-schedule-btn:hover { background: var(--gold); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(180,139,94,0.25); }
+  .unit-back-btn { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 13px 24px; width: 100%; font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; border-radius: 10px; }
+  .unit-back-btn:hover { border-color: var(--primary); color: var(--primary); }
+  @media (max-width: 768px) {
+    .unit-modal { grid-template-columns: 1fr; grid-template-rows: 56vw 1fr; height: auto; max-height: 95vh; border-radius: 16px; }
+    .unit-gallery { min-height: unset; }
+    .unit-info-panel { padding: 22px 20px; gap: 12px; }
+    .unit-info-type { font-size: 22px; }
+    .unit-info-price { font-size: 28px; }
+    .unit-schedule-btn { padding: 15px 20px; }
+  }
 </style>
 
 <!-- Google Analytics 4 -->
@@ -566,6 +616,37 @@
 
 </div><!-- /#buildingView -->
 
+<!-- ══ UNIT DETAIL MODAL ═════════════════════════════════════════ -->
+<div id="unitModal" class="unit-modal-overlay" onclick="if(event.target===this)closeUnitModal()">
+  <div class="unit-modal">
+    <button class="unit-modal-close" onclick="closeUnitModal()" aria-label="Close">✕</button>
+
+    <!-- GALLERY -->
+    <div class="unit-gallery">
+      <div class="unit-gallery-main" id="unitGalleryMain"></div>
+      <div class="unit-gallery-counter" id="unitGalleryCounter" style="display:none"></div>
+      <button class="unit-gallery-btn" id="unitGalleryPrev" onclick="galleryNav(-1)" aria-label="Previous photo" style="display:none">‹</button>
+      <button class="unit-gallery-btn" id="unitGalleryNext" onclick="galleryNav(1)" aria-label="Next photo" style="display:none">›</button>
+      <div class="unit-gallery-dots" id="unitGalleryDots"></div>
+    </div>
+
+    <!-- INFO PANEL -->
+    <div class="unit-info-panel">
+      <div class="unit-avail-badge"><span class="unit-avail-dot"></span>Available Now</div>
+      <div>
+        <div class="unit-info-building" id="unitInfoBuilding">—</div>
+        <div class="unit-info-type" id="unitInfoType">—</div>
+      </div>
+      <div id="unitInfoSpecs"></div>
+      <div class="unit-info-price" id="unitInfoPrice">—</div>
+      <div class="unit-info-actions">
+        <button class="unit-schedule-btn" onclick="scheduleViewingFromModal()">Schedule a Viewing →</button>
+        <button class="unit-back-btn" onclick="closeUnitModal()">Back to List</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer>
   <div class="footer-logo">Select Rentals Bangkok</div>
   <div class="footer-text" data-i18n="footer_copyright">© 2025 Select Rentals Bangkok · Sansiri Property Specialist</div>
@@ -710,7 +791,7 @@
   
   async function loadTranslationsListings() {
     try {
-      const response = await fetch('translations.json');
+      const response = await fetch('translations.json?v=2');
       const data = await response.json();
       translationsListings = data.listings || {};
     } catch (e) {
@@ -725,7 +806,7 @@
     localStorage.setItem('lang', lang);
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
-      if (translationsListings[lang] && translationsListings[lang][key]) {
+      if (translationsListings[lang] && key in translationsListings[lang]) {
         el.innerHTML = translationsListings[lang][key];
       }
     });
@@ -845,6 +926,7 @@
         area:      v(c,  7),
         direction: parseDirection(v(c,  8)),
         price:     v(c,  9),
+        driveUrl:  String(v(c, 19) || '').trim(),
       }));
   }
 
@@ -937,7 +1019,7 @@
   }
 
   // ─── Google Apps Script URL (paste after deploying) ──────────
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzlWZCoaWwSuSeVXrL-luYfuF2qwvVRO0aEuPa9U6eEJMOWqsmbqMvCVR0vVMrrSbvM/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxyO_gn0RdR7_Pz5AEPMQqkIrM7CEg70rFgy-DtzVaZQ1ssZDZXpcbFxPM_tieHJt9l/exec';
 
   let allProps = [];
   let allCards = [];
@@ -1414,6 +1496,8 @@
     const row = document.createElement('div');
     row.className = 'room-row card-anim';
     row.style.animationDelay = Math.min(i * 0.04, 0.4) + 's';
+    row.style.cursor = 'pointer';
+    row.addEventListener('click', function() { openUnitModal(i); });
     const price    = Number(r.price);
     const priceStr = price ? '฿' + price.toLocaleString('th-TH') : '—';
     const fp       = parseFloor(r.floor);
@@ -1552,8 +1636,176 @@
   }
 
   window.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeViewingModal();
+    if (e.key === 'Escape') { closeUnitModal(); closeViewingModal(); }
   });
+
+  // ── Unit Detail Modal ─────────────────────────────────────────
+  var currentUnitIdx    = -1;
+  var unitGalleryImages = [];
+  var unitGalleryIdx    = 0;
+
+  function extractFolderId(url) {
+    if (!url) return '';
+    var m = String(url).match(/\/folders\/([a-zA-Z0-9_-]+)/);
+    return m ? m[1] : '';
+  }
+
+  async function loadRoomPhotos(driveUrl) {
+    var folderId = extractFolderId(driveUrl);
+    if (!folderId || !SCRIPT_URL) return [];
+    try {
+      var res  = await fetch(SCRIPT_URL + '?action=images&folder=' + encodeURIComponent(folderId));
+      var data = await res.json();
+      if (data.files && data.files.length) {
+        return data.files.map(function(f) { return 'https://lh3.googleusercontent.com/d/' + f.id; });
+      }
+    } catch (e) {
+      console.warn('Could not load room photos:', e);
+    }
+    return [];
+  }
+
+  function updateGalleryCounter() {
+    var counter = document.getElementById('unitGalleryCounter');
+    if (!counter) return;
+    if (unitGalleryImages.length > 1) {
+      counter.textContent = (unitGalleryIdx + 1) + ' / ' + unitGalleryImages.length;
+      counter.style.display = '';
+    } else {
+      counter.style.display = 'none';
+    }
+  }
+
+  function renderUnitGallery(images) {
+    var main = document.getElementById('unitGalleryMain');
+    var dots = document.getElementById('unitGalleryDots');
+    var prev = document.getElementById('unitGalleryPrev');
+    var next = document.getElementById('unitGalleryNext');
+    main.innerHTML = '';
+    dots.innerHTML = '';
+    unitGalleryImages = images || [];
+    unitGalleryIdx    = 0;
+
+    if (!unitGalleryImages.length) {
+      main.innerHTML =
+        '<div class="unit-gallery-placeholder">' +
+          '<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.7"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M9 21V9h6v12M3 9l9-6 9 6"/></svg>' +
+          '<span>Photos coming soon</span>' +
+        '</div>';
+      prev.style.display = 'none';
+      next.style.display = 'none';
+      updateGalleryCounter();
+      return;
+    }
+
+    unitGalleryImages.forEach(function(url, i) {
+      var slide = document.createElement('div');
+      slide.className = 'unit-gallery-slide' + (i === 0 ? ' active' : '');
+      var img = document.createElement('img');
+      img.src = url;
+      img.alt = 'Unit photo ' + (i + 1);
+      slide.appendChild(img);
+      main.appendChild(slide);
+    });
+
+    if (unitGalleryImages.length > 1) {
+      prev.style.display = 'flex';
+      next.style.display = 'flex';
+      unitGalleryImages.forEach(function(_, i) {
+        var d = document.createElement('button');
+        d.className = 'unit-gallery-dot' + (i === 0 ? ' active' : '');
+        d.addEventListener('click', function() { setGallerySlide(i); });
+        dots.appendChild(d);
+      });
+    } else {
+      prev.style.display = 'none';
+      next.style.display = 'none';
+    }
+    updateGalleryCounter();
+  }
+
+  function setGallerySlide(idx) {
+    var main   = document.getElementById('unitGalleryMain');
+    var dotsEl = document.getElementById('unitGalleryDots');
+    var slides = main   ? main.querySelectorAll('.unit-gallery-slide')   : [];
+    var dots   = dotsEl ? dotsEl.querySelectorAll('.unit-gallery-dot') : [];
+    if (!slides.length) return;
+    slides[unitGalleryIdx] && slides[unitGalleryIdx].classList.remove('active');
+    dots[unitGalleryIdx]   && dots[unitGalleryIdx].classList.remove('active');
+    unitGalleryIdx = (idx + slides.length) % slides.length;
+    slides[unitGalleryIdx] && slides[unitGalleryIdx].classList.add('active');
+    dots[unitGalleryIdx]   && dots[unitGalleryIdx].classList.add('active');
+    updateGalleryCounter();
+  }
+
+  function galleryNav(dir) { setGallerySlide(unitGalleryIdx + dir); }
+
+  async function openUnitModal(idx) {
+    var r = currentBuildingRooms[idx];
+    if (!r) return;
+    currentUnitIdx = idx;
+
+    document.getElementById('unitInfoBuilding').textContent = r.project;
+    document.getElementById('unitInfoType').textContent = unitLabel(r.unitType, r.unit, r.area);
+
+    var fp       = parseFloor(r.floor);
+    var floorNum = Number(fp.floor);
+    var floorStr = (floorNum > 0 && floorNum <= 150) ? 'FL. ' + fp.floor : (fp.floor || '—');
+
+    var rows = '';
+    if (floorStr && floorStr !== '—') rows += '<div class="unit-spec-row"><span class="unit-spec-label">Floor</span><span class="unit-spec-val">' + esc(floorStr) + '</span></div>';
+    if (r.area)      rows += '<div class="unit-spec-row"><span class="unit-spec-label">Size</span><span class="unit-spec-val">' + r.area + ' sqm</span></div>';
+    if (r.direction) rows += '<div class="unit-spec-row"><span class="unit-spec-label">Direction</span><span class="unit-spec-val">' + esc(r.direction) + '</span></div>';
+    if (r.unit)      rows += '<div class="unit-spec-row"><span class="unit-spec-label">Unit No.</span><span class="unit-spec-val">' + esc(r.unit) + '</span></div>';
+    document.getElementById('unitInfoSpecs').innerHTML = rows ? '<div class="unit-spec-list">' + rows + '</div>' : '';
+
+    var price = Number(r.price);
+    document.getElementById('unitInfoPrice').innerHTML = price
+      ? '฿' + price.toLocaleString('th-TH') + ' <span>/ month</span>'
+      : 'Price on request';
+
+    // Show modal with loading spinner
+    var main = document.getElementById('unitGalleryMain');
+    main.innerHTML = '<div class="unit-gallery-loading"><div class="unit-gallery-spinner"></div></div>';
+    document.getElementById('unitGalleryPrev').style.display    = 'none';
+    document.getElementById('unitGalleryNext').style.display    = 'none';
+    document.getElementById('unitGalleryCounter').style.display = 'none';
+    document.getElementById('unitGalleryDots').innerHTML        = '';
+
+    document.getElementById('unitModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Async load photos
+    var images = r.driveUrl ? await loadRoomPhotos(r.driveUrl) : [];
+    // Only render if modal is still open for the same unit
+    if (currentUnitIdx === idx) renderUnitGallery(images);
+  }
+
+  function closeUnitModal() {
+    document.getElementById('unitModal').classList.remove('active');
+    document.body.style.overflow = '';
+    currentUnitIdx = -1;
+  }
+
+  function scheduleViewingFromModal() {
+    var idx = currentUnitIdx;
+    closeUnitModal();
+    openViewing(idx);
+  }
+
+  // Touch swipe support for gallery
+  (function() {
+    var startX = 0;
+    document.addEventListener('touchstart', function(e) {
+      if (e.target.closest && e.target.closest('#unitGalleryMain')) startX = e.touches[0].clientX;
+    }, { passive: true });
+    document.addEventListener('touchend', function(e) {
+      if (e.target.closest && e.target.closest('#unitGalleryMain')) {
+        var dx = e.changedTouches[0].clientX - startX;
+        if (Math.abs(dx) > 40) galleryNav(dx < 0 ? 1 : -1);
+      }
+    }, { passive: true });
+  })();
 
   function goBack() {
     if (slideshowTimer) { clearInterval(slideshowTimer); slideshowTimer = null; }
