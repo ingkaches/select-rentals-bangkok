@@ -209,6 +209,25 @@
     .filter-select { width: 100%; }
   }
 
+  /* ── AREA BUILDINGS PANEL ──────────────────────────────────── */
+  .area-buildings-panel { background: var(--bg-card); border-bottom: 1px solid var(--border); padding: 14px 64px 16px; transition: all 0.3s; }
+  .area-buildings-inner { max-width: 1400px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .area-buildings-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.22em; color: var(--text-muted); text-transform: uppercase; white-space: nowrap; flex-shrink: 0; }
+  .area-buildings-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .bldg-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 30px; font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: 0.04em; border: 1px solid var(--border); transition: all 0.2s; white-space: nowrap; }
+  .bldg-chip.available { background: var(--bg-alt); color: var(--text-main); cursor: pointer; }
+  .bldg-chip.available:hover { background: rgba(180,139,94,0.1); border-color: rgba(180,139,94,0.45); color: var(--gold); }
+  .bldg-chip.available.active-chip { background: rgba(180,139,94,0.12); border-color: rgba(180,139,94,0.5); color: var(--gold); }
+  .bldg-chip-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+  .bldg-chip.unavailable { background: transparent; color: var(--text-muted); opacity: 0.42; cursor: default; font-style: italic; }
+  @media (max-width: 900px) { .area-buildings-panel { padding: 12px 24px 14px; } }
+
+  /* ── PROJECT SEARCH ─────────────────────────────────────────── */
+  .csel-search-wrap { padding: 10px 14px 6px; border-bottom: 1px solid var(--border); }
+  .csel-search-input { width: 100%; background: var(--bg-alt); border: 1px solid var(--border); color: var(--text-main); padding: 7px 12px; font-family: 'DM Sans', sans-serif; font-size: 12px; outline: none; border-radius: 6px; transition: border-color 0.2s; }
+  .csel-search-input:focus { border-color: var(--gold); background: var(--bg-card); }
+  .csel-search-input::placeholder { color: rgba(107,104,97,0.5); }
+
   /* ── BUILDING PAGE VIEW ──────────────────────────────────────── */
   /* HERO / SLIDESHOW — ข้อความทับรูปคงใช้สีขาวเพื่อความชัดเจน */
   .bldg-hero { position: relative; height: 62vh; min-height: 380px; overflow: hidden; }
@@ -507,6 +526,9 @@
           </svg>
         </button>
         <div class="csel-panel" id="projectDropPanel">
+          <div class="csel-search-wrap">
+            <input type="text" class="csel-search-input" id="projectSearchInput" placeholder="Search project…" oninput="filterProjectOpts(this.value)">
+          </div>
           <div class="csel-panel-inner" id="projectDropOpts">
             <div class="csel-opt csel-opt-all active" data-val="" onclick="selectProject('','')" data-i18n="project_all">All Projects</div>
           </div>
@@ -538,6 +560,14 @@
       <button class="filter-clear-btn" id="clearFiltersBtn" onclick="clearFilters()" data-i18n="clear_filters">Clear Filters</button>
     </div>
 
+  </div>
+</div>
+
+<!-- AREA BUILDINGS PANEL -->
+<div id="areaBuildingsPanel" class="area-buildings-panel" style="display:none">
+  <div class="area-buildings-inner">
+    <div class="area-buildings-label">Buildings in <span id="areaBuildingsAreaName"></span></div>
+    <div class="area-buildings-chips" id="areaBuildingsChips"></div>
   </div>
 </div>
 
@@ -992,9 +1022,10 @@
     card.dataset.area     = getAreaGroup(prop.project);
     const price    = Number(prop.price);
     const priceStr = price ? '฿' + price.toLocaleString('th-TH') : '—';
+    const imgBgId  = 'card-bg-' + i;
     card.innerHTML =
       '<div class="property-img">' +
-        '<div class="property-img-bg" style="background:' + BG[i % BG.length] + '"></div>' +
+        '<div class="property-img-bg" id="' + imgBgId + '" style="background:' + BG[i % BG.length] + '"></div>' +
         '<div class="property-overlay"><button class="overlay-btn">View Units →</button></div>' +
         '<div class="property-badge"><div class="badge-dot"></div>Available</div>' +
         (prop.floor && Number(prop.floor) > 0 && Number(prop.floor) <= 150 ? '<div class="property-floor-tag">FL. ' + esc(prop.floor) + '</div>' : '') +
@@ -1015,6 +1046,18 @@
     card.addEventListener('click', function() {
       window.location.hash = '#/building/' + encodeURIComponent(prop.project);
     });
+    // Async load first photo from Drive
+    if (prop.driveUrl) {
+      loadRoomPhotos(prop.driveUrl).then(function(images) {
+        if (!images.length) return;
+        var bg = document.getElementById(imgBgId);
+        if (!bg) return;
+        bg.style.background = '';
+        bg.style.backgroundImage = 'url(' + images[0] + ')';
+        bg.style.backgroundSize = 'cover';
+        bg.style.backgroundPosition = 'center';
+      });
+    }
     return card;
   }
 
@@ -1043,6 +1086,17 @@
   function closeProjectDrop() {
     document.getElementById('projectDropPanel').classList.remove('open');
     document.getElementById('projectDropTrigger').classList.remove('open');
+    // Reset search when closing
+    const inp = document.getElementById('projectSearchInput');
+    if (inp) { inp.value = ''; filterProjectOpts(''); }
+  }
+
+  function filterProjectOpts(query) {
+    const q = query.toLowerCase().trim();
+    document.querySelectorAll('#projectDropOpts .csel-opt:not(.csel-opt-all)').forEach(opt => {
+      const match = !q || opt.textContent.toLowerCase().includes(q);
+      opt.style.display = match ? '' : 'none';
+    });
   }
   function selectProject(val, label) {
     activeProject = val;
@@ -1051,6 +1105,7 @@
     lbl.classList.toggle('has-value', !!val);
     document.querySelectorAll('.csel-opt').forEach(o => o.classList.toggle('active', o.dataset.val === val));
     closeProjectDrop();
+    updateAreaBuildingChipStates();
     applyFilters();
   }
   // ─── Custom area dropdown ──────────────────────────────────────
@@ -1072,7 +1127,63 @@
     lbl.classList.toggle('has-value', !!val);
     document.querySelectorAll('#areaDropOpts .csel-opt').forEach(o => o.classList.toggle('active', o.dataset.val === val));
     closeAreaDrop();
+    updateAreaBuildings(val);
     applyFilters();
+  }
+
+  function updateAreaBuildings(areaName) {
+    const panel  = document.getElementById('areaBuildingsPanel');
+    const chips  = document.getElementById('areaBuildingsChips');
+    const nameEl = document.getElementById('areaBuildingsAreaName');
+    if (!panel || !chips) return;
+
+    if (!areaName) { panel.style.display = 'none'; return; }
+
+    // Projects that have available listings in this area
+    const availableSet = new Set(
+      allProps.filter(p => getAreaGroup(p.project) === areaName).map(p => p.project)
+    );
+
+    // All known buildings in this area (from BUILDING_DATA)
+    const knownInArea = Object.keys(BUILDING_DATA).filter(name => getAreaGroup(name) === areaName);
+
+    // Merge: available first, then known-unavailable (not already in available)
+    const unavailable = knownInArea.filter(n => !availableSet.has(n)).sort();
+    const available   = [...availableSet].sort();
+    const all = [...available, ...unavailable];
+
+    if (!all.length) { panel.style.display = 'none'; return; }
+
+    nameEl.textContent = areaName;
+    chips.innerHTML = '';
+    all.forEach(name => {
+      const chip = document.createElement('span');
+      chip.dataset.project = name;
+      if (availableSet.has(name)) {
+        chip.className = 'bldg-chip available' + (activeProject === name ? ' active-chip' : '');
+        chip.innerHTML = '<span class="bldg-chip-dot"></span>' + esc(name);
+        chip.onclick = function() {
+          if (activeProject === name) {
+            selectProject('', 'All Projects');
+          } else {
+            selectProject(name, name);
+          }
+          updateAreaBuildingChipStates();
+        };
+      } else {
+        chip.className = 'bldg-chip unavailable';
+        chip.title = 'No units available';
+        chip.textContent = name;
+      }
+      chips.appendChild(chip);
+    });
+    panel.style.display = '';
+  }
+
+  function updateAreaBuildingChipStates() {
+    document.querySelectorAll('#areaBuildingsChips .bldg-chip.available').forEach(chip => {
+      chip.classList.toggle('active-chip', chip.dataset.project === activeProject);
+    });
   }
 
   document.addEventListener('click', function(e) {
@@ -1161,6 +1272,7 @@
     if (allPill) allPill.classList.add('active');
     selectProject('', 'All Projects');
     selectArea('', 'All Areas');
+    document.getElementById('areaBuildingsPanel').style.display = 'none';
   }
 
   async function initListings() {
@@ -1661,19 +1773,30 @@
     return m ? m[1] : '';
   }
 
+  var _photoCache = {};
   async function loadRoomPhotos(driveUrl) {
     var folderId = extractFolderId(driveUrl);
     if (!folderId || !SCRIPT_URL) return [];
-    try {
-      var res  = await fetch(SCRIPT_URL + '?action=images&folder=' + encodeURIComponent(folderId));
-      var data = await res.json();
-      if (data.files && data.files.length) {
-        return data.files.map(function(f) { return 'https://lh3.googleusercontent.com/d/' + f.id; });
+    if (_photoCache[folderId]) return _photoCache[folderId];
+    // Deduplicate in-flight requests
+    if (_photoCache[folderId + '_promise']) return _photoCache[folderId + '_promise'];
+    var promise = (async function() {
+      try {
+        var res  = await fetch(SCRIPT_URL + '?action=images&folder=' + encodeURIComponent(folderId));
+        var data = await res.json();
+        if (data.files && data.files.length) {
+          var imgs = data.files.map(function(f) { return 'https://lh3.googleusercontent.com/d/' + f.id; });
+          _photoCache[folderId] = imgs;
+          return imgs;
+        }
+      } catch (e) {
+        console.warn('Could not load room photos:', e);
       }
-    } catch (e) {
-      console.warn('Could not load room photos:', e);
-    }
-    return [];
+      _photoCache[folderId] = [];
+      return [];
+    })();
+    _photoCache[folderId + '_promise'] = promise;
+    return promise;
   }
 
   function updateGalleryCounter() {

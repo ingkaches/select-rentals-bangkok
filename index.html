@@ -1046,7 +1046,38 @@
         area:      v(c,  7),
         direction: parseDirection(v(c,  8)),
         price:     v(c,  9),
+        driveUrl:  String(v(c, 19) || '').trim(),
       }));
+  }
+
+  // ─── Photo loading ───────────────────────────────────────────
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxyO_gn0RdR7_Pz5AEPMQqkIrM7CEg70rFgy-DtzVaZQ1ssZDZXpcbFxPM_tieHJt9l/exec';
+  var _photoCache = {};
+  function extractFolderId(url) {
+    if (!url) return '';
+    var m = String(url).match(/\/folders\/([a-zA-Z0-9_-]+)/);
+    return m ? m[1] : '';
+  }
+  async function loadRoomPhotos(driveUrl) {
+    var folderId = extractFolderId(driveUrl);
+    if (!folderId || !SCRIPT_URL) return [];
+    if (_photoCache[folderId]) return _photoCache[folderId];
+    if (_photoCache[folderId + '_promise']) return _photoCache[folderId + '_promise'];
+    var promise = (async function() {
+      try {
+        var res  = await fetch(SCRIPT_URL + '?action=images&folder=' + encodeURIComponent(folderId));
+        var data = await res.json();
+        if (data.files && data.files.length) {
+          var imgs = data.files.map(function(f) { return 'https://lh3.googleusercontent.com/d/' + f.id; });
+          _photoCache[folderId] = imgs;
+          return imgs;
+        }
+      } catch (e) {}
+      _photoCache[folderId] = [];
+      return [];
+    })();
+    _photoCache[folderId + '_promise'] = promise;
+    return promise;
   }
 
   // ─── Card helpers ────────────────────────────────────────────
@@ -1104,9 +1135,10 @@
     card.dataset.filter = cardFilterTypes(prop);
     const price    = Number(prop.price);
     const priceStr = price ? '฿' + price.toLocaleString('th-TH') : '—';
+    const imgBgId  = 'idx-card-bg-' + i;
     card.innerHTML =
       '<div class="property-img">' +
-        '<div class="property-img-bg" style="background:' + BG[i % BG.length] + '"></div>' +
+        '<div class="property-img-bg" id="' + imgBgId + '" style="background:' + BG[i % BG.length] + '"></div>' +
         '<div class="property-overlay"><button class="overlay-btn">View Units →</button></div>' +
         '<div class="property-badge"><div class="badge-dot"></div>Available</div>' +
         (prop.floor && Number(prop.floor) > 0 && Number(prop.floor) <= 150 ? '<div class="property-floor-tag">FL. ' + esc(prop.floor) + '</div>' : '') +
@@ -1127,6 +1159,17 @@
     card.addEventListener('click', function() {
       window.location.href = 'listings.html#/building/' + encodeURIComponent(prop.project);
     });
+    if (prop.driveUrl) {
+      loadRoomPhotos(prop.driveUrl).then(function(images) {
+        if (!images.length) return;
+        var bg = document.getElementById(imgBgId);
+        if (!bg) return;
+        bg.style.background = '';
+        bg.style.backgroundImage = 'url(' + images[0] + ')';
+        bg.style.backgroundSize = 'cover';
+        bg.style.backgroundPosition = 'center';
+      });
+    }
     return card;
   }
 
