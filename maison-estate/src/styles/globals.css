@@ -375,6 +375,14 @@ body::before {
 .vf-success-title { font-family: var(--font-cormorant), serif; font-size: 24px; font-weight: 400; color: var(--primary); margin-bottom: 8px; }
 .vf-success-sub { font-size: 13px; color: var(--text-muted); }
 
+/* ---------- AREA CARD ---------- */
+.area-card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 24px 28px; text-decoration: none; display: flex;
+  justify-content: space-between; align-items: center; transition: all 0.25s;
+}
+.area-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+
 /* ---------- FOOTER ---------- */
 .site-footer {
   background: var(--primary); padding: 44px 64px;

@@ -135,13 +135,7 @@ export default async function Home() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
             {topAreas.map(([area, count]) => (
               <Link key={area} href={`/listings?area=${encodeURIComponent(area)}`}
-                style={{
-                  background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '12px',
-                  padding: '24px 28px', textDecoration: 'none', display: 'flex', justifyContent: 'space-between',
-                  alignItems: 'center', transition: 'all 0.25s',
-                }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--gold)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.transform = ''; }}
+                className="area-card"
               >
                 <div style={{ fontFamily: 'var(--font-cormorant)', fontSize: '20px', fontWeight: 400, color: 'var(--primary)' }}>{area}</div>
                 <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', color: 'var(--gold)', letterSpacing: '0.1em' }}>{count} units</div>
