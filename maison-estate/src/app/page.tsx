@@ -24,53 +24,55 @@ export default async function Home() {
       <Navbar />
 
       {/* ── Hero ── */}
-      <section style={{
-        paddingTop: '160px', paddingBottom: '100px',
-        background: 'var(--bg-alt)', borderBottom: '1px solid var(--border)',
-        padding: '160px 64px 100px',
-      }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-          <div style={{ maxWidth: '720px' }}>
-            <p className="page-eyebrow">Bangkok · Verified Sansiri Rentals</p>
-            <h1 style={{
-              fontFamily: 'var(--font-cormorant)', fontSize: 'clamp(48px,6vw,88px)',
-              fontWeight: 400, lineHeight: 1.05, color: 'var(--primary)', marginBottom: '28px',
-            }}>
+      <section className="hero-section">
+        {/* Video background */}
+        <video
+          className="hero-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+        >
+          <source src="/hero-web.mp4" type="video/mp4" />
+          <source src="/hero.mp4" type="video/mp4" />
+        </video>
+
+        {/* Overlay layers */}
+        <div className="hero-overlay" />
+
+        {/* Content */}
+        <div className="hero-content">
+          <div className="hero-content-inner">
+            <p className="hero-eyebrow">Bangkok · Verified Sansiri Rentals</p>
+            <h1 className="hero-title">
               Find Your Home<br />
-              in <em style={{ color: 'var(--gold)', fontStyle: 'italic' }}>Bangkok</em>
+              in <em>Bangkok</em>
             </h1>
-            <p style={{ fontSize: '16px', color: 'var(--text-muted)', lineHeight: 1.7, marginBottom: '40px', maxWidth: '520px' }}>
+            <p className="hero-desc">
               Verified Sansiri rental properties across Bangkok's prime districts.
               No service fees for tenants — we work for you.
             </p>
-            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+            <div className="hero-actions">
               <Link href="/listings" className="nav-cta" style={{ fontSize: '12px' }}>
                 Browse {total} Listings →
               </Link>
-              <Link href="/buildings" style={{
-                padding: '12px 28px', border: '1px solid var(--border)', borderRadius: '30px',
-                fontSize: '11px', fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase',
-                color: 'var(--text-muted)', textDecoration: 'none', transition: 'all 0.3s',
-              }}>
+              <Link href="/buildings" className="hero-btn-outline hero-btn-outline-light">
                 View Buildings
               </Link>
             </div>
           </div>
 
-          {/* Stats row */}
-          <div style={{ display: 'flex', gap: '40px', marginTop: '64px', flexWrap: 'wrap' }}>
+          {/* Stats bar at bottom */}
+          <div className="hero-stats-bar">
             {[
-              { val: total, label: 'Available Units' },
+              { val: total,                          label: 'Available Units' },
               { val: Object.keys(areaCounts).length, label: 'Districts' },
-              { val: '0', label: 'Service Fee for Tenants' },
-            ].map(s => (
-              <div key={s.label}>
-                <div style={{ fontFamily: 'var(--font-cormorant)', fontSize: '40px', fontWeight: 400, color: 'var(--primary)', lineHeight: 1 }}>
-                  {s.val}
-                </div>
-                <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--text-muted)', marginTop: '6px' }}>
-                  {s.label}
-                </div>
+              { val: '฿0',                           label: 'Service Fee' },
+              { val: '2 hrs',                        label: 'Viewing Confirmed' },
+            ].map((s, i) => (
+              <div key={s.label} className="hero-stat-item">
+                <div className="hero-stat-val">{s.val}</div>
+                <div className="hero-stat-label">{s.label}</div>
               </div>
             ))}
           </div>
@@ -134,11 +136,9 @@ export default async function Home() {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
             {topAreas.map(([area, count]) => (
-              <Link key={area} href={`/listings?area=${encodeURIComponent(area)}`}
-                className="area-card"
-              >
+              <Link key={area} href={`/listings?area=${encodeURIComponent(area)}`} className="area-card">
                 <div style={{ fontFamily: 'var(--font-cormorant)', fontSize: '20px', fontWeight: 400, color: 'var(--primary)' }}>{area}</div>
-                <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', color: 'var(--gold)', letterSpacing: '0.1em' }}>{count} units</div>
+                <div style={{ fontFamily: 'var(--font-dm-mono)', fontSize: '11px', color: 'var(--gold)', letterSpacing: '0.1em', whiteSpace: 'nowrap' }}>{count} units</div>
               </Link>
             ))}
           </div>

@@ -73,12 +73,13 @@ function PropertyCard({ prop, index, onClick }: {
   const floorNum = Number(fp.floor);
   const showFloor = floorNum > 0 && floorNum <= 150;
   const price = Number(prop.price);
+  const detailUrl = `/listings/${encodeURIComponent(prop.project + '|' + prop.unit)}`;
 
   return (
-    <div
+    <a
+      href={detailUrl}
       className="property-card"
-      style={{ animationDelay: `${(index % 3) * 0.08}s` }}
-      onClick={onClick}
+      style={{ animationDelay: `${(index % 3) * 0.08}s`, textDecoration: 'none', display: 'block' }}
     >
       <div className="card-img">
         <div
@@ -89,7 +90,7 @@ function PropertyCard({ prop, index, onClick }: {
           }
         />
         <div className="card-overlay">
-          <button className="overlay-btn">View Units →</button>
+          <button className="overlay-btn">View Details →</button>
         </div>
         <div className="card-badge">
           <div className="badge-dot" />
@@ -111,10 +112,10 @@ function PropertyCard({ prop, index, onClick }: {
           <div className="card-price">
             {price ? `฿${price.toLocaleString('th-TH')}` : '—'} <span>/ mo</span>
           </div>
-          <div className="card-avail">Available</div>
+          <div className="card-avail">View →</div>
         </div>
       </div>
-    </div>
+    </a>
   );
 }
 

@@ -12,3 +12,10 @@ node_modules/
 .env
 .env.local
 .env*.local
+
+# Large video files (use hero-web.mp4 instead)
+public/hero.mp4
+
+# Old static HTML files
+*.html
+docs/
