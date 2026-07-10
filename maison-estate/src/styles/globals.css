@@ -162,13 +162,13 @@ body::before {
 /* Stats bar at bottom of hero */
 .hero-stats-bar {
   display: flex; align-items: stretch;
-  border-top: 1px solid rgba(255,255,255,0.12);
-  background: rgba(10,10,10,0.5);
-  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(184,150,90,0.25);
+  background: rgba(20,12,4,0.72);
+  backdrop-filter: blur(16px);
 }
 .hero-stat-item {
   flex: 1; padding: 24px 36px;
-  border-right: 1px solid rgba(255,255,255,0.1);
+  border-right: 1px solid rgba(184,150,90,0.15);
 }
 .hero-stat-item:last-child { border-right: none; }
 .hero-stat-val {
@@ -177,7 +177,7 @@ body::before {
 }
 .hero-stat-label {
   font-family: var(--font-dm-mono), monospace; font-size: 9px;
-  letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.45);
+  letter-spacing: 0.22em; text-transform: uppercase; color: rgba(220,185,130,0.55);
 }
 
 /* ---------- PAGE HEADER ---------- */
