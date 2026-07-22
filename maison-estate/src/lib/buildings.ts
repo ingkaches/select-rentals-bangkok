@@ -137,6 +137,7 @@ const OKA_HAUS_IMG = {
 /** Google Drive file IDs for XT Phayathai project-detail photos (from the "buildings/XT Phayathai" folder), reused identically across all locales. */
 const XT_PHAYATHAI_IMG = {
   design:          '1d0jCxAcoCzQ5UpnY-T9Y_uZcslRiCBOj', // exterior-towers
+  hero:            '1eewDImhSJrREyvLiaZ8ivy5TxOj9yT3s', // 03architecture-atrium
   lobby:           '1JndPJ9efqQQ-gB52mIGbJuyb4geBNzw6',
   coWorking:       '1nWVZGVQuC3gk4vaP4RSR7To69jDMP7kr', // renamed "Co working space"
   gameRoom:        '1Z7iQVbmSSz33AuTj_qXI0JFRvJmnG5lX',
@@ -161,6 +162,7 @@ export const BUILDING_DETAILS: Record<string, Partial<Record<Locale, BuildingPro
   'XT Phayathai': {
     th: {
       tagline: 'สัมผัสถึงความสงบ ท่ามกลางความเร่งรีบของเมืองหลวง',
+      heroImageId: XT_PHAYATHAI_IMG.hero,
       facts: [
         { label: 'ที่ตั้ง',              value: 'ถนนศรีอยุธยา พญาไท ราชเทวี กรุงเทพฯ' },
         { label: 'พื้นที่โครงการ',        value: 'ประมาณ 3 ไร่' },
@@ -225,6 +227,7 @@ export const BUILDING_DETAILS: Record<string, Partial<Record<Locale, BuildingPro
     },
     en: {
       tagline: 'Experience a calming comfort amidst the urban hustle',
+      heroImageId: XT_PHAYATHAI_IMG.hero,
       facts: [
         { label: 'Location',      value: 'Sri Ayutthaya Road, Phaya Thai, Ratchathewi, Bangkok' },
         { label: 'Land Area',     value: 'Approximately 3 Rai' },
@@ -289,6 +292,7 @@ export const BUILDING_DETAILS: Record<string, Partial<Record<Locale, BuildingPro
     },
     zh: {
       tagline: '体验都市喧嚣中的宁静舒适',
+      heroImageId: XT_PHAYATHAI_IMG.hero,
       facts: [
         { label: '地址',     value: '是隆通里路，帕亚泰，拉差贴威县，曼谷' },
         { label: '占地面积',  value: '约3莱' },

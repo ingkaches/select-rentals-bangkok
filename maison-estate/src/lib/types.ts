@@ -61,6 +61,8 @@ export interface FactItem {
 
 export interface BuildingProjectDetails {
   tagline?:  string;
+  /** Google Drive file ID for the top banner. Falls back to design.imageId when not set. */
+  heroImageId?: string;
   facts?:    FactItem[];
   summary?:  string[];
   location?: { description: string; nearby?: NearbyPlace[]; imageId?: string };

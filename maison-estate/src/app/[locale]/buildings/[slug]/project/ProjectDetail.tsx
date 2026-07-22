@@ -1,6 +1,8 @@
 'use client';
 
+import { useRef } from 'react';
 import Link from 'next/link';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useTranslations, useLocale } from 'next-intl';
 import { BuildingData, BuildingMeta, BuildingProjectDetails } from '@/lib/types';
 import { driveImageUrl, driveImgOnError } from '@/lib/buildings';
@@ -22,38 +24,56 @@ export default function ProjectDetail({ name, details, bdata, meta }: {
   const locale = useLocale();
   const t = useTranslations('projectDetail');
   const slug = encodeURIComponent(name);
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
+  const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '25%']);
+
+  const metaRow = (onImage: boolean) => (
+    <div className="bldg-meta" style={{ marginTop: '4px' }}>
+      {(bdata?.district || meta.area) && (
+        <span className="bldg-meta-item" style={{ color: onImage ? 'rgba(255,255,255,0.8)' : 'var(--text-muted)' }}>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          {bdata?.district ?? meta.area}
+        </span>
+      )}
+      {(bdata?.bts || meta.bts) && (
+        <span className="bldg-meta-item" style={{ color: onImage ? 'rgba(255,255,255,0.8)' : 'var(--text-muted)' }}>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          {bdata?.bts ?? meta.bts}
+        </span>
+      )}
+    </div>
+  );
+
+  const heroImageId = details.heroImageId ?? details.design?.imageId;
 
   return (
     <>
-      {/* Hero */}
-      {details.design?.imageId && (
-        <div className="pd-hero">
-          <PdImage imageId={details.design.imageId} alt={name} className="pd-hero-img" />
-        </div>
-      )}
-
-      {/* Header */}
-      <div className="pd-header">
-        <div className="pd-header-inner">
-          <Link href={`/${locale}/buildings/${slug}`} className="back-link">{t('backTo', { name })}</Link>
-          <h1 className="pd-title">{name}</h1>
-          {details.tagline && <p className="pd-tagline">{details.tagline}</p>}
-          <div className="bldg-meta" style={{ marginTop: '4px' }}>
-            {(bdata?.district || meta.area) && (
-              <span className="bldg-meta-item" style={{ color: 'var(--text-muted)' }}>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                {bdata?.district ?? meta.area}
-              </span>
-            )}
-            {(bdata?.bts || meta.bts) && (
-              <span className="bldg-meta-item" style={{ color: 'var(--text-muted)' }}>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                {bdata?.bts ?? meta.bts}
-              </span>
-            )}
+      {heroImageId ? (
+        /* Hero — parallax banner with title overlaid */
+        <div className="pd-hero" ref={heroRef}>
+          <motion.div className="pd-hero-bg" style={{ y: heroY }}>
+            <PdImage imageId={heroImageId} alt={name} className="pd-hero-img" />
+          </motion.div>
+          <div className="pd-hero-overlay" />
+          <div className="pd-hero-content">
+            <Link href={`/${locale}/buildings/${slug}`} className="back-link pd-hero-back">{t('backTo', { name })}</Link>
+            <h1 className="pd-title pd-title--on-image">{name}</h1>
+            {details.tagline && <p className="pd-tagline pd-tagline--on-image">{details.tagline}</p>}
+            {metaRow(true)}
           </div>
         </div>
-      </div>
+      ) : (
+        /* Header — plain, no photo available */
+        <div className="pd-header">
+          <div className="pd-header-inner">
+            <Link href={`/${locale}/buildings/${slug}`} className="back-link">{t('backTo', { name })}</Link>
+            <h1 className="pd-title">{name}</h1>
+            {details.tagline && <p className="pd-tagline">{details.tagline}</p>}
+            {metaRow(false)}
+          </div>
+        </div>
+      )}
 
       {/* Quick facts */}
       {details.facts?.length && (
