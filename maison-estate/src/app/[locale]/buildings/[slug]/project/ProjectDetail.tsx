@@ -25,6 +25,13 @@ export default function ProjectDetail({ name, details, bdata, meta }: {
 
   return (
     <>
+      {/* Hero */}
+      {details.design?.imageId && (
+        <div className="pd-hero">
+          <PdImage imageId={details.design.imageId} alt={name} className="pd-hero-img" />
+        </div>
+      )}
+
       {/* Header */}
       <div className="pd-header">
         <div className="pd-header-inner">
