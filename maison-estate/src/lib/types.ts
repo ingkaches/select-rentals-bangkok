@@ -54,8 +54,14 @@ export interface FloorBreakdownItem {
   description: string;
 }
 
+export interface FactItem {
+  label: string;
+  value: string;
+}
+
 export interface BuildingProjectDetails {
   tagline?:  string;
+  facts?:    FactItem[];
   summary?:  string[];
   location?: { description: string; nearby?: NearbyPlace[]; imageId?: string };
   design?:   { description: string; floorBreakdown?: FloorBreakdownItem[]; imageId?: string };

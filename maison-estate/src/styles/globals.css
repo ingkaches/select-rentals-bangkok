@@ -674,6 +674,11 @@ body::before {
 .pd-header { padding: 40px 64px 24px; background: var(--bg-card); border-bottom: 1px solid var(--border); }
 .pd-header-inner { max-width: 900px; margin: 0 auto; }
 .pd-title { font-family: var(--font-cormorant), serif; font-size: clamp(28px,3vw,44px); font-weight: 500; color: var(--primary); margin: 16px 0 8px; }
+.pd-tagline { font-size: 15px; font-style: italic; color: var(--text-muted); margin: 0 0 8px; }
+.pd-facts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px 32px; }
+.pd-facts-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 4px; }
+.pd-facts-value { font-size: 14px; color: var(--text-main); line-height: 1.5; }
+@media (max-width: 640px) { .pd-facts-grid { grid-template-columns: 1fr; } }
 .pd-section { padding: 48px 64px; }
 .pd-section-alt { background: var(--bg-alt); }
 .pd-section > * { max-width: 900px; margin-left: auto; margin-right: auto; }

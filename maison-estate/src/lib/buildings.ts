@@ -9,7 +9,7 @@ interface RawBuildingData extends Omit<BuildingData, 'highlight'> {
 }
 
 const RAW_BUILDING_DATA: Record<string, RawBuildingData> = {
-  'XT Phayathai':            { district: 'Ratchathewi',           bts: 'BTS Phaya Thai 600m',          floors: 41, units: 1435, year: 2022, facilities: ['Pool','Gym','Co-working','EV Charging','Family Mart'],           highlight: { en: 'Two-tower flagship with Airport Rail Link access, 5 min to Siam', th: 'แฟลกชิปสองอาคาร เชื่อมต่อ Airport Rail Link ห่างสยามเพียง 5 นาที', zh: '双塔旗舰盘，连接机场快线，5分钟直达暹罗商圈' } },
+  'XT Phayathai':            { district: 'Ratchathewi',           bts: 'BTS Phaya Thai 600m',          floors: 41, units: 1435, year: 2022, facilities: ['Pool','Gym','Co-working','EV Charging','Family Mart'],           highlight: { en: 'Two-tower flagship with Airport Rail Link access, 5 min to Siam', th: 'แฟลกชิปสองอาคาร เชื่อมต่อ Airport Rail Link ห่างสยามเพียง 5 นาที', zh: '双塔旗舰盘，连接机场快线，5分钟直达暹罗商圈' }, photosUrl: 'https://drive.google.com/drive/folders/1Lt_44I-eKRPtzAA2YCtf-TZSy0krKfAd' },
   'XT Huaikhwang':           { district: 'Huai Khwang',           bts: 'MRT Huai Khwang 75m',          floors: 43, units: 1404, year: 2021, facilities: ['Pool','Gym','Co-working','Sky Bar','Parking'],                   highlight: { en: 'Ultra-close MRT access, 24-hr lifestyle facilities', th: 'ใกล้ MRT สุดๆ พร้อมสิ่งอำนวยความสะดวกเปิด 24 ชม.', zh: '紧邻地铁站，24小时生活配套设施' } },
   'XT Ekkamai':              { district: 'Ekkamai / Watthana',    bts: 'BTS Ekkamai',                  floors: 38, units: 537,  year: 2020, facilities: ['Pool','Gym','Sky Lounge','Co-working'],                          highlight: { en: "Creative lifestyle condo in Bangkok's most vibrant district", th: 'คอนโดไลฟ์สไตล์สร้างสรรค์ ในย่านที่มีชีวิตชีวาที่สุดของกรุงเทพฯ', zh: '曼谷最具活力街区的创意生活公寓' } },
   'Flo by Sansiri':          { district: 'Khlong San',            bts: 'BTS Khlong San 350m',          floors: 22, units: 508,  year: 2025, facilities: ['Infinity Pool','Gym','Sky Lounge','Garden','Parking'],           highlight: { en: 'Riverside living near ICONSIAM, river views, Gold Line access', th: 'ริมแม่น้ำใกล้ ICONSIAM วิวแม่น้ำ เชื่อมต่อสายสีทอง', zh: '毗邻ICONSIAM的江景住宅，可乘金线轻轨' } },
@@ -134,7 +134,224 @@ const OKA_HAUS_IMG = {
   omniLight:       '1PBORrLv53yIdhbMCyfy5PNheWYiJoL4l',
 };
 
+/** Google Drive file IDs for XT Phayathai project-detail photos (from the "buildings/XT Phayathai" folder), reused identically across all locales. */
+const XT_PHAYATHAI_IMG = {
+  design:          '1d0jCxAcoCzQ5UpnY-T9Y_uZcslRiCBOj', // exterior-towers
+  lobby:           '1JndPJ9efqQQ-gB52mIGbJuyb4geBNzw6',
+  coWorking:       '1nWVZGVQuC3gk4vaP4RSR7To69jDMP7kr', // renamed "Co working space"
+  gameRoom:        '1Z7iQVbmSSz33AuTj_qXI0JFRvJmnG5lX',
+  fitnessRoom:     '1PCpCAVIfgqtN_pPIBB45cv3WhXqYYO9Q',
+  coKitchen:       '10YHgwasNutUtA5I88ycfAkwUtWmPBzo3', // renamed "Co-Kitchen" (was dining-room)
+  skyPool:         '1mZayIvlTNNMg_6ZF0MkYsOdACkiLFgbu', // pool-skyline-view
+  jacuzzi:         '1DUWSt5yH6xmO2elRcBGa-4gnCeuLcvyR',
+  gardenPavilion:  '1dzvdOAqGZ8sjrYL0-QE7qeA8JdWYDmpF',
+  sansiriBackyard: '1X-IGVpaACZSpukgWul6Ma5boDfqVWc1M', // renamed "Sansiri backyard" (was rooftop-garden-02)
+  secretTheatre:   '1DwI8DII2D-vhD619sy0NZ6Vg6ZNqJ7PZ', // cinema-room
+  skyLounge:       '1Cn2hnrsrMhh8uysAh2JmHca1l7IQihcM',
+  outdoorLounge:   '1uaK10YNQaarszoksE4vI4GeEanLma-dp', // lounge-outdoor
+  terrace:         '1DbM7YNLMPkZNvM1sy3NSKOE-y9wviWcI',
+  mailRoom:        '1yYU4iQKXPDkeDMfWDI9sTMXyDp-a5-ne', // "Mail-room"
+  gardenLibrary:   '1gIN2jVDwkyN9JSQwa7R5zpbEfQjRQ51g', // "Garden-Library"
+  meetingRoom:     '1N-29392z1U9p4m-KYGkQ0dSc4OPprsV8', // "Meeting-room"
+  communalRoom:    '1b2zfk8bVXJaXRMxle4p7DUH_FJQRUuRX', // "Communual-room"
+  playground:      '1DjpZO_wSLdINKJZXTysbSoRteMxVVDCj', // renamed "playground" (was lounge-pod)
+};
+
 export const BUILDING_DETAILS: Record<string, Partial<Record<Locale, BuildingProjectDetails>>> = {
+  'XT Phayathai': {
+    th: {
+      tagline: 'สัมผัสถึงความสงบ ท่ามกลางความเร่งรีบของเมืองหลวง',
+      facts: [
+        { label: 'ที่ตั้ง',              value: 'ถนนศรีอยุธยา พญาไท ราชเทวี กรุงเทพฯ' },
+        { label: 'พื้นที่โครงการ',        value: 'ประมาณ 3 ไร่' },
+        { label: 'รูปแบบโครงการ',        value: 'อาคารที่พักอาศัย 1 อาคาร (ทาวเวอร์ A 41 ชั้น และทาวเวอร์ B 37 ชั้น)' },
+        { label: 'จำนวนยูนิต',           value: '1,435' },
+        { label: 'สร้างเสร็จ',           value: '2023' },
+        { label: 'ผู้พัฒนาโครงการ',       value: 'บริษัท แสนสิริ จำกัด (มหาชน)' },
+      ],
+      summary: [
+        'ทำเลติดถนนศรีอยุธยา ใกล้ BTS พญาไทและ Airport Rail Link เพียง 650 เมตร เดินทางเข้าเมืองสะดวก',
+        'อาคาร 2 ทาวเวอร์ สูง 41 และ 37 ชั้น ออกแบบเพื่อความเป็นส่วนตัว เชื่อมถึงกันได้ที่ชั้น 8 และ 16',
+        'พื้นที่ส่วนกลางกว่า 4,500 ตร.ม. ครบครันทุกไลฟ์สไตล์ ตั้งแต่ Sky Pool วิว 180 องศา ถึง Co-Working Space',
+        'ห้องพักหลากหลายขนาด ตั้งแต่ 1 Bedroom 25 ตร.ม. ถึง 2 Bedrooms 101 ตร.ม.',
+      ],
+      location: {
+        description: 'โครงการตั้งอยู่บนถนนศรีอยุธยา เชื่อมต่อถนนพญาไทและเพชรบุรีได้ง่าย ใกล้ BTS และ Airport Rail Link สถานีพญาไทเพียง 650 เมตร เดินทางเข้าสยามได้ในระยะ 2 สถานี',
+        nearby: [
+          { name: 'โรงพยาบาลพญาไท 1', distance: '450 ม.' },
+          { name: 'BTS/Airport Link สถานีพญาไท', distance: '650 ม.' },
+          { name: 'คิง เพาเวอร์ รางน้ำ', distance: '600 ม.' },
+          { name: 'โรงเรียนศรีอยุธยา', distance: '100 ม.' },
+          { name: 'Century Mall', distance: '850 ม.' },
+          { name: 'Siam Paragon', distance: '2.8 กม.' },
+        ],
+      },
+      design: {
+        imageId: XT_PHAYATHAI_IMG.design,
+        description: 'อาคาร High Rise 2 ทาวเวอร์ ทาวเวอร์ A สูง 41 ชั้น และทาวเวอร์ B สูง 37 ชั้น บนพื้นที่ประมาณ 3 ไร่ รวม 1,435 ยูนิต เชื่อมถึงกันที่ชั้น 1-16 เพื่อให้แต่ละอาคารมีความเป็นส่วนตัว แต่ยังใช้พื้นที่ส่วนกลางร่วมกันได้',
+      },
+      unitTypes: [
+        { label: '1 Bedroom S', sizeRange: '25.25 – 33.75 ตร.ม.' },
+        { label: '1 Bedroom M', sizeRange: '40.50 – 49.75 ตร.ม.' },
+        { label: '2 Bedrooms S', sizeRange: '61.00 – 74.75 ตร.ม.' },
+        { label: '2 Bedrooms M', sizeRange: '82.25 – 101.00 ตร.ม.' },
+      ],
+      facilities: [
+        { name: 'Lobby',           imageId: XT_PHAYATHAI_IMG.lobby,           description: 'พื้นที่ต้อนรับขนาดใหญ่ ดีไซน์หรูหราพร้อมโคมไฟระย้าเป็นจุดเด่น' },
+        { name: 'Co-Working Space', imageId: XT_PHAYATHAI_IMG.coWorking,      description: 'พื้นที่ทำงานและพักผ่อนพร้อม Wi-Fi รองรับการประชุมออนไลน์' },
+        { name: 'Game Room',       imageId: XT_PHAYATHAI_IMG.gameRoom,        description: 'มุมผ่อนคลายด้วย VR Game, Wii Game และ Board Game สำหรับสังสรรค์กับเพื่อนบ้าน' },
+        { name: 'Fitness Room',    imageId: XT_PHAYATHAI_IMG.fitnessRoom,     description: 'ห้องออกกำลังกายขนาดใหญ่ พร้อมอุปกรณ์ครบครัน' },
+        { name: 'Co-Kitchen',      imageId: XT_PHAYATHAI_IMG.coKitchen,       description: 'ครัวส่วนกลางสำหรับทำอาหารหรือจัดปาร์ตี้กับเพื่อนฝูง' },
+        { name: 'Garden Library',  imageId: XT_PHAYATHAI_IMG.gardenLibrary, description: 'ห้องสมุดพร้อมสวนขนาดย่อม เหมาะสำหรับนั่งอ่านหนังสือหรือทำงาน' },
+        { name: 'Meeting Room',    imageId: XT_PHAYATHAI_IMG.meetingRoom,   description: 'ห้องประชุมส่วนกลางสำหรับใช้งานที่เป็นทางการ' },
+        { name: 'Communal Room',   imageId: XT_PHAYATHAI_IMG.communalRoom,  description: 'ห้องรับรองส่วนตัวสำหรับต้อนรับแขกหรือใช้พื้นที่ส่วนตัว' },
+        { name: 'Playground',     imageId: XT_PHAYATHAI_IMG.playground,    description: 'สนามเด็กเล่นสำหรับครอบครัวที่มีเด็กเล็ก' },
+        { name: 'Sky Pool',        imageId: XT_PHAYATHAI_IMG.skyPool,         description: 'สระว่ายน้ำยาว 25 เมตร บนชั้นดาดฟ้าทั้ง 2 อาคาร มองเห็นวิวเมืองได้ 180 องศา' },
+        { name: 'Jacuzzi',         imageId: XT_PHAYATHAI_IMG.jacuzzi,         description: 'จากุซซี่ริมสระ ผ่อนคลายพร้อมวิวเมืองรอบทิศทาง' },
+        { name: 'Garden Pavilion', imageId: XT_PHAYATHAI_IMG.gardenPavilion, description: 'ศาลาพักผ่อนกลางแจ้งท่ามกลางพื้นที่สีเขียว' },
+        { name: 'Sansiri Backyard', imageId: XT_PHAYATHAI_IMG.sansiriBackyard, description: 'แปลงผักสวนครัวส่วนกลาง ให้ลูกบ้านได้เก็บเกี่ยวไปประกอบอาหาร' },
+        { name: 'Secret Theatre', imageId: XT_PHAYATHAI_IMG.secretTheatre,   description: 'ห้องดูหนังส่วนตัวสำหรับลูกบ้าน สัมผัสบรรยากาศโรงภาพยนตร์' },
+        { name: 'Sky Lounge',      imageId: XT_PHAYATHAI_IMG.skyLounge,       description: 'เลาจน์ลอยฟ้าสำหรับพักผ่อนหรือสังสรรค์ยามเย็น' },
+        { name: 'Outdoor Lounge',  imageId: XT_PHAYATHAI_IMG.outdoorLounge,  description: 'พื้นที่นั่งเล่นกลางแจ้ง ร่มรื่นด้วยพื้นที่สีเขียวโดยรอบ' },
+        { name: 'Terrace',         imageId: XT_PHAYATHAI_IMG.terrace,         description: 'ระเบียงกว้างสำหรับนั่งเล่นรับลม ชมวิวเมือง' },
+      ],
+      innovations: [
+        { name: 'Mail Room & Smart Locker', imageId: XT_PHAYATHAI_IMG.mailRoom, description: 'ระบบรับพัสดุอัตโนมัติ ปลดล็อคด้วย QR Code ตลอด 24 ชั่วโมง' },
+        { name: 'Phone Box',                description: 'ห้องโทรศัพท์ส่วนตัวสำหรับประชุมหรือสนทนาแบบไม่รบกวนผู้อื่น' },
+        { name: 'EV Charger',               description: 'จุดชาร์จรถยนต์ไฟฟ้าสำหรับลูกบ้าน' },
+        { name: 'Face Scan Access',         description: 'ระบบสแกนใบหน้าเพื่อความปลอดภัยในการเข้า-ออกอาคาร' },
+        { name: 'Shuttle Service',          description: 'บริการรถรับส่งระหว่างโครงการและสถานี BTS/Airport Rail Link พญาไท' },
+      ],
+    },
+    en: {
+      tagline: 'Experience a calming comfort amidst the urban hustle',
+      facts: [
+        { label: 'Location',      value: 'Sri Ayutthaya Road, Phaya Thai, Ratchathewi, Bangkok' },
+        { label: 'Land Area',     value: 'Approximately 3 Rai' },
+        { label: 'Project Type',  value: '1 residential development (Tower A 41 floors, Tower B 37 floors)' },
+        { label: 'Total Units',   value: '1,435' },
+        { label: 'Completion',    value: '2023' },
+        { label: 'Developer',    value: 'Sansiri PCL.' },
+      ],
+      summary: [
+        'Fronting Sri Ayutthaya Road, just 650m from BTS Phaya Thai and the Airport Rail Link for easy access into the city.',
+        'Two towers — 41 and 37 storeys — designed for privacy, connected at floors 8 and 16.',
+        'Over 4,500 sqm of shared facilities, from a 180°-view Sky Pool to dedicated co-working space.',
+        'A range of unit sizes, from 25 sqm 1-Bedrooms up to 101 sqm 2-Bedrooms.',
+      ],
+      location: {
+        description: 'The project fronts Sri Ayutthaya Road, connecting easily to Phaya Thai and Phetchaburi roads. BTS and Airport Rail Link Phaya Thai station are just 650m away — only 2 stops from Siam.',
+        nearby: [
+          { name: 'Phayathai 1 Hospital', distance: '450 m' },
+          { name: 'BTS/Airport Link Phaya Thai', distance: '650 m' },
+          { name: 'King Power Rangnam', distance: '600 m' },
+          { name: 'Sri Ayutthaya School', distance: '100 m' },
+          { name: 'Century Mall', distance: '850 m' },
+          { name: 'Siam Paragon', distance: '2.8 km' },
+        ],
+      },
+      design: {
+        imageId: XT_PHAYATHAI_IMG.design,
+        description: 'A high-rise development of two towers — Tower A at 41 storeys and Tower B at 37 — on roughly 3 rai, with 1,435 units in total. The towers connect at floors 1–16, keeping each building private while sharing common facilities.',
+      },
+      unitTypes: [
+        { label: '1 Bedroom S', sizeRange: '25.25–33.75 sqm' },
+        { label: '1 Bedroom M', sizeRange: '40.50–49.75 sqm' },
+        { label: '2 Bedrooms S', sizeRange: '61.00–74.75 sqm' },
+        { label: '2 Bedrooms M', sizeRange: '82.25–101.00 sqm' },
+      ],
+      facilities: [
+        { name: 'Lobby',           imageId: XT_PHAYATHAI_IMG.lobby,           description: 'A grand welcome area featuring an elegant chandelier centerpiece.' },
+        { name: 'Co-Working Space', imageId: XT_PHAYATHAI_IMG.coWorking,      description: 'A work-and-relax space with Wi-Fi, ready for online meetings.' },
+        { name: 'Game Room',       imageId: XT_PHAYATHAI_IMG.gameRoom,        description: 'A hangout corner with VR, Wii, and board games for socializing with neighbours.' },
+        { name: 'Fitness Room',    imageId: XT_PHAYATHAI_IMG.fitnessRoom,     description: 'A spacious, fully equipped gym.' },
+        { name: 'Co-Kitchen',      imageId: XT_PHAYATHAI_IMG.coKitchen,       description: 'A communal kitchen for cooking or hosting a get-together.' },
+        { name: 'Garden Library',  imageId: XT_PHAYATHAI_IMG.gardenLibrary, description: 'A library with a small garden setting, ideal for reading or working.' },
+        { name: 'Meeting Room',    imageId: XT_PHAYATHAI_IMG.meetingRoom,   description: 'A communal meeting room for formal use.' },
+        { name: 'Communal Room',   imageId: XT_PHAYATHAI_IMG.communalRoom,  description: 'A private communal room for receiving guests or personal use.' },
+        { name: 'Playground',     imageId: XT_PHAYATHAI_IMG.playground,    description: 'A playground for families with young children.' },
+        { name: 'Sky Pool',        imageId: XT_PHAYATHAI_IMG.skyPool,         description: 'A 25m pool on the rooftop of both towers, with 180° city views.' },
+        { name: 'Jacuzzi',         imageId: XT_PHAYATHAI_IMG.jacuzzi,         description: 'A poolside jacuzzi for unwinding with panoramic city views.' },
+        { name: 'Garden Pavilion', imageId: XT_PHAYATHAI_IMG.gardenPavilion, description: 'An open-air pavilion set among green space.' },
+        { name: 'Sansiri Backyard', imageId: XT_PHAYATHAI_IMG.sansiriBackyard, description: 'A communal vegetable garden residents can harvest for cooking.' },
+        { name: 'Secret Theatre', imageId: XT_PHAYATHAI_IMG.secretTheatre,   description: 'A private cinema room with a true movie-theatre feel.' },
+        { name: 'Sky Lounge',      imageId: XT_PHAYATHAI_IMG.skyLounge,       description: 'A rooftop lounge for evening relaxation or gatherings.' },
+        { name: 'Outdoor Lounge',  imageId: XT_PHAYATHAI_IMG.outdoorLounge,  description: 'An open-air seating area shaded by surrounding greenery.' },
+        { name: 'Terrace',         imageId: XT_PHAYATHAI_IMG.terrace,         description: 'A wide terrace for catching the breeze and city views.' },
+      ],
+      innovations: [
+        { name: 'Mail Room & Smart Locker', imageId: XT_PHAYATHAI_IMG.mailRoom, description: 'Automated parcel receiving, unlocked via QR code, 24 hours a day.' },
+        { name: 'Phone Box',                description: 'A private call booth for meetings or conversations without disturbing others.' },
+        { name: 'EV Charger',               description: "Charging points for residents' electric vehicles." },
+        { name: 'Face Scan Access',         description: 'Facial recognition access control for building security.' },
+        { name: 'Shuttle Service',          description: 'Shuttle service between the project and BTS/Airport Rail Link Phaya Thai station.' },
+      ],
+    },
+    zh: {
+      tagline: '体验都市喧嚣中的宁静舒适',
+      facts: [
+        { label: '地址',     value: '是隆通里路，帕亚泰，拉差贴威县，曼谷' },
+        { label: '占地面积',  value: '约3莱' },
+        { label: '项目类型',  value: '1栋住宅楼（A栋41层，B栋37层）' },
+        { label: '总单位数',  value: '1,435' },
+        { label: '竣工年份',  value: '2023' },
+        { label: '开发商',   value: 'Sansiri PCL.' },
+      ],
+      summary: [
+        '紧邻是隆通里路，距离BTS帕亚泰站和机场快线仅650米，进城十分便利。',
+        '双塔设计，41层与37层，兼顾私密性，8楼及16楼设有连接层。',
+        '公共设施逾4,500平方米，从180度全景空中泳池到共享办公空间一应俱全。',
+        '户型多样，从25平方米的一居室到101平方米的两居室。',
+      ],
+      location: {
+        description: '项目地处是隆通里路，可轻松连接帕亚泰路和佩差汶里路。距离BTS及机场快线帕亚泰站仅650米，2站即达暹罗商圈。',
+        nearby: [
+          { name: '帕亚泰1医院', distance: '450米' },
+          { name: 'BTS及机场快线帕亚泰站', distance: '650米' },
+          { name: '皇权免税店(拉南)', distance: '600米' },
+          { name: '是隆通里学校', distance: '100米' },
+          { name: 'Century Mall', distance: '850米' },
+          { name: 'Siam Paragon', distance: '2.8公里' },
+        ],
+      },
+      design: {
+        imageId: XT_PHAYATHAI_IMG.design,
+        description: '高层双塔项目，A栋41层，B栋37层，占地约3莱，共1,435个单位。两栋在1-16楼相连，各栋保持私密性，同时共享公共设施。',
+      },
+      unitTypes: [
+        { label: '1居室 S', sizeRange: '25.25–33.75平方米' },
+        { label: '1居室 M', sizeRange: '40.50–49.75平方米' },
+        { label: '2居室 S', sizeRange: '61.00–74.75平方米' },
+        { label: '2居室 M', sizeRange: '82.25–101.00平方米' },
+      ],
+      facilities: [
+        { name: 'Lobby',           imageId: XT_PHAYATHAI_IMG.lobby,           description: '宽敞的迎宾大堂，以典雅吊灯为视觉焦点。' },
+        { name: 'Co-Working Space', imageId: XT_PHAYATHAI_IMG.coWorking,      description: '配备Wi-Fi的工作休闲空间，适合线上会议。' },
+        { name: 'Game Room',       imageId: XT_PHAYATHAI_IMG.gameRoom,        description: '设有VR、Wii及桌游的休闲角落，方便邻里社交。' },
+        { name: 'Fitness Room',    imageId: XT_PHAYATHAI_IMG.fitnessRoom,     description: '宽敞的健身房，设备齐全。' },
+        { name: 'Co-Kitchen',      imageId: XT_PHAYATHAI_IMG.coKitchen,       description: '共享厨房，适合烹饪或举办聚会。' },
+        { name: 'Garden Library',  imageId: XT_PHAYATHAI_IMG.gardenLibrary, description: '带小型花园的图书室，适合阅读或办公。' },
+        { name: 'Meeting Room',    imageId: XT_PHAYATHAI_IMG.meetingRoom,   description: '共享会议室，适合正式会议使用。' },
+        { name: 'Communal Room',   imageId: XT_PHAYATHAI_IMG.communalRoom,  description: '私人会客室，适合接待访客或个人使用。' },
+        { name: 'Playground',     imageId: XT_PHAYATHAI_IMG.playground,    description: '适合有幼儿家庭使用的儿童游乐场。' },
+        { name: 'Sky Pool',        imageId: XT_PHAYATHAI_IMG.skyPool,         description: '两栋楼顶层均设25米泳池，享180度城市景观。' },
+        { name: 'Jacuzzi',         imageId: XT_PHAYATHAI_IMG.jacuzzi,         description: '泳池畔按摩浴池，享受全景城市视野的放松时光。' },
+        { name: 'Garden Pavilion', imageId: XT_PHAYATHAI_IMG.gardenPavilion, description: '绿意环绕的露天凉亭。' },
+        { name: 'Sansiri Backyard', imageId: XT_PHAYATHAI_IMG.sansiriBackyard, description: '住户可采摘食材用于烹饪的共享菜园。' },
+        { name: 'Secret Theatre', imageId: XT_PHAYATHAI_IMG.secretTheatre,   description: '私人放映室，重现电影院氛围。' },
+        { name: 'Sky Lounge',      imageId: XT_PHAYATHAI_IMG.skyLounge,       description: '空中会所，适合傍晚休憩或聚会。' },
+        { name: 'Outdoor Lounge',  imageId: XT_PHAYATHAI_IMG.outdoorLounge,  description: '被绿意环绕的户外休闲座位区。' },
+        { name: 'Terrace',         imageId: XT_PHAYATHAI_IMG.terrace,         description: '宽敞露台，可迎风纳凉、欣赏城市景观。' },
+      ],
+      innovations: [
+        { name: 'Mail Room & Smart Locker', imageId: XT_PHAYATHAI_IMG.mailRoom, description: '24小时自动收件系统，通过二维码解锁。' },
+        { name: 'Phone Box',                description: '私人电话亭，方便通话或会议而不打扰他人。' },
+        { name: 'EV Charger',               description: '为住户提供的电动车充电点。' },
+        { name: 'Face Scan Access',         description: '人脸识别门禁系统，保障出入安全。' },
+        { name: 'Shuttle Service',          description: '项目与BTS/机场快线帕亚泰站之间的班车接送服务。' },
+      ],
+    },
+  },
   'Oka Haus': {
     th: {
       summary: [

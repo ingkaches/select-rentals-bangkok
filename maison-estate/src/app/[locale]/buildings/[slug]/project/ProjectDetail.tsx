@@ -30,6 +30,7 @@ export default function ProjectDetail({ name, details, bdata, meta }: {
         <div className="pd-header-inner">
           <Link href={`/${locale}/buildings/${slug}`} className="back-link">{t('backTo', { name })}</Link>
           <h1 className="pd-title">{name}</h1>
+          {details.tagline && <p className="pd-tagline">{details.tagline}</p>}
           <div className="bldg-meta" style={{ marginTop: '4px' }}>
             {(bdata?.district || meta.area) && (
               <span className="bldg-meta-item" style={{ color: 'var(--text-muted)' }}>
@@ -46,6 +47,20 @@ export default function ProjectDetail({ name, details, bdata, meta }: {
           </div>
         </div>
       </div>
+
+      {/* Quick facts */}
+      {details.facts?.length && (
+        <section className="pd-section pd-section-alt">
+          <div className="pd-facts-grid">
+            {details.facts.map((f, i) => (
+              <div key={i} className="pd-facts-item">
+                <div className="pd-facts-label">{f.label}</div>
+                <div className="pd-facts-value">{f.value}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Summary */}
       {details.summary?.length && (
