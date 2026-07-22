@@ -118,6 +118,22 @@ export function getBuildingData(name: string, locale: Locale = 'en'): BuildingDa
   };
 }
 
+/** Google Drive file IDs for Oka Haus project-detail photos (from the "buildings" folder), reused identically across all locales. */
+const OKA_HAUS_IMG = {
+  location:        '1ggl6Wj0p7IP0xkD8mzpqUpwXHq4Bz8Xf',
+  design:          '1ctnsHhgcE9A5ZQHz2EHL-WHKQPwcDcdV',
+  lobbyLounge:     '1cdavqY01bv4818omG-Jqc9UCUxICa3_M',
+  pool:            '1K6XmexAKD0pd8s6eSoSyHaF7FTkGXyBP',
+  kidsArea:        '1X21SyRWtJjXr0sfFBWPirgINr3l7jvXF',
+  exerciseRoom:    '1fmuWECVMRD-O_q2FeDfZZHjlTOhk3y7J',
+  coWorking:       '1n6S5TA1FIaYEtI-65A7unQV30S-gpPuF',
+  coKitchen:       '1vVXgym5AGjlkFs_IFqqtP5xFGCH4kVfc',
+  amphitheater:    '1D6iDqU4Dp7MzJaZmTAujGzFmDg_Jsobt',
+  rooftopGarden:   '1w73HQmscet-zzHddb7e5YoGEmZDVe8kD',
+  sansiriBackyard: '1Ea4niexAhh9_QA5hb0BgveUV17-s1_rj',
+  omniLight:       '1PBORrLv53yIdhbMCyfy5PNheWYiJoL4l',
+};
+
 export const BUILDING_DETAILS: Record<string, Partial<Record<Locale, BuildingProjectDetails>>> = {
   'Oka Haus': {
     th: {
@@ -128,6 +144,7 @@ export const BUILDING_DETAILS: Record<string, Partial<Record<Locale, BuildingPro
         'มีนวัตกรรมล้ำสมัย ที่ครอบคลุมการใช้ชีวิตในทุกๆ ด้าน',
       ],
       location: {
+        imageId: OKA_HAUS_IMG.location,
         description: 'OKA HAUS สุขุมวิท 36 ตั้งอยู่บนทำเลที่มีศักยภาพมาก อยู่ติดถนนใหญ่พระราม 4 ใกล้กับอาคารมาลีนนท์ ทาวเวอร์ นอกจากจะสามารถใช้เส้นทางเข้าออกจากซอยสุขุมวิท 36 ได้แล้ว ยังสามารถใช้ซอยสุขุมวิท 26 และ 38 ลัดไปออกตรง BTS สถานีทองหล่อพอดีอีกด้วย เพียงแค่ประมาณ 1.3 กม. ซึ่งใครที่ใช้ BTS เป็นประจำ ทางโครงการก็มี Shuttle Service ไปส่งด้วย นอกจากนี้ยังใกล้ทางด่วนเฉลิมมหานคร และอาจณรงค์ สามารถเชื่อมต่อ จตุจักร พระราม 3 บางนา รามอินทรา ได้อย่างรวดเร็ว',
         nearby: [
           { name: 'อาคารมาลีนนท์', distance: '450 เมตร' },
@@ -146,6 +163,7 @@ export const BUILDING_DETAILS: Record<string, Partial<Record<Locale, BuildingPro
         ],
       },
       design: {
+        imageId: OKA_HAUS_IMG.design,
         description: 'คำว่า "oka" ในภาษาญี่ปุ่นแปลว่า "ภูเขา" ดังนั้นโครงการ oka HAUS สุขุมวิท 36 จึงเป็นโครงการที่ออกแบบโดยเน้นความเป็นธรรมชาติ ภายใต้แนวคิด RETREAT & REBOUND ที่หยิบเอา ขุนเขา สายลม แสงแดด มาเป็นแรงบันดาลใจในการออกแบบโครงการ ทั้งในส่วนของห้องพัก และส่วนกลาง พร้อมตอบโจทย์คนทำงานที่ต้องการพักผ่อนอย่างเต็มที่ หลังจากทำงานมาทั้งวัน โครงการเป็นคอนโด High Rise สูง 47 ชั้น มีจำนวนทั้งหมด 1,178 ยูนิต',
         floorBreakdown: [
           { label: 'ชั้น 1',     description: 'Lobby ของโครงการ พร้อม Educational Playground สนามเด็กเล่นเสริมพัฒนาการ' },
@@ -170,15 +188,15 @@ export const BUILDING_DETAILS: Record<string, Partial<Record<Locale, BuildingPro
         'Living room และห้องนอนแยกสัดส่วน เชื่อมต่อระเบียงกว้าง รับแสงธรรมชาติผ่านประตูกระจกบานใหญ่',
       ],
       facilities: [
-        { name: 'Lobby Lounge',      description: 'ล็อบบี้ขนาดใหญ่ สำหรับต้อนรับแขก หรือนั่งพักผ่อน' },
-        { name: 'Pool',               description: 'สระว่ายน้ำขนาดใหญ่ พร้อม Hydrotherapy Pool และบ่อ Onsen' },
-        { name: "Kid's Area",         description: 'พื้นที่จินตนาการสำหรับเด็กๆ เพื่อเสริมสร้างพัฒนาการที่ดี' },
-        { name: 'Exercise Room',      description: 'ห้องออกกำลังกายที่มีอุปกรณ์ให้เลือกใช้อย่างครบครัน' },
-        { name: 'Co-Working Space',   description: 'พร้อม Wi-Fi รองรับการเรียนออนไลน์ หรือ Conference Call' },
-        { name: 'Co-Kitchen',         description: 'พื้นที่ครัวส่วนกลางที่พร้อมให้คุณทำได้ทุกเมนู' },
-        { name: 'Amphitheater',       description: 'พื้นที่พักผ่อนดูหนังกลางแจ้ง พร้อมที่นั่งแบบไล่ระดับเหมือนในโรงหนัง' },
-        { name: 'Rooftop Garden',     description: 'พื้นที่สีเขียวเพื่อการพักผ่อนท่ามกลางความร่มรื่น' },
-        { name: 'Sansiri Backyard',   description: 'พื้นที่ปลูกพืชผักสวนครัวที่ลูกบ้านสามารถเก็บไปประกอบอาหารได้' },
+        { name: 'Lobby Lounge',      imageId: OKA_HAUS_IMG.lobbyLounge,     description: 'ล็อบบี้ขนาดใหญ่ สำหรับต้อนรับแขก หรือนั่งพักผ่อน' },
+        { name: 'Pool',               imageId: OKA_HAUS_IMG.pool,            description: 'สระว่ายน้ำขนาดใหญ่ พร้อม Hydrotherapy Pool และบ่อ Onsen' },
+        { name: "Kid's Area",         imageId: OKA_HAUS_IMG.kidsArea,        description: 'พื้นที่จินตนาการสำหรับเด็กๆ เพื่อเสริมสร้างพัฒนาการที่ดี' },
+        { name: 'Exercise Room',      imageId: OKA_HAUS_IMG.exerciseRoom,    description: 'ห้องออกกำลังกายที่มีอุปกรณ์ให้เลือกใช้อย่างครบครัน' },
+        { name: 'Co-Working Space',   imageId: OKA_HAUS_IMG.coWorking,       description: 'พร้อม Wi-Fi รองรับการเรียนออนไลน์ หรือ Conference Call' },
+        { name: 'Co-Kitchen',         imageId: OKA_HAUS_IMG.coKitchen,       description: 'พื้นที่ครัวส่วนกลางที่พร้อมให้คุณทำได้ทุกเมนู' },
+        { name: 'Amphitheater',       imageId: OKA_HAUS_IMG.amphitheater,    description: 'พื้นที่พักผ่อนดูหนังกลางแจ้ง พร้อมที่นั่งแบบไล่ระดับเหมือนในโรงหนัง' },
+        { name: 'Rooftop Garden',     imageId: OKA_HAUS_IMG.rooftopGarden,   description: 'พื้นที่สีเขียวเพื่อการพักผ่อนท่ามกลางความร่มรื่น' },
+        { name: 'Sansiri Backyard',   imageId: OKA_HAUS_IMG.sansiriBackyard, description: 'พื้นที่ปลูกพืชผักสวนครัวที่ลูกบ้านสามารถเก็บไปประกอบอาหารได้' },
         { name: 'Steam Room',         description: 'ห้องอบไอน้ำ ช่วยผ่อนคลายความเครียดและกล้ามเนื้อ' },
         { name: 'Shuttle Service',    description: 'บริการรถรับ-ส่งระหว่างโครงการ และ BTS สถานีทองหล่อ' },
       ],
@@ -190,7 +208,7 @@ export const BUILDING_DETAILS: Record<string, Partial<Record<Locale, BuildingPro
         { name: 'Facility Booking',        description: 'ระบบจองพื้นที่ส่วนกลางผ่านมือถือ พร้อมแจ้งเตือน' },
         { name: 'Trendy Wash',             description: 'เครื่องซักผ้า-อบผ้าแจ้งเตือนผ่าน Kuhu Application' },
         { name: 'Smart Mail Box',          description: 'ระบบแจ้งเตือนรับจดหมาย ปลดล็อคด้วย QR Code' },
-        { name: 'Omni-Light',              description: 'เสาไฟฟ้าผลิตแสงสว่างจาก Solar Cell และ Wind Turbine' },
+        { name: 'Omni-Light',              imageId: OKA_HAUS_IMG.omniLight,  description: 'เสาไฟฟ้าผลิตแสงสว่างจาก Solar Cell และ Wind Turbine' },
         { name: 'Dialog Oven (Miele)',     description: 'เตาอบ Automatic Program ปรับอุณหภูมิและเวลาอัตโนมัติ' },
         { name: 'Home Automation',         description: 'ควบคุมเครื่องใช้ไฟฟ้าภายในห้องผ่าน Application' },
       ],
@@ -203,6 +221,7 @@ export const BUILDING_DETAILS: Record<string, Partial<Record<Locale, BuildingPro
         'Cutting-edge innovations covering every aspect of daily living.',
       ],
       location: {
+        imageId: OKA_HAUS_IMG.location,
         description: 'OKA HAUS Sukhumvit 36 sits on a highly strategic location, fronting the main Rama 4 Road near Maleenont Tower. Besides the entrance via Sukhumvit Soi 36, residents can also cut through Sukhumvit Soi 26 and 38 straight to BTS Thong Lo station, just about 1.3 km away — and for regular BTS commuters, the project also runs a shuttle service. It’s also close to the Chalerm Maha Nakhon and Arjanrongsang expressways, giving quick connections to Chatuchak, Rama 3, Bang Na and Ram Intra.',
         nearby: [
           { name: 'Maleenont Tower', distance: '450 m' },
@@ -221,6 +240,7 @@ export const BUILDING_DETAILS: Record<string, Partial<Record<Locale, BuildingPro
         ],
       },
       design: {
+        imageId: OKA_HAUS_IMG.design,
         description: 'The word ‘oka’ means ‘mountain’ in Japanese, so oka HAUS Sukhumvit 36 was designed with nature at its core, under the RETREAT & REBOUND concept — drawing inspiration from mountains, breezes and sunlight for both the units and the common areas, giving hardworking professionals a place to truly unwind after a long day. The project is a 47-storey high-rise condominium with 1,178 units in total.',
         floorBreakdown: [
           { label: 'Floor 1',     description: 'Project lobby, with an Educational Playground for children’s development' },
@@ -245,15 +265,15 @@ export const BUILDING_DETAILS: Record<string, Partial<Record<Locale, BuildingPro
         'Separate living room and bedroom, connected to a wide balcony with natural light through large glass doors',
       ],
       facilities: [
-        { name: 'Lobby Lounge',    description: 'A spacious lobby for welcoming guests or relaxing' },
-        { name: 'Pool',            description: 'A large swimming pool with a hydrotherapy pool and onsen' },
-        { name: "Kid's Area",      description: 'An imaginative play area for children to support healthy development' },
-        { name: 'Exercise Room',   description: 'A fully equipped fitness room with a wide range of equipment' },
-        { name: 'Co-Working Space', description: 'With Wi-Fi, supporting online classes or conference calls' },
-        { name: 'Co-Kitchen',      description: 'A communal kitchen space ready for any recipe' },
-        { name: 'Amphitheater',    description: 'An outdoor movie-watching area with tiered, cinema-style seating' },
-        { name: 'Rooftop Garden',  description: 'A green space for relaxing amid lush surroundings' },
-        { name: 'Sansiri Backyard', description: 'A vegetable garden where residents can harvest ingredients for cooking' },
+        { name: 'Lobby Lounge',    imageId: OKA_HAUS_IMG.lobbyLounge,     description: 'A spacious lobby for welcoming guests or relaxing' },
+        { name: 'Pool',            imageId: OKA_HAUS_IMG.pool,            description: 'A large swimming pool with a hydrotherapy pool and onsen' },
+        { name: "Kid's Area",      imageId: OKA_HAUS_IMG.kidsArea,        description: 'An imaginative play area for children to support healthy development' },
+        { name: 'Exercise Room',   imageId: OKA_HAUS_IMG.exerciseRoom,    description: 'A fully equipped fitness room with a wide range of equipment' },
+        { name: 'Co-Working Space', imageId: OKA_HAUS_IMG.coWorking,      description: 'With Wi-Fi, supporting online classes or conference calls' },
+        { name: 'Co-Kitchen',      imageId: OKA_HAUS_IMG.coKitchen,       description: 'A communal kitchen space ready for any recipe' },
+        { name: 'Amphitheater',    imageId: OKA_HAUS_IMG.amphitheater,    description: 'An outdoor movie-watching area with tiered, cinema-style seating' },
+        { name: 'Rooftop Garden',  imageId: OKA_HAUS_IMG.rooftopGarden,   description: 'A green space for relaxing amid lush surroundings' },
+        { name: 'Sansiri Backyard', imageId: OKA_HAUS_IMG.sansiriBackyard, description: 'A vegetable garden where residents can harvest ingredients for cooking' },
         { name: 'Steam Room',      description: 'A steam room that helps relieve stress and muscle tension' },
         { name: 'Shuttle Service', description: 'Shuttle service between the project and BTS Thong Lo station' },
       ],
@@ -265,7 +285,7 @@ export const BUILDING_DETAILS: Record<string, Partial<Record<Locale, BuildingPro
         { name: 'Facility Booking',    description: 'Book common facilities via mobile with reminder notifications' },
         { name: 'Trendy Wash',         description: 'Washer-dryers with notifications via the Kuhu app' },
         { name: 'Smart Mail Box',      description: 'Mail notification system, unlocked via QR code' },
-        { name: 'Omni-Light',          description: 'Lamp posts generating light from solar cells and wind turbines' },
+        { name: 'Omni-Light',          imageId: OKA_HAUS_IMG.omniLight, description: 'Lamp posts generating light from solar cells and wind turbines' },
         { name: 'Dialog Oven (Miele)', description: 'Oven with automatic programs that adjust temperature and time' },
         { name: 'Home Automation',     description: 'Control in-unit appliances via the app' },
       ],
@@ -278,6 +298,7 @@ export const BUILDING_DETAILS: Record<string, Partial<Record<Locale, BuildingPro
         '尖端科技创新，涵盖生活的方方面面。',
       ],
       location: {
+        imageId: OKA_HAUS_IMG.location,
         description: 'OKA HAUS 素坤逸36巷坐落于极具潜力的地段，紧邻Rama 4大路和玛琳暖大厦(Maleenont Tower)。除了可经素坤逸36巷出入外，还可经素坤逸26巷和38巷抄近路直达BTS通罗站，车程仅约1.3公里；对于经常搭乘BTS的住户，项目还提供班车接送服务。此外还靠近Chalerm Maha Nakhon高速公路和Arjanrongsang高速公路，可快速连接恰图恰、Rama 3路、曼谷那和蓝英拉区。',
         nearby: [
           { name: '玛琳暖大厦', distance: '450米' },
@@ -296,6 +317,7 @@ export const BUILDING_DETAILS: Record<string, Partial<Record<Locale, BuildingPro
         ],
       },
       design: {
+        imageId: OKA_HAUS_IMG.design,
         description: '「oka」在日语中意为「山」，因此oka HAUS素坤逸36巷以自然为设计核心，秉持RETREAT & REBOUND（静养与复原）理念，从山峦、微风与阳光中汲取灵感，运用于住宅单位与公共空间的设计之中，让辛勤工作的都市人在忙碌一天后能彻底放松身心。项目为47层高层公寓，共1,178个单位。',
         floorBreakdown: [
           { label: '1楼',     description: '项目大堂，配有寓教于乐的儿童游乐区' },
@@ -320,15 +342,15 @@ export const BUILDING_DETAILS: Record<string, Partial<Record<Locale, BuildingPro
         '客厅与卧室独立分区，连接宽敞阳台，大面积玻璃门引入自然采光',
       ],
       facilities: [
-        { name: 'Lobby Lounge',    description: '宽敞大堂，用于接待访客或休憩' },
-        { name: 'Pool',            description: '大型泳池，配有水疗池及温泉池' },
-        { name: "Kid's Area",      description: '富有想象力的儿童活动区，促进健康发展' },
-        { name: 'Exercise Room',   description: '设备齐全的健身房' },
-        { name: 'Co-Working Space', description: '配备Wi-Fi，支持在线学习或视频会议' },
-        { name: 'Co-Kitchen',      description: '共享厨房空间，可烹饪各类料理' },
-        { name: 'Amphitheater',    description: '户外观影休闲区，配有阶梯式影院座椅' },
-        { name: 'Rooftop Garden',  description: '绿意盎然的休闲空间' },
-        { name: 'Sansiri Backyard', description: '蔬菜种植区，住户可采摘食材用于烹饪' },
+        { name: 'Lobby Lounge',    imageId: OKA_HAUS_IMG.lobbyLounge,     description: '宽敞大堂，用于接待访客或休憩' },
+        { name: 'Pool',            imageId: OKA_HAUS_IMG.pool,            description: '大型泳池，配有水疗池及温泉池' },
+        { name: "Kid's Area",      imageId: OKA_HAUS_IMG.kidsArea,        description: '富有想象力的儿童活动区，促进健康发展' },
+        { name: 'Exercise Room',   imageId: OKA_HAUS_IMG.exerciseRoom,    description: '设备齐全的健身房' },
+        { name: 'Co-Working Space', imageId: OKA_HAUS_IMG.coWorking,      description: '配备Wi-Fi，支持在线学习或视频会议' },
+        { name: 'Co-Kitchen',      imageId: OKA_HAUS_IMG.coKitchen,       description: '共享厨房空间，可烹饪各类料理' },
+        { name: 'Amphitheater',    imageId: OKA_HAUS_IMG.amphitheater,    description: '户外观影休闲区，配有阶梯式影院座椅' },
+        { name: 'Rooftop Garden',  imageId: OKA_HAUS_IMG.rooftopGarden,   description: '绿意盎然的休闲空间' },
+        { name: 'Sansiri Backyard', imageId: OKA_HAUS_IMG.sansiriBackyard, description: '蔬菜种植区，住户可采摘食材用于烹饪' },
         { name: 'Steam Room',      description: '蒸汽室，有助于缓解压力和肌肉紧张' },
         { name: 'Shuttle Service', description: '项目与BTS通罗站之间的班车接送服务' },
       ],
@@ -340,7 +362,7 @@ export const BUILDING_DETAILS: Record<string, Partial<Record<Locale, BuildingPro
         { name: 'Facility Booking',    description: '通过手机预订公共设施，并提供提醒通知' },
         { name: 'Trendy Wash',         description: '洗衣烘干机，通过Kuhu App发送通知' },
         { name: 'Smart Mail Box',      description: '邮件提醒系统，通过二维码解锁' },
-        { name: 'Omni-Light',          description: '利用太阳能电池板和风力发电的路灯' },
+        { name: 'Omni-Light',          imageId: OKA_HAUS_IMG.omniLight, description: '利用太阳能电池板和风力发电的路灯' },
         { name: 'Dialog Oven (Miele)', description: '自动程序烤箱，自动调节温度与时间' },
         { name: 'Home Automation',     description: '通过App控制房内电器' },
       ],
