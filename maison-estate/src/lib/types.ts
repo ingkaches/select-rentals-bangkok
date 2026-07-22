@@ -1,3 +1,5 @@
+export type Locale = 'en' | 'th' | 'zh';
+
 export interface Property {
   project:   string;
   unit:      string;
@@ -20,6 +22,45 @@ export interface BuildingData {
   floors?:    number;
   units?:     number;
   year?:      number;
+  /** Canonical English facility names — translated for display via translateFacility(). */
   facilities?: string[];
+  /** One-line marketing highlight, already resolved to the current locale. */
   highlight?: string;
+  /** Google Drive folder URL with building-level photos (lobby, pool, exterior — not unit photos). */
+  photosUrl?: string;
+}
+
+export interface NearbyPlace {
+  name:     string;
+  distance: string;
+}
+
+export interface UnitTypeInfo {
+  label:     string;
+  sizeRange: string;
+  /** Google Drive file ID for this unit type's photo. */
+  imageId?:  string;
+}
+
+export interface NamedItem {
+  name:        string;
+  description: string;
+  /** Google Drive file ID for this item's photo. */
+  imageId?:    string;
+}
+
+export interface FloorBreakdownItem {
+  label:       string;
+  description: string;
+}
+
+export interface BuildingProjectDetails {
+  tagline?:  string;
+  summary?:  string[];
+  location?: { description: string; nearby?: NearbyPlace[]; imageId?: string };
+  design?:   { description: string; floorBreakdown?: FloorBreakdownItem[]; imageId?: string };
+  unitTypes?: UnitTypeInfo[];
+  unitHighlights?: string[];
+  facilities?: NamedItem[];
+  innovations?: NamedItem[];
 }

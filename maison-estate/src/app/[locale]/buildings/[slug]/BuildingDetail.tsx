@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Property } from '@/lib/types';
-import { BuildingData, BuildingMeta } from '@/lib/types';
-import { SCRIPT_URL, unitLabel, parseFloor, extractFolderId } from '@/lib/buildings';
+import { useTranslations, useLocale } from 'next-intl';
+import { Property, BuildingData, BuildingMeta, Locale } from '@/lib/types';
+import { SCRIPT_URL, unitLabel, directionLabel, parseFloor, extractFolderId, driveImageUrl, driveImgOnError } from '@/lib/buildings';
+import ViewingModal from '@/components/ViewingModal';
 
 const BG = ['linear-gradient(135deg,#1a2a1a,#0a1a2a)', 'linear-gradient(135deg,#1a1a2a,#2a1a1a)'];
 
@@ -20,7 +21,7 @@ async function loadPhotos(driveUrl: string): Promise<string[]> {
       const res  = await fetch(`${SCRIPT_URL}?action=images&folder=${encodeURIComponent(folderId)}`);
       const data = await res.json();
       if (data.files?.length) {
-        const imgs = data.files.map((f: { id: string }) => `https://lh3.googleusercontent.com/d/${f.id}`);
+        const imgs = data.files.map((f: { id: string }) => driveImageUrl(f.id));
         photoCache[folderId] = imgs;
         return imgs;
       }
@@ -32,6 +33,30 @@ async function loadPhotos(driveUrl: string): Promise<string[]> {
   return promise;
 }
 
+// ── Unit Thumb ─────────────────────────────────────────────────────────────────
+
+function UnitThumb({ driveUrl }: { driveUrl?: string }) {
+  const [img, setImg] = useState('');
+
+  useEffect(() => {
+    if (!driveUrl) return;
+    loadPhotos(driveUrl).then(imgs => { if (imgs[0]) setImg(imgs[0]); });
+  }, [driveUrl]);
+
+  return (
+    <div className="unit-thumb">
+      {img ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={img} alt="" onError={driveImgOnError} />
+      ) : (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.9">
+          <rect x="3" y="3" width="18" height="18" rx="1"/><path d="M9 21V9h6v12M3 9l9-6 9 6"/>
+        </svg>
+      )}
+    </div>
+  );
+}
+
 // ── Unit Modal ─────────────────────────────────────────────────────────────────
 
 function UnitModal({ prop, onClose, onSchedule }: {
@@ -39,6 +64,9 @@ function UnitModal({ prop, onClose, onSchedule }: {
   onClose: () => void;
   onSchedule: () => void;
 }) {
+  const locale = useLocale();
+  const t = useTranslations('common');
+  const tDetail = useTranslations('listingDetail');
   const [images, setImages]     = useState<string[]>([]);
   const [loading, setLoading]   = useState(true);
   const [slideIdx, setSlideIdx] = useState(0);
@@ -76,14 +104,14 @@ function UnitModal({ prop, onClose, onSchedule }: {
                   <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.7">
                     <rect x="3" y="3" width="18" height="18" rx="1"/><path d="M9 21V9h6v12M3 9l9-6 9 6"/>
                   </svg>
-                  <span style={{ fontSize: '12px' }}>Photos coming soon</span>
+                  <span style={{ fontSize: '12px' }}>{t('photosComingSoon')}</span>
                 </div>
               ) : (
                 <>
                   {images.map((url, i) => (
                     <div key={i} className={`unit-gallery-slide${i === slideIdx ? ' active' : ''}`}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={url} alt={`Unit photo ${i + 1}`} />
+                      <img src={url} alt={`${prop.project} ${i + 1}`} onError={driveImgOnError} />
                     </div>
                   ))}
                   {images.length > 1 && (
@@ -105,89 +133,19 @@ function UnitModal({ prop, onClose, onSchedule }: {
           {/* Info */}
           <div className="unit-info-col">
             <div className="unit-info-building">{prop.project}</div>
-            <div className="unit-info-type">{unitLabel(prop.unitType, prop.unit, prop.area)}</div>
+            <div className="unit-info-type">{unitLabel(prop.unitType, prop.unit, prop.area, locale as Locale)}</div>
             <div className="unit-spec-list">
-              {floorStr && <div className="unit-spec-row"><span className="unit-spec-label">Floor</span><span className="unit-spec-val">{floorStr}</span></div>}
-              {prop.area && <div className="unit-spec-row"><span className="unit-spec-label">Size</span><span className="unit-spec-val">{prop.area} sqm</span></div>}
-              {prop.direction && <div className="unit-spec-row"><span className="unit-spec-label">Direction</span><span className="unit-spec-val">{prop.direction}</span></div>}
-              {prop.unit && <div className="unit-spec-row"><span className="unit-spec-label">Unit No.</span><span className="unit-spec-val">{prop.unit}</span></div>}
+              {floorStr && <div className="unit-spec-row"><span className="unit-spec-label">{tDetail('floor')}</span><span className="unit-spec-val">{floorStr}</span></div>}
+              {prop.area && <div className="unit-spec-row"><span className="unit-spec-label">{tDetail('size')}</span><span className="unit-spec-val">{prop.area} {t('sqm')}</span></div>}
+              {prop.direction && <div className="unit-spec-row"><span className="unit-spec-label">{tDetail('direction')}</span><span className="unit-spec-val">{directionLabel(prop.direction, locale as Locale)}</span></div>}
+              {prop.unit && <div className="unit-spec-row"><span className="unit-spec-label">{tDetail('unitNo')}</span><span className="unit-spec-val">{prop.unit}</span></div>}
             </div>
             <div className="unit-info-price">
-              {price ? `฿${price.toLocaleString('th-TH')}` : 'Price on request'}
-              {price ? <span> / month</span> : null}
+              {price ? `฿${price.toLocaleString('th-TH')}` : t('priceOnRequest')}
+              {price ? <span>{t('perMonthLong')}</span> : null}
             </div>
-            <button className="unit-cta-btn" onClick={onSchedule}>Schedule a Viewing →</button>
+            <button className="unit-cta-btn" onClick={onSchedule}>{t('scheduleViewing')}</button>
           </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ── Viewing Modal ──────────────────────────────────────────────────────────────
-
-function ViewingModal({ prop, onClose }: { prop: Property; onClose: () => void }) {
-  const [contactMethod, setContactMethod] = useState<'WhatsApp' | 'LINE'>('WhatsApp');
-  const [submitted, setSubmitted]         = useState(false);
-  const [sending, setSending]             = useState(false);
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setSending(true);
-    const fd = new FormData(e.currentTarget);
-    const payload = {
-      timestamp: new Date().toISOString(),
-      building: prop.project, unit: prop.unit, floor: prop.floor,
-      unitType: prop.unitType, area: String(prop.area ?? ''), price: String(prop.price ?? ''),
-      name: fd.get('name'), nationality: fd.get('nationality'), persons: fd.get('persons'),
-      leaseDuration: fd.get('leaseDuration'), moveInDate: fd.get('moveInDate'),
-      phone: fd.get('phone'), contactMethod, contactId: fd.get('contactId'),
-      viewingDate: fd.get('viewingDate') ?? '', viewingTime: fd.get('viewingTime') ?? '',
-      notes: fd.get('notes') ?? '', status: 'New Lead',
-    };
-    fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) }).catch(() => {});
-    setTimeout(() => { setSending(false); setSubmitted(true); }, 600);
-  }
-
-  return (
-    <div className="modal-overlay active" onClick={onClose}>
-      <div style={{ position: 'relative' }} onClick={e => e.stopPropagation()}>
-        <div className="modal-box viewing-modal-box" style={{ position: 'relative' }}>
-          <button className="modal-close" onClick={onClose} style={{ position: 'absolute' }}>×</button>
-          {submitted ? (
-            <div className="vf-success">
-              <div className="vf-success-icon">✓</div>
-              <div className="vf-success-title">Request Received!</div>
-              <p className="vf-success-sub">We'll confirm your viewing within 2 hours.</p>
-            </div>
-          ) : (
-            <>
-              <div className="viewing-header">
-                <div className="viewing-title">Schedule a Viewing</div>
-                <div className="viewing-sub">{prop.project} · {unitLabel(prop.unitType, prop.unit, prop.area)}</div>
-              </div>
-              <form onSubmit={handleSubmit}>
-                <div className="viewing-body">
-                  <div className="vf-grid">
-                    <div className="vf-field"><label className="vf-label">Full Name *</label><input name="name" required className="vf-input" placeholder="Your name" /></div>
-                    <div className="vf-field"><label className="vf-label">Nationality</label><input name="nationality" className="vf-input" placeholder="e.g. Thai, Japanese" /></div>
-                    <div className="vf-field"><label className="vf-label">Phone *</label><input name="phone" required className="vf-input" placeholder="+66 81 234 5678" /></div>
-                    <div className="vf-field"><label className="vf-label">No. of Persons</label><select name="persons" className="vf-select"><option>1</option><option>2</option><option>3</option><option>4+</option></select></div>
-                    <div className="vf-field"><label className="vf-label">Preferred Contact</label><div className="vf-toggle"><button type="button" className={`vf-toggle-btn${contactMethod === 'WhatsApp' ? ' on' : ''}`} onClick={() => setContactMethod('WhatsApp')}>WhatsApp</button><button type="button" className={`vf-toggle-btn${contactMethod === 'LINE' ? ' on' : ''}`} onClick={() => setContactMethod('LINE')}>LINE</button></div></div>
-                    <div className="vf-field"><label className="vf-label">{contactMethod === 'WhatsApp' ? 'WhatsApp Number *' : 'LINE ID *'}</label><input name="contactId" required className="vf-input" placeholder={contactMethod === 'WhatsApp' ? '+66 81 234 5678' : '@yourlineid'} /></div>
-                    <div className="vf-field"><label className="vf-label">Lease Duration</label><select name="leaseDuration" className="vf-select"><option>6 months</option><option>1 year</option><option>2 years</option><option>Other</option></select></div>
-                    <div className="vf-field"><label className="vf-label">Move-in Date</label><input name="moveInDate" type="date" className="vf-input" /></div>
-                    <div className="vf-field"><label className="vf-label">Preferred Viewing Date</label><input name="viewingDate" type="date" className="vf-input" /></div>
-                    <div className="vf-field"><label className="vf-label">Preferred Time</label><select name="viewingTime" className="vf-select"><option value="">Anytime</option><option>Morning (9–12)</option><option>Afternoon (13–17)</option><option>Evening (17–19)</option></select></div>
-                    <div className="vf-field full"><label className="vf-label">Notes</label><textarea name="notes" className="vf-textarea" placeholder="Any special requirements..." /></div>
-                  </div>
-                </div>
-                <div className="viewing-footer">
-                  <button type="submit" className="vf-submit-btn" disabled={sending}>{sending ? 'Sending…' : 'Submit Viewing Request →'}</button>
-                </div>
-              </form>
-            </>
-          )}
         </div>
       </div>
     </div>
@@ -204,12 +162,26 @@ export default function BuildingDetail({ name, rooms, bdata, meta }: {
   bdata: BuildingData | null;
   meta: BuildingMeta;
 }) {
+  const locale = useLocale();
+  const t = useTranslations('buildingDetail');
+  const tCommon = useTranslations('common');
   const [modal, setModal] = useState<ModalState>(null);
+  const [heroImages, setHeroImages] = useState<string[]>([]);
+  const [heroIdx, setHeroIdx]       = useState(0);
 
   useEffect(() => {
     document.body.style.overflow = modal ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [modal]);
+
+  useEffect(() => {
+    setHeroImages([]); setHeroIdx(0);
+    if (bdata?.photosUrl) loadPhotos(bdata.photosUrl).then(setHeroImages);
+  }, [bdata?.photosUrl]);
+
+  function navHero(dir: number) {
+    setHeroIdx(i => (i + dir + heroImages.length) % heroImages.length);
+  }
 
   const sorted = [...rooms].sort((a, b) => (Number(a.floor) || 999) - (Number(b.floor) || 999));
 
@@ -217,12 +189,32 @@ export default function BuildingDetail({ name, rooms, bdata, meta }: {
     <>
       {/* Hero */}
       <div className="bldg-hero">
-        <div className="bldg-slide active">
-          <div className="bldg-slide-placeholder" style={{ background: BG[0] }} />
-        </div>
+        {heroImages.length ? (
+          heroImages.map((url, i) => (
+            <div key={url} className={`bldg-slide${i === heroIdx ? ' active' : ''}`}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={url} alt={`${name} photo ${i + 1}`} onError={driveImgOnError} />
+            </div>
+          ))
+        ) : (
+          <div className="bldg-slide active">
+            <div className="bldg-slide-placeholder" style={{ background: BG[0] }} />
+          </div>
+        )}
+        {heroImages.length > 1 && (
+          <>
+            <button className="gallery-nav-btn prev" onClick={() => navHero(-1)}>‹</button>
+            <button className="gallery-nav-btn next" onClick={() => navHero(1)}>›</button>
+            <div className="gallery-dots">
+              {heroImages.map((_, i) => (
+                <button key={i} className={`gallery-dot${i === heroIdx ? ' active' : ''}`} onClick={() => setHeroIdx(i)} />
+              ))}
+            </div>
+          </>
+        )}
         <div className="bldg-hero-overlay" />
         <div className="bldg-hero-content">
-          <Link href="/buildings" className="back-link">← All Buildings</Link>
+          <Link href={`/${locale}/buildings`} className="back-link">{t('allBuildings')}</Link>
           <div className="bldg-name" style={{ marginTop: '16px' }}>{name}</div>
           <div className="bldg-meta">
             {(bdata?.district || meta.area) && (
@@ -239,19 +231,22 @@ export default function BuildingDetail({ name, rooms, bdata, meta }: {
             )}
             <span className="bldg-meta-item">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-              {rooms.length} unit{rooms.length !== 1 ? 's' : ''} available
+              {tCommon('unitsAvailable', { count: rooms.length })}
             </span>
           </div>
+          <Link href={`/${locale}/buildings/${encodeURIComponent(name)}/project`} className="bldg-details-btn">
+            {t('viewProjectDetails')}
+          </Link>
         </div>
       </div>
 
       {/* Stats */}
       {bdata && (bdata.floors || bdata.units || bdata.year) && (
         <div className="bldg-stats">
-          {bdata.floors && <div className="bldg-stat"><div className="bldg-stat-val">{bdata.floors}</div><div className="bldg-stat-label">Floors</div></div>}
-          {bdata.units  && <div className="bldg-stat"><div className="bldg-stat-val">{Number(bdata.units).toLocaleString()}</div><div className="bldg-stat-label">Total Units</div></div>}
-          {bdata.year   && <div className="bldg-stat"><div className="bldg-stat-val">{bdata.year}</div><div className="bldg-stat-label">Completed</div></div>}
-          <div className="bldg-stat"><div className="bldg-stat-val" style={{ color: 'var(--green)' }}>{rooms.length}</div><div className="bldg-stat-label">Available Now</div></div>
+          {bdata.floors && <div className="bldg-stat"><div className="bldg-stat-val">{bdata.floors}</div><div className="bldg-stat-label">{tCommon('floors')}</div></div>}
+          {bdata.units  && <div className="bldg-stat"><div className="bldg-stat-val">{Number(bdata.units).toLocaleString()}</div><div className="bldg-stat-label">{tCommon('totalUnits')}</div></div>}
+          {bdata.year   && <div className="bldg-stat"><div className="bldg-stat-val">{bdata.year}</div><div className="bldg-stat-label">{tCommon('completed')}</div></div>}
+          <div className="bldg-stat"><div className="bldg-stat-val" style={{ color: 'var(--green)' }}>{rooms.length}</div><div className="bldg-stat-label">{tCommon('availableNow')}</div></div>
         </div>
       )}
 
@@ -269,7 +264,7 @@ export default function BuildingDetail({ name, rooms, bdata, meta }: {
 
       {/* Units */}
       <div className="bldg-units">
-        <div className="bldg-units-title">Available Units</div>
+        <div className="bldg-units-title">{t('availableUnitsTitle')}</div>
         <div className="unit-list">
           {sorted.map((r, i) => {
             const fp = parseFloor(r.floor);
@@ -278,16 +273,17 @@ export default function BuildingDetail({ name, rooms, bdata, meta }: {
             const price = Number(r.price);
             return (
               <div key={i} className="unit-row" onClick={() => setModal({ type: 'unit', prop: r })}>
-                <div className="unit-type-badge">{unitLabel(r.unitType, r.unit, r.area)}</div>
+                <UnitThumb driveUrl={r.driveUrl} />
+                <div className="unit-type-badge">{unitLabel(r.unitType, r.unit, r.area, locale as Locale)}</div>
                 <div className="unit-row-specs">
                   {floorStr && floorStr !== '—' && <span className="unit-row-spec"><strong>{floorStr}</strong></span>}
-                  {r.area && <span className="unit-row-spec"><strong>{r.area}</strong> sqm</span>}
-                  {r.direction && <span className="unit-row-spec">{r.direction}</span>}
-                  {r.unit && <span className="unit-row-spec">Unit <strong>{r.unit}</strong></span>}
+                  {r.area && <span className="unit-row-spec"><strong>{r.area}</strong> {tCommon('sqm')}</span>}
+                  {r.direction && <span className="unit-row-spec">{directionLabel(r.direction, locale as Locale)}</span>}
+                  {r.unit && <span className="unit-row-spec">{tCommon('unitPrefix')} <strong>{r.unit}</strong></span>}
                 </div>
                 <div className="unit-row-price">
-                  {price ? `฿${price.toLocaleString('th-TH')}` : 'POA'}
-                  <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontFamily: 'var(--font-dm-sans)' }}> /mo</span>
+                  {price ? `฿${price.toLocaleString('th-TH')}` : tCommon('poa')}
+                  <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontFamily: 'var(--font-dm-sans)' }}> {tCommon('perMonth')}</span>
                 </div>
                 <div className="unit-row-arrow">›</div>
               </div>

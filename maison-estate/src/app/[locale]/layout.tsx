@@ -1,6 +1,11 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
 import { Cormorant_Garamond, DM_Sans, DM_Mono } from 'next/font/google';
-import '../styles/globals.css';
+import '../../styles/globals.css';
+
+const locales = ['en', 'th', 'zh'];
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -34,9 +39,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children, params: { locale } }: {
+  children: React.ReactNode;
+  params: { locale: string };
+}) {
+  if (!locales.includes(locale)) notFound();
+  const messages = await getMessages();
+
   return (
-    <html lang="en" className={`${cormorant.variable} ${dmSans.variable} ${dmMono.variable}`}>
+    <html lang={locale} className={`${cormorant.variable} ${dmSans.variable} ${dmMono.variable}`}>
       <head>
         {/* Google Analytics */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-P4HQGXEWW9" />
@@ -51,7 +62,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <NextIntlClientProvider messages={messages}>
+          {children}
+        </NextIntlClientProvider>
+      </body>
     </html>
   );
 }

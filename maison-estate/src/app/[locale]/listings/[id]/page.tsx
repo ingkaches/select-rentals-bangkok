@@ -3,10 +3,11 @@ import { notFound } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { fetchProperties } from '@/lib/sheets';
-import { BUILDING_DATA, unitLabel } from '@/lib/buildings';
+import { getBuildingData, unitLabel, directionLabel } from '@/lib/buildings';
+import type { Locale } from '@/lib/types';
 import ListingDetailClient from './ListingDetailClient';
 
-type Props = { params: Promise<{ id: string }> };
+type Props = { params: Promise<{ id: string; locale: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
@@ -22,21 +23,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: `${prop.unitType} for rent at ${prop.project}. ${prop.area} sqm, ฿${price.toLocaleString('th-TH')}/mo. No tenant fees. Book a free viewing today.`,
     openGraph: {
       title: `${prop.project} — ${label}`,
-      description: `฿${price.toLocaleString('th-TH')}/mo · ${prop.area} sqm · ${prop.direction || 'Bangkok'}`,
+      description: `฿${price.toLocaleString('th-TH')}/mo · ${prop.area} sqm · ${directionLabel(prop.direction) || 'Bangkok'}`,
       type: 'website',
     },
   };
 }
 
 export default async function ListingDetailPage({ params }: Props) {
-  const { id } = await params;
+  const { id, locale } = await params;
   const properties = await fetchProperties().catch(() => []);
   const [project, unit] = decodeURIComponent(id).split('|');
   const prop = properties.find(p => p.project === project && p.unit === unit);
 
   if (!prop) notFound();
 
-  const bdata = BUILDING_DATA[prop.project] ?? null;
+  const bdata = getBuildingData(prop.project, locale as Locale);
   const related = properties
     .filter(p => p.project === prop.project && p.unit !== prop.unit)
     .slice(0, 3);

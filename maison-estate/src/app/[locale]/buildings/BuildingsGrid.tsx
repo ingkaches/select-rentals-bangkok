@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { SCRIPT_URL, extractFolderId } from '@/lib/buildings';
+import { useTranslations, useLocale } from 'next-intl';
+import { SCRIPT_URL, extractFolderId, resolveDriveImageUrl } from '@/lib/buildings';
 
 const BG = [
   'linear-gradient(135deg,#1a2a1a,#0a1a2a)',
@@ -12,34 +13,34 @@ const BG = [
   'linear-gradient(135deg,#1a2a2a,#2a2a1a)',
 ];
 
-const photoCache: Record<string, string[] | Promise<string[]>> = {};
+const idCache: Record<string, string[] | Promise<string[]>> = {};
 
-async function loadFirstPhoto(driveUrl: string): Promise<string> {
-  const folderId = extractFolderId(driveUrl);
-  if (!folderId || !SCRIPT_URL) return '';
-  if (Array.isArray(photoCache[folderId])) {
-    return (photoCache[folderId] as string[])[0] ?? '';
-  }
-  if (photoCache[folderId]) {
-    const imgs = await (photoCache[folderId] as Promise<string[]>);
-    return imgs[0] ?? '';
-  }
+async function fetchFileIds(folderId: string): Promise<string[]> {
+  if (Array.isArray(idCache[folderId])) return idCache[folderId] as string[];
+  if (idCache[folderId]) return idCache[folderId] as Promise<string[]>;
   const promise = (async () => {
     try {
       const res  = await fetch(`${SCRIPT_URL}?action=images&folder=${encodeURIComponent(folderId)}`);
       const data = await res.json();
       if (data.files?.length) {
-        const imgs = data.files.map((f: { id: string }) => `https://lh3.googleusercontent.com/d/${f.id}`);
-        photoCache[folderId] = imgs;
-        return imgs;
+        const ids = data.files.map((f: { id: string }) => f.id);
+        idCache[folderId] = ids;
+        return ids;
       }
     } catch { /* ignore */ }
-    photoCache[folderId] = [];
+    idCache[folderId] = [];
     return [] as string[];
   })();
-  photoCache[folderId] = promise;
-  const imgs = await promise;
-  return imgs[0] ?? '';
+  idCache[folderId] = promise;
+  return promise;
+}
+
+async function loadFirstPhoto(driveUrl: string): Promise<string> {
+  const folderId = extractFolderId(driveUrl);
+  if (!folderId || !SCRIPT_URL) return '';
+  const ids = await fetchFileIds(folderId);
+  if (!ids.length) return '';
+  return resolveDriveImageUrl(ids[0]);
 }
 
 interface Building {
@@ -55,6 +56,8 @@ interface Building {
 
 function BuildingCard({ bldg, index }: { bldg: Building; index: number }) {
   const [bgImg, setBgImg] = useState('');
+  const locale = useLocale();
+  const tCommon = useTranslations('common');
 
   useEffect(() => {
     if (!bldg.driveUrl) return;
@@ -65,7 +68,7 @@ function BuildingCard({ bldg, index }: { bldg: Building; index: number }) {
 
   return (
     <a
-      href={`/buildings/${slug}`}
+      href={`/${locale}/buildings/${slug}`}
       className="property-card"
       style={{ animationDelay: `${(index % 3) * 0.08}s`, textDecoration: 'none', display: 'block' }}
     >
@@ -75,12 +78,12 @@ function BuildingCard({ bldg, index }: { bldg: Building; index: number }) {
           style={bgImg ? { backgroundImage: `url(${bgImg})` } : { background: BG[index % BG.length] }}
         />
         <div className="card-overlay">
-          <button className="overlay-btn">View Units →</button>
+          <button className="overlay-btn">{tCommon('viewUnits')}</button>
         </div>
         {/* Available count badge */}
         <div className="card-badge">
           <div className="badge-dot" />
-          {bldg.count} unit{bldg.count !== 1 ? 's' : ''} available
+          {tCommon('unitsAvailable', { count: bldg.count })}
         </div>
         {/* Area tag */}
         {bldg.area && (
@@ -92,14 +95,14 @@ function BuildingCard({ bldg, index }: { bldg: Building; index: number }) {
         <div className="card-name">{bldg.name}</div>
         <div className="card-specs">
           {bldg.bts   && <span className="spec">{bldg.bts}</span>}
-          {bldg.floors && <span className="spec">{bldg.floors} floors</span>}
-          {bldg.year  && <span className="spec">Built {bldg.year}</span>}
+          {bldg.floors && <span className="spec">{bldg.floors} {tCommon('floorsSuffix')}</span>}
+          {bldg.year  && <span className="spec">{tCommon('builtYear', { year: bldg.year })}</span>}
         </div>
         <div className="card-footer">
           <div className="card-price" style={{ fontSize: '18px' }}>
-            {bldg.count} <span>unit{bldg.count !== 1 ? 's' : ''} available</span>
+            {tCommon('unitsAvailable', { count: bldg.count })}
           </div>
-          <div className="card-avail">View →</div>
+          <div className="card-avail">{tCommon('view')}</div>
         </div>
       </div>
     </a>
@@ -108,6 +111,7 @@ function BuildingCard({ bldg, index }: { bldg: Building; index: number }) {
 
 export default function BuildingsGrid({ buildings }: { buildings: Building[] }) {
   const [areaFilter, setAreaFilter] = useState('');
+  const t = useTranslations('buildings');
   const areas = [...new Set(buildings.map(b => b.area))].filter(Boolean).sort();
 
   const filtered = areaFilter ? buildings.filter(b => b.area === areaFilter) : buildings;
@@ -117,10 +121,10 @@ export default function BuildingsGrid({ buildings }: { buildings: Building[] }) 
       <div className="page-header">
         <div className="page-header-inner">
           <div>
-            <div className="page-eyebrow">Bangkok · Sansiri Portfolio</div>
-            <h1 className="page-title">Our <em>Buildings</em></h1>
+            <div className="page-eyebrow">{t('eyebrow')}</div>
+            <h1 className="page-title">{t('titlePre')} <em>{t('titleEm')}</em></h1>
           </div>
-          <div className="count-badge">{buildings.length} buildings · {buildings.reduce((s, b) => s + b.count, 0)} units</div>
+          <div className="count-badge">{t('countBadge', { buildings: buildings.length, units: buildings.reduce((s, b) => s + b.count, 0) })}</div>
         </div>
       </div>
 
@@ -128,16 +132,16 @@ export default function BuildingsGrid({ buildings }: { buildings: Building[] }) 
       <div className="listings-toolbar">
         <div className="filter-bar">
           <div className="filter-group">
-            <div className="filter-label">Area</div>
+            <div className="filter-label">{t('areaLabel')}</div>
             <div className="filter-pills">
-              <button className={`filter-pill${!areaFilter ? ' active' : ''}`} onClick={() => setAreaFilter('')}>All</button>
+              <button className={`filter-pill${!areaFilter ? ' active' : ''}`} onClick={() => setAreaFilter('')}>{t('areaAll')}</button>
               {areas.map(a => (
                 <button key={a} className={`filter-pill${areaFilter === a ? ' active' : ''}`} onClick={() => setAreaFilter(a)}>{a}</button>
               ))}
             </div>
           </div>
           <div className="filter-actions">
-            <span className="filter-count">Showing {filtered.length} building{filtered.length !== 1 ? 's' : ''}</span>
+            <span className="filter-count">{t('showing', { count: filtered.length })}</span>
           </div>
         </div>
       </div>

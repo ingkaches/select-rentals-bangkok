@@ -1,11 +1,14 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Property } from '@/lib/types';
+import { useTranslations, useLocale } from 'next-intl';
+import { Property, Locale } from '@/lib/types';
 import {
-  BUILDING_DATA, SCRIPT_URL,
-  getAreaGroup, unitLabel, cardRoomType, parseFloor, extractFolderId,
+  getBuildingData, SCRIPT_URL,
+  getAreaGroup, unitLabel, directionLabel, cardRoomType, parseFloor, extractFolderId, driveImageUrl, driveImgOnError,
+  extractDriveFileId, resolveDriveImageUrl,
 } from '@/lib/buildings';
+import ViewingModal from '@/components/ViewingModal';
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -31,7 +34,7 @@ async function loadPhotos(driveUrl: string): Promise<string[]> {
       const res  = await fetch(`${SCRIPT_URL}?action=images&folder=${encodeURIComponent(folderId)}`);
       const data = await res.json();
       if (data.files?.length) {
-        const imgs = data.files.map((f: { id: string }) => `https://lh3.googleusercontent.com/d/${f.id}`);
+        const imgs = data.files.map((f: { id: string }) => driveImageUrl(f.id));
         photoCache[folderId] = imgs;
         return imgs;
       }
@@ -52,6 +55,30 @@ type ModalState   = { type: 'unit'; prop: Property; images: string[]; loading: b
                   | { type: 'viewing'; prop: Property }
                   | null;
 
+// ── UnitThumb ─────────────────────────────────────────────────────────────────
+
+function UnitThumb({ driveUrl }: { driveUrl?: string }) {
+  const [img, setImg] = useState('');
+
+  useEffect(() => {
+    if (!driveUrl) return;
+    loadPhotos(driveUrl).then(imgs => { if (imgs[0]) setImg(imgs[0]); });
+  }, [driveUrl]);
+
+  return (
+    <div className="unit-thumb">
+      {img ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={img} alt="" onError={driveImgOnError} />
+      ) : (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.9">
+          <rect x="3" y="3" width="18" height="18" rx="1"/><path d="M9 21V9h6v12M3 9l9-6 9 6"/>
+        </svg>
+      )}
+    </div>
+  );
+}
+
 // ── PropertyCard ─────────────────────────────────────────────────────────────
 
 function PropertyCard({ prop, index, onClick }: {
@@ -59,13 +86,16 @@ function PropertyCard({ prop, index, onClick }: {
   index: number;
   onClick: () => void;
 }) {
+  const locale = useLocale();
+  const t = useTranslations('common');
   const [bgImg, setBgImg] = useState('');
   const bgDefault = BG[index % BG.length];
 
   useEffect(() => {
     if (!prop.driveUrl) return;
     loadPhotos(prop.driveUrl).then(imgs => {
-      if (imgs[0]) setBgImg(imgs[0]);
+      const id = imgs[0] && extractDriveFileId(imgs[0]);
+      if (id) resolveDriveImageUrl(id).then(url => { if (url) setBgImg(url); });
     });
   }, [prop.driveUrl]);
 
@@ -73,7 +103,7 @@ function PropertyCard({ prop, index, onClick }: {
   const floorNum = Number(fp.floor);
   const showFloor = floorNum > 0 && floorNum <= 150;
   const price = Number(prop.price);
-  const detailUrl = `/listings/${encodeURIComponent(prop.project + '|' + prop.unit)}`;
+  const detailUrl = `/${locale}/listings/${encodeURIComponent(prop.project + '|' + prop.unit)}`;
 
   return (
     <a
@@ -90,11 +120,11 @@ function PropertyCard({ prop, index, onClick }: {
           }
         />
         <div className="card-overlay">
-          <button className="overlay-btn">View Details →</button>
+          <button className="overlay-btn">{t('viewDetails')}</button>
         </div>
         <div className="card-badge">
           <div className="badge-dot" />
-          Available
+          {t('available')}
         </div>
         {showFloor && (
           <div className="card-floor">FL. {fp.floor}</div>
@@ -102,17 +132,17 @@ function PropertyCard({ prop, index, onClick }: {
       </div>
       <div className="card-info">
         <div className="card-building">{prop.project}</div>
-        <div className="card-name">{unitLabel(prop.unitType, prop.unit, prop.area)}</div>
+        <div className="card-name">{unitLabel(prop.unitType, prop.unit, prop.area, locale as Locale)}</div>
         <div className="card-specs">
-          {prop.area      && <span className="spec">{prop.area} sqm</span>}
+          {prop.area      && <span className="spec">{prop.area} {t('sqm')}</span>}
           {prop.unitType  && prop.unitType !== 'n/a' && <span className="spec">{prop.unitType}</span>}
-          {prop.direction && <span className="spec">{prop.direction}</span>}
+          {prop.direction && <span className="spec">{directionLabel(prop.direction, locale as Locale)}</span>}
         </div>
         <div className="card-footer">
           <div className="card-price">
-            {price ? `฿${price.toLocaleString('th-TH')}` : '—'} <span>/ mo</span>
+            {price ? `฿${price.toLocaleString('th-TH')}` : '—'} <span>{t('perMonth')}</span>
           </div>
-          <div className="card-avail">View →</div>
+          <div className="card-avail">{t('view')}</div>
         </div>
       </div>
     </a>
@@ -127,7 +157,11 @@ function BuildingView({ name, rooms, onBack, onOpenUnit }: {
   onBack: () => void;
   onOpenUnit: (prop: Property) => void;
 }) {
-  const bdata = BUILDING_DATA[name] ?? null;
+  const locale = useLocale();
+  const t = useTranslations('buildingDetail');
+  const tCommon = useTranslations('common');
+  const tNav = useTranslations('nav');
+  const bdata = getBuildingData(name, locale as Locale);
   const [slideIdx, setSlideIdx] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const images = bdata?.facilities ? null : null; // no building images (use placeholder)
@@ -150,7 +184,7 @@ function BuildingView({ name, rooms, onBack, onOpenUnit }: {
         <div className="bldg-hero-overlay" />
         <div className="bldg-hero-content">
           <button className="back-link" onClick={onBack}>
-            ← All Listings
+            ← {tNav('allListings')}
           </button>
           <div className="bldg-name" style={{ marginTop: '16px' }}>{name}</div>
           <div className="bldg-meta">
@@ -168,7 +202,7 @@ function BuildingView({ name, rooms, onBack, onOpenUnit }: {
             )}
             <span className="bldg-meta-item">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-              {rooms.length} unit{rooms.length !== 1 ? 's' : ''} available
+              {tCommon('unitsAvailable', { count: rooms.length })}
             </span>
           </div>
         </div>
@@ -180,24 +214,24 @@ function BuildingView({ name, rooms, onBack, onOpenUnit }: {
           {bdata.floors && (
             <div className="bldg-stat">
               <div className="bldg-stat-val">{bdata.floors}</div>
-              <div className="bldg-stat-label">Floors</div>
+              <div className="bldg-stat-label">{tCommon('floors')}</div>
             </div>
           )}
           {bdata.units && (
             <div className="bldg-stat">
               <div className="bldg-stat-val">{Number(bdata.units).toLocaleString()}</div>
-              <div className="bldg-stat-label">Total Units</div>
+              <div className="bldg-stat-label">{tCommon('totalUnits')}</div>
             </div>
           )}
           {bdata.year && (
             <div className="bldg-stat">
               <div className="bldg-stat-val">{bdata.year}</div>
-              <div className="bldg-stat-label">Completed</div>
+              <div className="bldg-stat-label">{tCommon('completed')}</div>
             </div>
           )}
           <div className="bldg-stat">
             <div className="bldg-stat-val" style={{ color: 'var(--green)' }}>{rooms.length}</div>
-            <div className="bldg-stat-label">Available Now</div>
+            <div className="bldg-stat-label">{tCommon('availableNow')}</div>
           </div>
         </div>
       )}
@@ -218,7 +252,7 @@ function BuildingView({ name, rooms, onBack, onOpenUnit }: {
 
       {/* Units */}
       <div className="bldg-units">
-        <div className="bldg-units-title">Available Units</div>
+        <div className="bldg-units-title">{t('availableUnitsTitle')}</div>
         <div className="unit-list">
           {sortedRooms.map((r, i) => {
             const fp = parseFloor(r.floor);
@@ -228,23 +262,24 @@ function BuildingView({ name, rooms, onBack, onOpenUnit }: {
 
             return (
               <div key={i} className="unit-row" onClick={() => onOpenUnit(r)}>
-                <div className="unit-type-badge">{unitLabel(r.unitType, r.unit, r.area)}</div>
+                <UnitThumb driveUrl={r.driveUrl} />
+                <div className="unit-type-badge">{unitLabel(r.unitType, r.unit, r.area, locale as Locale)}</div>
                 <div className="unit-row-specs">
                   {floorStr && floorStr !== '—' && (
                     <span className="unit-row-spec"><strong>{floorStr}</strong></span>
                   )}
                   {r.area && (
-                    <span className="unit-row-spec"><strong>{r.area}</strong> sqm</span>
+                    <span className="unit-row-spec"><strong>{r.area}</strong> {tCommon('sqm')}</span>
                   )}
                   {r.direction && (
-                    <span className="unit-row-spec">{r.direction}</span>
+                    <span className="unit-row-spec">{directionLabel(r.direction, locale as Locale)}</span>
                   )}
                   {r.unit && (
-                    <span className="unit-row-spec">Unit <strong>{r.unit}</strong></span>
+                    <span className="unit-row-spec">{tCommon('unitPrefix')} <strong>{r.unit}</strong></span>
                   )}
                 </div>
                 <div className="unit-row-price">
-                  {price ? `฿${price.toLocaleString('th-TH')}` : 'POA'} <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontFamily: 'var(--font-dm-sans)' }}>/mo</span>
+                  {price ? `฿${price.toLocaleString('th-TH')}` : tCommon('poa')} <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontFamily: 'var(--font-dm-sans)' }}>{tCommon('perMonth')}</span>
                 </div>
                 <div className="unit-row-arrow">›</div>
               </div>
@@ -265,6 +300,9 @@ function UnitModal({ prop, images, loading, onClose, onSchedule }: {
   onClose: () => void;
   onSchedule: () => void;
 }) {
+  const locale = useLocale();
+  const t = useTranslations('common');
+  const tDetail = useTranslations('listingDetail');
   const [slideIdx, setSlideIdx] = useState(0);
 
   useEffect(() => { setSlideIdx(0); }, [images]);
@@ -294,14 +332,14 @@ function UnitModal({ prop, images, loading, onClose, onSchedule }: {
                 <rect x="3" y="3" width="18" height="18" rx="1"/>
                 <path d="M9 21V9h6v12M3 9l9-6 9 6"/>
               </svg>
-              <span style={{ fontSize: '12px' }}>Photos coming soon</span>
+              <span style={{ fontSize: '12px' }}>{t('photosComingSoon')}</span>
             </div>
           ) : (
             <>
               {images.map((url, i) => (
                 <div key={i} className={`unit-gallery-slide${i === slideIdx ? ' active' : ''}`}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={url} alt={`Unit photo ${i + 1}`} />
+                  <img src={url} alt={`${prop.project} ${i + 1}`} onError={driveImgOnError} />
                 </div>
               ))}
               {images.length > 1 && (
@@ -324,152 +362,22 @@ function UnitModal({ prop, images, loading, onClose, onSchedule }: {
       {/* Info */}
       <div className="unit-info-col">
         <div className="unit-info-building">{prop.project}</div>
-        <div className="unit-info-type">{unitLabel(prop.unitType, prop.unit, prop.area)}</div>
+        <div className="unit-info-type">{unitLabel(prop.unitType, prop.unit, prop.area, locale as Locale)}</div>
 
         <div className="unit-spec-list">
-          {floorStr && <div className="unit-spec-row"><span className="unit-spec-label">Floor</span><span className="unit-spec-val">{floorStr}</span></div>}
-          {prop.area && <div className="unit-spec-row"><span className="unit-spec-label">Size</span><span className="unit-spec-val">{prop.area} sqm</span></div>}
-          {prop.direction && <div className="unit-spec-row"><span className="unit-spec-label">Direction</span><span className="unit-spec-val">{prop.direction}</span></div>}
-          {prop.unit && <div className="unit-spec-row"><span className="unit-spec-label">Unit No.</span><span className="unit-spec-val">{prop.unit}</span></div>}
+          {floorStr && <div className="unit-spec-row"><span className="unit-spec-label">{tDetail('floor')}</span><span className="unit-spec-val">{floorStr}</span></div>}
+          {prop.area && <div className="unit-spec-row"><span className="unit-spec-label">{tDetail('size')}</span><span className="unit-spec-val">{prop.area} {t('sqm')}</span></div>}
+          {prop.direction && <div className="unit-spec-row"><span className="unit-spec-label">{tDetail('direction')}</span><span className="unit-spec-val">{directionLabel(prop.direction, locale as Locale)}</span></div>}
+          {prop.unit && <div className="unit-spec-row"><span className="unit-spec-label">{tDetail('unitNo')}</span><span className="unit-spec-val">{prop.unit}</span></div>}
         </div>
 
         <div className="unit-info-price">
-          {price ? `฿${price.toLocaleString('th-TH')}` : 'Price on request'}
-          {price ? <span> / month</span> : null}
+          {price ? `฿${price.toLocaleString('th-TH')}` : t('priceOnRequest')}
+          {price ? <span>{t('perMonthLong')}</span> : null}
         </div>
 
-        <button className="unit-cta-btn" onClick={onSchedule}>Schedule a Viewing →</button>
+        <button className="unit-cta-btn" onClick={onSchedule}>{t('scheduleViewing')}</button>
       </div>
-    </div>
-  );
-}
-
-// ── ViewingModal ──────────────────────────────────────────────────────────────
-
-function ViewingModal({ prop, onClose }: { prop: Property; onClose: () => void }) {
-  const [contactMethod, setContactMethod] = useState<'WhatsApp' | 'LINE'>('WhatsApp');
-  const [submitted, setSubmitted] = useState(false);
-  const [sending, setSending] = useState(false);
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setSending(true);
-    const fd = new FormData(e.currentTarget);
-    const payload = {
-      timestamp:     new Date().toISOString(),
-      building:      prop.project,
-      unit:          prop.unit,
-      floor:         prop.floor,
-      unitType:      prop.unitType,
-      area:          String(prop.area ?? ''),
-      price:         String(prop.price ?? ''),
-      name:          fd.get('name'),
-      nationality:   fd.get('nationality'),
-      persons:       fd.get('persons'),
-      leaseDuration: fd.get('leaseDuration'),
-      moveInDate:    fd.get('moveInDate'),
-      phone:         fd.get('phone'),
-      contactMethod: contactMethod,
-      contactId:     fd.get('contactId'),
-      viewingDate:   fd.get('viewingDate') ?? '',
-      viewingTime:   fd.get('viewingTime') ?? '',
-      notes:         fd.get('notes') ?? '',
-      status:        'New Lead',
-    };
-
-    fetch(SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(payload),
-    }).catch(() => {});
-
-    setTimeout(() => { setSending(false); setSubmitted(true); }, 600);
-  }
-
-  return (
-    <div className="modal-box viewing-modal-box" style={{ position: 'relative' }}>
-      <button className="modal-close" onClick={onClose} style={{ position: 'absolute' }}>×</button>
-
-      {submitted ? (
-        <div className="vf-success">
-          <div className="vf-success-icon">✓</div>
-          <div className="vf-success-title">Request Received!</div>
-          <p className="vf-success-sub">We'll confirm your viewing within 2 hours. Thank you!</p>
-        </div>
-      ) : (
-        <>
-          <div className="viewing-header">
-            <div className="viewing-title">Schedule a Viewing</div>
-            <div className="viewing-sub">{prop.project} · {unitLabel(prop.unitType, prop.unit, prop.area)}</div>
-          </div>
-          <form onSubmit={handleSubmit}>
-            <div className="viewing-body">
-              <div className="vf-grid">
-                <div className="vf-field">
-                  <label className="vf-label">Full Name *</label>
-                  <input name="name" required className="vf-input" placeholder="Your name" />
-                </div>
-                <div className="vf-field">
-                  <label className="vf-label">Nationality</label>
-                  <input name="nationality" className="vf-input" placeholder="e.g. Thai, Japanese" />
-                </div>
-                <div className="vf-field">
-                  <label className="vf-label">Phone *</label>
-                  <input name="phone" required className="vf-input" placeholder="+66 81 234 5678" />
-                </div>
-                <div className="vf-field">
-                  <label className="vf-label">No. of Persons</label>
-                  <select name="persons" className="vf-select">
-                    <option>1</option><option>2</option><option>3</option><option>4+</option>
-                  </select>
-                </div>
-                <div className="vf-field">
-                  <label className="vf-label">Preferred Contact</label>
-                  <div className="vf-toggle">
-                    <button type="button" className={`vf-toggle-btn${contactMethod === 'WhatsApp' ? ' on' : ''}`} onClick={() => setContactMethod('WhatsApp')}>WhatsApp</button>
-                    <button type="button" className={`vf-toggle-btn${contactMethod === 'LINE' ? ' on' : ''}`} onClick={() => setContactMethod('LINE')}>LINE</button>
-                  </div>
-                </div>
-                <div className="vf-field">
-                  <label className="vf-label">{contactMethod === 'WhatsApp' ? 'WhatsApp Number *' : 'LINE ID *'}</label>
-                  <input name="contactId" required className="vf-input" placeholder={contactMethod === 'WhatsApp' ? '+66 81 234 5678' : '@yourlineid'} />
-                </div>
-                <div className="vf-field">
-                  <label className="vf-label">Lease Duration</label>
-                  <select name="leaseDuration" className="vf-select">
-                    <option>6 months</option><option>1 year</option><option>2 years</option><option>Other</option>
-                  </select>
-                </div>
-                <div className="vf-field">
-                  <label className="vf-label">Move-in Date</label>
-                  <input name="moveInDate" type="date" className="vf-input" />
-                </div>
-                <div className="vf-field">
-                  <label className="vf-label">Preferred Viewing Date</label>
-                  <input name="viewingDate" type="date" className="vf-input" />
-                </div>
-                <div className="vf-field">
-                  <label className="vf-label">Preferred Time</label>
-                  <select name="viewingTime" className="vf-select">
-                    <option value="">Anytime</option>
-                    <option>Morning (9–12)</option><option>Afternoon (13–17)</option><option>Evening (17–19)</option>
-                  </select>
-                </div>
-                <div className="vf-field full">
-                  <label className="vf-label">Notes</label>
-                  <textarea name="notes" className="vf-textarea" placeholder="Any special requirements..." />
-                </div>
-              </div>
-            </div>
-            <div className="viewing-footer">
-              <button type="submit" className="vf-submit-btn" disabled={sending}>
-                {sending ? 'Sending…' : 'Submit Viewing Request →'}
-              </button>
-            </div>
-          </form>
-        </>
-      )}
     </div>
   );
 }
@@ -477,6 +385,7 @@ function ViewingModal({ prop, onClose }: { prop: Property; onClose: () => void }
 // ── Main ListingsClient ───────────────────────────────────────────────────────
 
 export default function ListingsClient({ properties }: { properties: Property[] }) {
+  const t = useTranslations('listings');
   const [priceFilter, setPriceFilter]   = useState<PriceFilter>('any');
   const [roomFilter, setRoomFilter]     = useState<RoomFilter>('all');
   const [activeProject, setActiveProject] = useState('');
@@ -595,11 +504,11 @@ export default function ListingsClient({ properties }: { properties: Property[] 
       <div className="page-header">
         <div className="page-header-inner">
           <div>
-            <div className="page-eyebrow">Bangkok · Verified Sansiri Properties</div>
-            <h1 className="page-title">All <em>Available</em> Listings</h1>
+            <div className="page-eyebrow">{t('eyebrow')}</div>
+            <h1 className="page-title">{t('titlePre')} <em>{t('titleEm')}</em> {t('titlePost')}</h1>
           </div>
           <div>
-            <div className="count-badge">{filtered.length} Available</div>
+            <div className="count-badge">{t('countBadge', { count: filtered.length })}</div>
           </div>
         </div>
       </div>
@@ -609,7 +518,7 @@ export default function ListingsClient({ properties }: { properties: Property[] 
         <div className="filter-bar">
           {/* Price */}
           <div className="filter-group">
-            <div className="filter-label">Price</div>
+            <div className="filter-label">{t('priceLabel')}</div>
             <div className="filter-pills">
               {(['any','under20k','20k-50k','over50k'] as PriceFilter[]).map(v => (
                 <button
@@ -617,7 +526,7 @@ export default function ListingsClient({ properties }: { properties: Property[] 
                   className={`filter-pill${priceFilter === v ? ' active' : ''}`}
                   onClick={() => setPriceFilter(v)}
                 >
-                  {v === 'any' ? 'Any' : v === 'under20k' ? '< ฿20k' : v === '20k-50k' ? '฿20k–50k' : '> ฿50k'}
+                  {v === 'any' ? t('priceAny') : v === 'under20k' ? t('priceUnder20k') : v === '20k-50k' ? t('price20k50k') : t('priceOver50k')}
                 </button>
               ))}
             </div>
@@ -625,7 +534,7 @@ export default function ListingsClient({ properties }: { properties: Property[] 
 
           {/* Rooms */}
           <div className="filter-group">
-            <div className="filter-label">Type</div>
+            <div className="filter-label">{t('typeLabel')}</div>
             <div className="filter-pills">
               {(['all','studio','1-bed','2-bed','3-bed'] as RoomFilter[]).map(v => (
                 <button
@@ -633,7 +542,7 @@ export default function ListingsClient({ properties }: { properties: Property[] 
                   className={`filter-pill${roomFilter === v ? ' active' : ''}`}
                   onClick={() => setRoomFilter(v)}
                 >
-                  {v === 'all' ? 'All' : v === 'studio' ? 'Studio' : v === '1-bed' ? '1 Bed' : v === '2-bed' ? '2 Beds' : '3+ Beds'}
+                  {v === 'all' ? t('typeAll') : v === 'studio' ? t('typeStudio') : v === '1-bed' ? t('type1bed') : v === '2-bed' ? t('type2bed') : t('type3bed')}
                 </button>
               ))}
             </div>
@@ -641,21 +550,21 @@ export default function ListingsClient({ properties }: { properties: Property[] 
 
           {/* Project dropdown */}
           <div className="filter-group" ref={projectRef}>
-            <div className="filter-label">Project</div>
+            <div className="filter-label">{t('projectLabel')}</div>
             <div className="csel-wrap">
               <button
                 className={`csel-trigger${projectOpen ? ' open' : ''}`}
                 onClick={() => setProjectOpen(o => !o)}
               >
                 <span className={`csel-label${activeProject ? ' active' : ''}`}>
-                  {activeProject || 'All Projects'}
+                  {activeProject || t('allProjects')}
                 </span>
                 <span className="csel-chevron">▾</span>
               </button>
               <div className={`csel-panel${projectOpen ? ' open' : ''}`}>
                 <div className="csel-panel-inner">
                   <button className={`csel-opt${!activeProject ? ' active' : ''}`} onClick={() => { setActiveProject(''); setProjectOpen(false); }}>
-                    All Projects
+                    {t('allProjects')}
                   </button>
                   {projects.map(p => (
                     <button key={p} className={`csel-opt${activeProject === p ? ' active' : ''}`} onClick={() => { setActiveProject(p); setProjectOpen(false); }}>
@@ -669,21 +578,21 @@ export default function ListingsClient({ properties }: { properties: Property[] 
 
           {/* Area dropdown */}
           <div className="filter-group" ref={areaRef}>
-            <div className="filter-label">Area</div>
+            <div className="filter-label">{t('areaLabel')}</div>
             <div className="csel-wrap">
               <button
                 className={`csel-trigger${areaOpen ? ' open' : ''}`}
                 onClick={() => setAreaOpen(o => !o)}
               >
                 <span className={`csel-label${activeArea ? ' active' : ''}`}>
-                  {activeArea || 'All Areas'}
+                  {activeArea || t('allAreas')}
                 </span>
                 <span className="csel-chevron">▾</span>
               </button>
               <div className={`csel-panel${areaOpen ? ' open' : ''}`}>
                 <div className="csel-panel-inner">
                   <button className={`csel-opt${!activeArea ? ' active' : ''}`} onClick={() => { setActiveArea(''); setAreaOpen(false); }}>
-                    All Areas
+                    {t('allAreas')}
                   </button>
                   {areas.map(a => (
                     <button key={a} className={`csel-opt${activeArea === a ? ' active' : ''}`} onClick={() => { setActiveArea(a); setAreaOpen(false); }}>
@@ -696,9 +605,9 @@ export default function ListingsClient({ properties }: { properties: Property[] 
           </div>
 
           <div className="filter-actions">
-            <span className="filter-count">Showing {filtered.length} listing{filtered.length !== 1 ? 's' : ''}</span>
+            <span className="filter-count">{t('showing', { count: filtered.length })}</span>
             <button className={`filter-clear${isFiltered ? ' visible' : ''}`} onClick={clearFilters}>
-              Clear filters
+              {t('clearFilters')}
             </button>
           </div>
         </div>
@@ -708,7 +617,7 @@ export default function ListingsClient({ properties }: { properties: Property[] 
       <div className="listings-body">
         <div className="properties-grid">
           {filtered.length === 0 ? (
-            <div className="listings-empty">No properties match your filters.</div>
+            <div className="listings-empty">{t('empty')}</div>
           ) : (
             filtered.map((prop, i) => (
               <PropertyCard

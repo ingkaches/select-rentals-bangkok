@@ -1,11 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { SCRIPT_URL } from '@/lib/buildings';
 
 export default function ContactPage() {
+  const t = useTranslations('contact');
+  const tViewing = useTranslations('viewing');
   const [contactMethod, setContactMethod] = useState<'WhatsApp' | 'LINE'>('WhatsApp');
   const [submitted, setSubmitted]         = useState(false);
   const [sending, setSending]             = useState(false);
@@ -47,8 +50,8 @@ export default function ContactPage() {
         <div className="page-header">
           <div className="page-header-inner">
             <div>
-              <div className="page-eyebrow">Get In Touch</div>
-              <h1 className="page-title">Contact <em>Us</em></h1>
+              <div className="page-eyebrow">{t('eyebrow')}</div>
+              <h1 className="page-title">{t('titlePre')} <em>{t('titleEm')}</em></h1>
             </div>
           </div>
         </div>
@@ -57,10 +60,10 @@ export default function ContactPage() {
           {/* Left — info */}
           <div>
             <h2 style={{ fontFamily: 'var(--font-cormorant)', fontSize: '32px', fontWeight: 400, color: 'var(--primary)', marginBottom: '20px', lineHeight: 1.2 }}>
-              Tell us what you're looking for
+              {t('heading')}
             </h2>
             <p style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: 1.8, marginBottom: '40px' }}>
-              Fill in the form and we'll get back to you within 2 hours. Or reach us directly on WhatsApp or LINE.
+              {t('body')}
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -82,56 +85,56 @@ export default function ContactPage() {
             {submitted ? (
               <div className="vf-success" style={{ paddingTop: '60px' }}>
                 <div className="vf-success-icon">✓</div>
-                <div className="vf-success-title">Message Received!</div>
-                <p className="vf-success-sub">We'll be in touch within 2 hours. Thank you!</p>
+                <div className="vf-success-title">{t('messageReceived')}</div>
+                <p className="vf-success-sub">{t('messageReceivedSub')}</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
                 <div className="vf-grid">
                   <div className="vf-field">
-                    <label className="vf-label">Full Name *</label>
-                    <input name="name" required className="vf-input" placeholder="Your name" />
+                    <label className="vf-label">{tViewing('fullName')}</label>
+                    <input name="name" required className="vf-input" placeholder={tViewing('fullNamePlaceholder')} />
                   </div>
                   <div className="vf-field">
-                    <label className="vf-label">Nationality</label>
-                    <input name="nationality" className="vf-input" placeholder="e.g. Thai, Japanese" />
+                    <label className="vf-label">{tViewing('nationality')}</label>
+                    <input name="nationality" className="vf-input" placeholder={tViewing('nationalityPlaceholder')} />
                   </div>
                   <div className="vf-field">
-                    <label className="vf-label">Phone *</label>
-                    <input name="phone" required className="vf-input" placeholder="+66 81 234 5678" />
+                    <label className="vf-label">{tViewing('phone')}</label>
+                    <input name="phone" required className="vf-input" placeholder={tViewing('phonePlaceholder')} />
                   </div>
                   <div className="vf-field">
-                    <label className="vf-label">Preferred Contact</label>
+                    <label className="vf-label">{tViewing('preferredContact')}</label>
                     <div className="vf-toggle">
                       <button type="button" className={`vf-toggle-btn${contactMethod === 'WhatsApp' ? ' on' : ''}`} onClick={() => setContactMethod('WhatsApp')}>WhatsApp</button>
                       <button type="button" className={`vf-toggle-btn${contactMethod === 'LINE' ? ' on' : ''}`} onClick={() => setContactMethod('LINE')}>LINE</button>
                     </div>
                   </div>
                   <div className="vf-field full">
-                    <label className="vf-label">{contactMethod === 'WhatsApp' ? 'WhatsApp Number *' : 'LINE ID *'}</label>
-                    <input name="contactId" required className="vf-input" placeholder={contactMethod === 'WhatsApp' ? '+66 81 234 5678' : '@yourlineid'} />
+                    <label className="vf-label">{contactMethod === 'WhatsApp' ? tViewing('whatsappNumber') : tViewing('lineId')}</label>
+                    <input name="contactId" required className="vf-input" placeholder={contactMethod === 'WhatsApp' ? tViewing('phonePlaceholder') : tViewing('lineIdPlaceholder')} />
                   </div>
                   <div className="vf-field">
-                    <label className="vf-label">Interested In (Building / Area)</label>
-                    <input name="interest" className="vf-input" placeholder="e.g. Thonglor, KHUN BY YOO" />
+                    <label className="vf-label">{t('interestedIn')}</label>
+                    <input name="interest" className="vf-input" placeholder={t('interestedInPlaceholder')} />
                   </div>
                   <div className="vf-field">
-                    <label className="vf-label">Lease Duration</label>
+                    <label className="vf-label">{tViewing('leaseDuration')}</label>
                     <select name="leaseDuration" className="vf-select">
-                      <option>6 months</option><option>1 year</option><option>2 years</option><option>Other</option>
+                      <option>{tViewing('lease6m')}</option><option>{tViewing('lease1y')}</option><option>{tViewing('lease2y')}</option><option>{tViewing('leaseOther')}</option>
                     </select>
                   </div>
                   <div className="vf-field full">
-                    <label className="vf-label">Move-in Date</label>
+                    <label className="vf-label">{tViewing('moveInDate')}</label>
                     <input name="moveInDate" type="date" className="vf-input" />
                   </div>
                   <div className="vf-field full">
-                    <label className="vf-label">Message</label>
-                    <textarea name="notes" className="vf-textarea" style={{ minHeight: '100px' }} placeholder="Tell us your requirements..." />
+                    <label className="vf-label">{t('message')}</label>
+                    <textarea name="notes" className="vf-textarea" style={{ minHeight: '100px' }} placeholder={t('messagePlaceholder')} />
                   </div>
                 </div>
                 <button type="submit" className="vf-submit-btn" style={{ marginTop: '24px' }} disabled={sending}>
-                  {sending ? 'Sending…' : 'Send Message →'}
+                  {sending ? tViewing('sending') : t('sendMessage')}
                 </button>
               </form>
             )}

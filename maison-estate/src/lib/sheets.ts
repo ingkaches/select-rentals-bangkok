@@ -42,14 +42,10 @@ function mapProject(raw: string): string {
   return PROJECT_NAME_MAP[t] ?? t.replace(/_+$/, '');
 }
 
+/** Extracts the raw compass code (N/S/E/W/NE/NW/SE/SW) — display formatting happens at render time via directionLabel(), which is locale-aware. */
 function parseDirection(raw: string): string {
   const m = String(raw).trim().match(/^(NE|NW|SE|SW|N|S|E|W)\b/i);
-  if (!m) return '';
-  const map: Record<string, string> = {
-    N:'North', S:'South', E:'East', W:'West',
-    NE:'Northeast', NW:'Northwest', SE:'Southeast', SW:'Southwest',
-  };
-  return (map[m[1].toUpperCase()] ?? m[1]) + ' Facing';
+  return m ? m[1].toUpperCase() : '';
 }
 
 export async function fetchProperties(): Promise<Property[]> {

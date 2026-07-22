@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Property, BuildingData } from '@/lib/types';
-import { SCRIPT_URL, unitLabel, parseFloor, extractFolderId } from '@/lib/buildings';
+import { useTranslations, useLocale } from 'next-intl';
+import { Property, BuildingData, Locale } from '@/lib/types';
+import { SCRIPT_URL, unitLabel, directionLabel, parseFloor, extractFolderId, driveImageUrl, driveImgOnError } from '@/lib/buildings';
 
 const BG = [
   'linear-gradient(135deg,#1a2a1a,#0a1a2a)',
@@ -17,7 +18,7 @@ async function fetchImages(driveUrl: string): Promise<string[]> {
   try {
     const res  = await fetch(`${SCRIPT_URL}?action=images&folder=${encodeURIComponent(folderId)}`);
     const data = await res.json();
-    if (data.files?.length) return data.files.map((f: { id: string }) => `https://lh3.googleusercontent.com/d/${f.id}`);
+    if (data.files?.length) return data.files.map((f: { id: string }) => driveImageUrl(f.id));
   } catch { /* ignore */ }
   return [];
 }
@@ -29,6 +30,10 @@ export default function ListingDetailClient({
   bdata:   BuildingData | null;
   related: Property[];
 }) {
+  const locale = useLocale();
+  const t = useTranslations('listingDetail');
+  const tCommon = useTranslations('common');
+  const tViewing = useTranslations('viewing');
   const [images,        setImages]        = useState<string[]>([]);
   const [imgIdx,        setImgIdx]        = useState(0);
   const [imgLoading,    setImgLoading]    = useState(true);
@@ -79,16 +84,16 @@ export default function ListingDetailClient({
 
   const fp    = parseFloor(prop.floor);
   const price = Number(prop.price);
-  const label = unitLabel(prop.unitType, prop.unit, prop.area);
+  const label = unitLabel(prop.unitType, prop.unit, prop.area, locale as Locale);
 
   return (
     <div style={{ paddingTop: '73px' }}>
 
       {/* ── Breadcrumb ── */}
       <div className="detail-breadcrumb">
-        <Link href="/listings" className="detail-back">← All Listings</Link>
+        <Link href={`/${locale}/listings`} className="detail-back">{t('allListings')}</Link>
         <span className="detail-sep">·</span>
-        <Link href={`/buildings/${encodeURIComponent(prop.project)}`} className="detail-back">
+        <Link href={`/${locale}/buildings/${encodeURIComponent(prop.project)}`} className="detail-back">
           {prop.project}
         </Link>
       </div>
@@ -102,12 +107,12 @@ export default function ListingDetailClient({
         )}
         {images.map((src, i) => (
           <div key={i} className={`detail-gallery-slide${i === imgIdx ? ' active' : ''}`}>
-            <img src={src} alt={`${label} photo ${i + 1}`} />
+            <img src={src} alt={`${label} photo ${i + 1}`} onError={driveImgOnError} />
           </div>
         ))}
         {!imgLoading && images.length === 0 && (
           <div className="detail-gallery-empty" style={{ background: BG[0] }}>
-            <span>Photos coming soon</span>
+            <span>{tCommon('photosComingSoon')}</span>
           </div>
         )}
         <div className="detail-gallery-overlay" />
@@ -142,25 +147,25 @@ export default function ListingDetailClient({
           <div className="detail-price-block">
             <div className="detail-price">
               {price ? `฿${price.toLocaleString('th-TH')}` : '—'}
-              <span>/ month</span>
+              <span>{tCommon('perMonthLong')}</span>
             </div>
             <div className="detail-avail">
               <div className="badge-dot" />
-              Available Now
+              {tCommon('availableNow')}
             </div>
           </div>
 
           {/* Specs */}
           <div className="detail-section">
-            <div className="detail-section-title">Unit Details</div>
+            <div className="detail-section-title">{t('unitDetailsTitle')}</div>
             <div className="detail-specs-grid">
               {[
-                { label: 'Building',   val: prop.project },
-                { label: 'Unit Type',  val: prop.unitType || '—' },
-                { label: 'Unit No.',   val: prop.unit     || '—' },
-                { label: 'Floor',      val: fp.floor ? `Floor ${fp.floor}` : (prop.floor || '—') },
-                { label: 'Size',       val: prop.area ? `${prop.area} sqm` : '—' },
-                { label: 'Direction',  val: prop.direction || '—' },
+                { label: t('building'),  val: prop.project },
+                { label: t('unitType'),  val: prop.unitType || '—' },
+                { label: t('unitNo'),    val: prop.unit     || '—' },
+                { label: t('floor'),     val: fp.floor ? t('floorValue', { n: fp.floor }) : (prop.floor || '—') },
+                { label: t('size'),      val: prop.area ? `${prop.area} ${tCommon('sqm')}` : '—' },
+                { label: t('direction'), val: directionLabel(prop.direction, locale as Locale) || '—' },
               ].map(s => (
                 <div key={s.label} className="detail-spec-cell">
                   <div className="detail-spec-label">{s.label}</div>
@@ -173,29 +178,29 @@ export default function ListingDetailClient({
           {/* Building info */}
           {bdata && (
             <div className="detail-section">
-              <div className="detail-section-title">About {prop.project}</div>
+              <div className="detail-section-title">{t('aboutBuilding', { name: prop.project })}</div>
               {bdata.highlight && (
                 <p className="detail-highlight">"{bdata.highlight}"</p>
               )}
               <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '16px' }}>
                 {bdata.bts    && <span className="spec">{bdata.bts}</span>}
-                {bdata.floors && <span className="spec">{bdata.floors} floors</span>}
-                {bdata.year   && <span className="spec">Built {bdata.year}</span>}
+                {bdata.floors && <span className="spec">{bdata.floors} {tCommon('floorsSuffix')}</span>}
+                {bdata.year   && <span className="spec">{tCommon('builtYear', { year: bdata.year })}</span>}
               </div>
               {bdata.facilities && bdata.facilities.length > 0 && (
                 <>
-                  <div className="detail-spec-label" style={{ marginBottom: '10px' }}>Facilities</div>
+                  <div className="detail-spec-label" style={{ marginBottom: '10px' }}>{t('facilities')}</div>
                   <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                     {bdata.facilities.map(f => <span key={f} className="facility-tag">{f}</span>)}
                   </div>
                 </>
               )}
               <div style={{ marginTop: '20px' }}>
-                <Link href={`/buildings/${encodeURIComponent(prop.project)}`} style={{
+                <Link href={`/${locale}/buildings/${encodeURIComponent(prop.project)}`} style={{
                   color: 'var(--gold)', fontSize: '12px', fontWeight: 600,
                   letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none',
                 }}>
-                  See all units in this building →
+                  {t('seeAllUnits')}
                 </Link>
               </div>
             </div>
@@ -205,8 +210,8 @@ export default function ListingDetailClient({
           <div className="detail-promise">
             <div className="detail-promise-icon">✦</div>
             <div>
-              <div className="detail-promise-title">Zero Service Fee for Tenants</div>
-              <div className="detail-promise-body">We never charge tenants. Our fee is paid by the landlord — you get full agency service at no cost.</div>
+              <div className="detail-promise-title">{t('noFeeTitle')}</div>
+              <div className="detail-promise-body">{t('noFeeBody')}</div>
             </div>
           </div>
         </div>
@@ -217,61 +222,61 @@ export default function ListingDetailClient({
             {submitted ? (
               <div className="vf-success">
                 <div className="vf-success-icon">✓</div>
-                <div className="vf-success-title">Viewing Requested!</div>
-                <p className="vf-success-sub">We'll confirm within 2 hours. See you soon!</p>
-                <Link href="/listings" style={{
+                <div className="vf-success-title">{t('viewingRequested')}</div>
+                <p className="vf-success-sub">{t('seeYouSoon')}</p>
+                <Link href={`/${locale}/listings`} style={{
                   display: 'inline-block', marginTop: '20px', color: 'var(--gold)',
                   fontSize: '12px', letterSpacing: '0.1em', textTransform: 'uppercase',
                   fontWeight: 600, textDecoration: 'none',
-                }}>← Browse more listings</Link>
+                }}>{t('browseMore')}</Link>
               </div>
             ) : (
               <>
                 <div className="detail-form-header">
-                  <div className="detail-form-title">Book a Free Viewing</div>
-                  <div className="detail-form-sub">Confirmed in 2 hours · No commitment</div>
+                  <div className="detail-form-title">{t('bookViewing')}</div>
+                  <div className="detail-form-sub">{t('confirmedIn2h')}</div>
                 </div>
                 <form onSubmit={handleSubmit}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                     <div className="vf-field">
-                      <label className="vf-label">Full Name *</label>
-                      <input name="name" required className="vf-input" placeholder="Your name" />
+                      <label className="vf-label">{tViewing('fullName')}</label>
+                      <input name="name" required className="vf-input" placeholder={tViewing('fullNamePlaceholder')} />
                     </div>
                     <div className="vf-field">
-                      <label className="vf-label">Phone *</label>
-                      <input name="phone" required className="vf-input" placeholder="+66 81 234 5678" />
+                      <label className="vf-label">{tViewing('phone')}</label>
+                      <input name="phone" required className="vf-input" placeholder={tViewing('phonePlaceholder')} />
                     </div>
                     <div className="vf-field">
-                      <label className="vf-label">Preferred Contact</label>
+                      <label className="vf-label">{tViewing('preferredContact')}</label>
                       <div className="vf-toggle">
                         <button type="button" className={`vf-toggle-btn${contactMethod === 'WhatsApp' ? ' on' : ''}`} onClick={() => setContactMethod('WhatsApp')}>WhatsApp</button>
                         <button type="button" className={`vf-toggle-btn${contactMethod === 'LINE' ? ' on' : ''}`} onClick={() => setContactMethod('LINE')}>LINE</button>
                       </div>
                     </div>
                     <div className="vf-field">
-                      <label className="vf-label">{contactMethod === 'WhatsApp' ? 'WhatsApp Number *' : 'LINE ID *'}</label>
+                      <label className="vf-label">{contactMethod === 'WhatsApp' ? tViewing('whatsappNumber') : tViewing('lineId')}</label>
                       <input name="contactId" required className="vf-input"
-                        placeholder={contactMethod === 'WhatsApp' ? '+66 81 234 5678' : '@yourlineid'} />
+                        placeholder={contactMethod === 'WhatsApp' ? tViewing('phonePlaceholder') : tViewing('lineIdPlaceholder')} />
                     </div>
                     <div className="vf-field">
-                      <label className="vf-label">Move-in Date</label>
+                      <label className="vf-label">{tViewing('moveInDate')}</label>
                       <input name="moveInDate" type="date" className="vf-input" />
                     </div>
                     <div className="vf-field">
-                      <label className="vf-label">Lease Duration</label>
+                      <label className="vf-label">{tViewing('leaseDuration')}</label>
                       <select name="leaseDuration" className="vf-select">
-                        <option>6 months</option>
-                        <option>1 year</option>
-                        <option>2 years</option>
-                        <option>Other</option>
+                        <option>{tViewing('lease6m')}</option>
+                        <option>{tViewing('lease1y')}</option>
+                        <option>{tViewing('lease2y')}</option>
+                        <option>{tViewing('leaseOther')}</option>
                       </select>
                     </div>
                     <div className="vf-field">
-                      <label className="vf-label">Message (optional)</label>
-                      <textarea name="notes" className="vf-textarea" placeholder="Any questions or requirements?" />
+                      <label className="vf-label">{t('messageOptional')}</label>
+                      <textarea name="notes" className="vf-textarea" placeholder={t('messagePlaceholder')} />
                     </div>
                     <button type="submit" className="vf-submit-btn" disabled={sending}>
-                      {sending ? 'Sending…' : 'Request Viewing →'}
+                      {sending ? tViewing('sending') : t('requestViewing')}
                     </button>
                   </div>
                 </form>
@@ -281,12 +286,12 @@ export default function ListingDetailClient({
 
           {/* Share */}
           <div className="detail-share">
-            <span className="detail-share-label">Share this listing</span>
+            <span className="detail-share-label">{t('share')}</span>
             <button
               className="detail-share-btn"
-              onClick={() => navigator.clipboard?.writeText(window.location.href).then(() => alert('Link copied!'))}
+              onClick={() => navigator.clipboard?.writeText(window.location.href).then(() => alert(t('linkCopied')))}
             >
-              Copy Link
+              {t('copyLink')}
             </button>
           </div>
         </div>
@@ -296,33 +301,33 @@ export default function ListingDetailClient({
       {related.length > 0 && (
         <div className="detail-related">
           <div className="detail-related-inner">
-            <p className="page-eyebrow" style={{ marginBottom: '8px' }}>Same building</p>
-            <h2 className="detail-related-title">More units at {prop.project}</h2>
+            <p className="page-eyebrow" style={{ marginBottom: '8px' }}>{t('sameBuilding')}</p>
+            <h2 className="detail-related-title">{t('moreUnitsAt', { name: prop.project })}</h2>
             <div className="properties-grid">
               {related.map((r, i) => {
                 const rPrice = Number(r.price);
                 const rid    = encodeURIComponent(r.project + '|' + r.unit);
                 return (
-                  <Link key={i} href={`/listings/${rid}`} className="property-card"
+                  <Link key={i} href={`/${locale}/listings/${rid}`} className="property-card"
                     style={{ textDecoration: 'none', display: 'block', animationDelay: `${i * 0.08}s` }}>
                     <div className="card-img">
                       <div className="card-img-bg" style={{ background: BG[i % BG.length] }} />
-                      <div className="card-overlay"><button className="overlay-btn">View Unit →</button></div>
-                      <div className="card-badge"><div className="badge-dot" />Available</div>
+                      <div className="card-overlay"><button className="overlay-btn">{tCommon('viewUnit')}</button></div>
+                      <div className="card-badge"><div className="badge-dot" />{tCommon('available')}</div>
                     </div>
                     <div className="card-info">
                       <div className="card-building">{r.project}</div>
-                      <div className="card-name">{unitLabel(r.unitType, r.unit, r.area)}</div>
+                      <div className="card-name">{unitLabel(r.unitType, r.unit, r.area, locale as Locale)}</div>
                       <div className="card-specs">
-                        {r.area      && <span className="spec">{r.area} sqm</span>}
-                        {r.direction && <span className="spec">{r.direction}</span>}
+                        {r.area      && <span className="spec">{r.area} {tCommon('sqm')}</span>}
+                        {r.direction && <span className="spec">{directionLabel(r.direction, locale as Locale)}</span>}
                       </div>
                       <div className="card-footer">
                         <div className="card-price">
                           {rPrice ? `฿${rPrice.toLocaleString('th-TH')}` : '—'}
-                          <span>/ mo</span>
+                          <span>{tCommon('perMonth')}</span>
                         </div>
-                        <div className="card-avail">View →</div>
+                        <div className="card-avail">{tCommon('view')}</div>
                       </div>
                     </div>
                   </Link>
@@ -330,8 +335,8 @@ export default function ListingDetailClient({
               })}
             </div>
             <div style={{ textAlign: 'center', marginTop: '32px' }}>
-              <Link href={`/buildings/${encodeURIComponent(prop.project)}`} className="hero-btn-outline">
-                See all units in {prop.project} →
+              <Link href={`/${locale}/buildings/${encodeURIComponent(prop.project)}`} className="hero-btn-outline">
+                {t('seeAllUnitsIn', { name: prop.project })}
               </Link>
             </div>
           </div>

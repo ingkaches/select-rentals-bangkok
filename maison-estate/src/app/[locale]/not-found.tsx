@@ -1,8 +1,13 @@
+'use client';
+
 import Link from 'next/link';
+import { useTranslations, useLocale } from 'next-intl';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export default function NotFound() {
+  const locale = useLocale();
+  const t = useTranslations('notFound');
   return (
     <>
       <Navbar />
@@ -21,18 +26,17 @@ export default function NotFound() {
             fontFamily: 'var(--font-cormorant)', fontSize: 'clamp(24px,3vw,40px)',
             fontWeight: 400, color: 'var(--primary)', marginBottom: '16px', marginTop: '8px',
           }}>
-            Page Not Found
+            {t('title')}
           </h1>
           <p style={{ fontSize: '15px', color: 'var(--text-muted)', lineHeight: 1.7, maxWidth: '400px', marginBottom: '40px' }}>
-            The listing or page you're looking for may have been rented or moved.
-            Browse our current available units below.
+            {t('body')}
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <Link href="/listings" className="nav-cta" style={{ fontSize: '12px' }}>
-              Browse All Listings →
+            <Link href={`/${locale}/listings`} className="nav-cta" style={{ fontSize: '12px' }}>
+              {t('browseListings')}
             </Link>
-            <Link href="/" className="hero-btn-outline">
-              Back to Home
+            <Link href={`/${locale}`} className="hero-btn-outline">
+              {t('backHome')}
             </Link>
           </div>
         </div>

@@ -4,9 +4,10 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import BuildingDetail from './BuildingDetail';
 import { fetchProperties } from '@/lib/sheets';
-import { BUILDING_DATA, getBldgMeta } from '@/lib/buildings';
+import { getBuildingData, getBldgMeta } from '@/lib/buildings';
+import type { Locale } from '@/lib/types';
 
-interface Props { params: { slug: string } }
+interface Props { params: { slug: string; locale: string } }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const name = decodeURIComponent(params.slug);
@@ -23,7 +24,7 @@ export default async function BuildingPage({ params }: Props) {
 
   if (!rooms.length) notFound();
 
-  const bdata = BUILDING_DATA[name] ?? null;
+  const bdata = getBuildingData(name, params.locale as Locale);
   const meta  = getBldgMeta(name);
 
   return (
