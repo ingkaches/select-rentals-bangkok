@@ -1,6 +1,8 @@
 'use client';
 
+import { ReactNode } from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { useTranslations, useLocale } from 'next-intl';
 import { BuildingData, BuildingMeta, BuildingProjectDetails } from '@/lib/types';
 import { driveImageUrl, driveImgOnError } from '@/lib/buildings';
@@ -10,6 +12,36 @@ function PdImage({ imageId, alt, className }: { imageId?: string; alt: string; c
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img src={driveImageUrl(imageId)} alt={alt} className={className} onError={driveImgOnError} />
+  );
+}
+
+/** Fades a whole section up into place the first time it scrolls into view. */
+function Reveal({ children, className }: { children: ReactNode; className?: string }) {
+  return (
+    <motion.section
+      className={className}
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+    >
+      {children}
+    </motion.section>
+  );
+}
+
+/** Same idea for grid items, staggered by index so a row of cards reveals one after another. */
+function RevealItem({ children, className, i = 0 }: { children: ReactNode; className?: string; i?: number }) {
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.5, delay: i * 0.06, ease: 'easeOut' }}
+    >
+      {children}
+    </motion.div>
   );
 }
 
@@ -59,30 +91,40 @@ export default function ProjectDetail({ name, details, bdata, meta }: {
 
       {/* Quick facts */}
       {details.facts?.length && (
-        <section className="pd-section pd-section-alt">
+        <Reveal className="pd-section pd-section-alt">
           <div className="pd-facts-grid">
             {details.facts.map((f, i) => (
-              <div key={i} className="pd-facts-item">
+              <RevealItem key={i} i={i} className="pd-facts-item">
                 <div className="pd-facts-label">{f.label}</div>
                 <div className="pd-facts-value">{f.value}</div>
-              </div>
+              </RevealItem>
             ))}
           </div>
-        </section>
+        </Reveal>
       )}
 
       {/* Summary */}
       {details.summary?.length && (
-        <section className="pd-section">
+        <Reveal className="pd-section">
           <ul className="pd-summary-list">
-            {details.summary.map((s, i) => <li key={i}>{s}</li>)}
+            {details.summary.map((s, i) => (
+              <motion.li
+                key={i}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.5, delay: i * 0.08, ease: 'easeOut' }}
+              >
+                {s}
+              </motion.li>
+            ))}
           </ul>
-        </section>
+        </Reveal>
       )}
 
       {/* Location */}
       {details.location && (
-        <section className="pd-section pd-section-alt">
+        <Reveal className="pd-section pd-section-alt">
           <h2 className="pd-h2">{t('location')}</h2>
           <PdImage imageId={details.location.imageId} alt={t('location')} className="pd-banner-img" />
           <p className="pd-p">{details.location.description}</p>
@@ -96,12 +138,12 @@ export default function ProjectDetail({ name, details, bdata, meta }: {
               ))}
             </div>
           )}
-        </section>
+        </Reveal>
       )}
 
       {/* Design */}
       {details.design && (
-        <section className="pd-section">
+        <Reveal className="pd-section">
           <h2 className="pd-h2">{t('design')}</h2>
           <PdImage imageId={details.design.imageId} alt={t('design')} className="pd-banner-img" />
           <p className="pd-p">{details.design.description}</p>
@@ -115,20 +157,20 @@ export default function ProjectDetail({ name, details, bdata, meta }: {
               ))}
             </div>
           )}
-        </section>
+        </Reveal>
       )}
 
       {/* Unit types */}
       {details.unitTypes?.length && (
-        <section className="pd-section pd-section-alt">
+        <Reveal className="pd-section pd-section-alt">
           <h2 className="pd-h2">{t('unitTypes')}</h2>
           <div className="pd-unittype-grid">
             {details.unitTypes.map((u, i) => (
-              <div key={i} className="pd-unittype-card">
+              <RevealItem key={i} i={i} className="pd-unittype-card">
                 <PdImage imageId={u.imageId} alt={u.label} className="pd-unittype-img" />
                 <div className="pd-unittype-label">{u.label}</div>
                 <div className="pd-unittype-size">{u.sizeRange}</div>
-              </div>
+              </RevealItem>
             ))}
           </div>
           {details.unitHighlights?.length && (
@@ -136,47 +178,47 @@ export default function ProjectDetail({ name, details, bdata, meta }: {
               {details.unitHighlights.map((h, i) => <li key={i}>{h}</li>)}
             </ol>
           )}
-        </section>
+        </Reveal>
       )}
 
       {/* Facilities */}
       {details.facilities?.length && (
-        <section className="pd-section">
+        <Reveal className="pd-section">
           <h2 className="pd-h2">{t('facilities')}</h2>
           <div className="pd-item-grid">
             {details.facilities.map((f, i) => (
-              <div key={i} className="pd-item-card">
+              <RevealItem key={i} i={i} className="pd-item-card">
                 <PdImage imageId={f.imageId} alt={f.name} className="pd-item-img" />
                 <div className="pd-item-name">{f.name}</div>
                 <div className="pd-item-desc">{f.description}</div>
-              </div>
+              </RevealItem>
             ))}
           </div>
-        </section>
+        </Reveal>
       )}
 
       {/* Innovations */}
       {details.innovations?.length && (
-        <section className="pd-section pd-section-alt">
+        <Reveal className="pd-section pd-section-alt">
           <h2 className="pd-h2">{t('innovations')}</h2>
           <div className="pd-item-grid">
             {details.innovations.map((f, i) => (
-              <div key={i} className="pd-item-card">
+              <RevealItem key={i} i={i} className="pd-item-card">
                 <PdImage imageId={f.imageId} alt={f.name} className="pd-item-img" />
                 <div className="pd-item-name">{f.name}</div>
                 <div className="pd-item-desc">{f.description}</div>
-              </div>
+              </RevealItem>
             ))}
           </div>
-        </section>
+        </Reveal>
       )}
 
       {/* CTA */}
-      <div className="pd-cta">
+      <Reveal className="pd-cta">
         <Link href={`/${locale}/buildings/${slug}`} className="pd-cta-btn">
           {t('viewAvailableUnits')}
         </Link>
-      </div>
+      </Reveal>
       </div>
     </>
   );
