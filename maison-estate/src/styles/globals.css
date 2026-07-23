@@ -701,6 +701,8 @@ body::before {
 .pd-floor-label { flex: 0 0 100px; font-weight: 600; color: var(--primary); }
 .pd-floor-desc { color: var(--text-muted); }
 .pd-banner-img { width: 100%; height: 340px; object-fit: cover; border-radius: 10px; margin-bottom: 24px; display: block; }
+/* For infographics/diagrams that must show in full, uncropped, rather than fill a fixed-height box. */
+.pd-banner-img--full { height: auto; object-fit: contain; }
 .pd-unittype-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 28px; }
 .pd-unittype-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; text-align: center; overflow: hidden; }
 .pd-unittype-img { width: calc(100% + 40px); height: 140px; object-fit: cover; margin: -20px -20px 14px; display: block; }
@@ -768,4 +770,5 @@ body::before {
   .pd-nearby-grid { grid-template-columns: 1fr; }
   .pd-floor-row { flex-direction: column; gap: 4px; }
   .pd-banner-img { height: 200px; }
+  .pd-banner-img--full { height: auto; }
 }

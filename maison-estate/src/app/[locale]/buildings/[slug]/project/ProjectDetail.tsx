@@ -201,7 +201,7 @@ export default function ProjectDetail({ name, details, bdata, meta }: {
         <Reveal className="pd-section">
           <h2 className="pd-h2">{t('facilities')}</h2>
           {details.facilitiesOverviewImageId && (
-            <PdImage imageId={details.facilitiesOverviewImageId} alt={t('facilities')} className="pd-banner-img" />
+            <PdImage imageId={details.facilitiesOverviewImageId} alt={t('facilities')} className="pd-banner-img pd-banner-img--full" />
           )}
           <div className="pd-item-grid">
             {details.facilities.map((f, i) => (
