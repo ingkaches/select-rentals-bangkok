@@ -1,8 +1,7 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { createElement, ReactNode, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { useTranslations, useLocale } from 'next-intl';
 import { BuildingData, BuildingMeta, BuildingProjectDetails } from '@/lib/types';
 import { driveImageUrl, driveImgOnError } from '@/lib/buildings';
@@ -15,34 +14,58 @@ function PdImage({ imageId, alt, className }: { imageId?: string; alt: string; c
   );
 }
 
+/**
+ * Plain IntersectionObserver + CSS transition, deliberately NOT baked into the
+ * server-rendered HTML: content stays fully visible until the client mounts and
+ * an observer is actually attached, and a timeout forces it visible regardless
+ * if the observer never fires. A JS/observer failure can only skip the animation,
+ * it can never leave a section permanently invisible.
+ */
+function useReveal<T extends HTMLElement>(delayMs = 0) {
+  const ref = useRef<T>(null);
+  const [mounted, setMounted] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
+
+  useEffect(() => {
+    if (!mounted || visible || !ref.current) return;
+    const node = ref.current;
+    const io = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
+    );
+    io.observe(node);
+    const fallback = setTimeout(() => setVisible(true), 2500 + delayMs);
+    return () => { io.disconnect(); clearTimeout(fallback); };
+  }, [mounted, visible, delayMs]);
+
+  return { ref, mounted, visible };
+}
+
+function revealStyle(mounted: boolean, visible: boolean, distance: number, delayMs: number): React.CSSProperties | undefined {
+  if (!mounted) return undefined;
+  return {
+    opacity: visible ? 1 : 0,
+    transform: visible ? 'none' : `translateY(${distance}px)`,
+    transition: `opacity 0.6s ease-out ${delayMs}ms, transform 0.6s ease-out ${delayMs}ms`,
+  };
+}
+
 /** Fades a whole section up into place the first time it scrolls into view. */
 function Reveal({ children, className }: { children: ReactNode; className?: string }) {
+  const { ref, mounted, visible } = useReveal<HTMLElement>();
   return (
-    <motion.section
-      className={className}
-      initial={{ opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-    >
+    <section ref={ref} className={className} style={revealStyle(mounted, visible, 28, 0)}>
       {children}
-    </motion.section>
+    </section>
   );
 }
 
-/** Same idea for grid items, staggered by index so a row of cards reveals one after another. */
-function RevealItem({ children, className, i = 0 }: { children: ReactNode; className?: string; i?: number }) {
-  return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.5, delay: i * 0.06, ease: 'easeOut' }}
-    >
-      {children}
-    </motion.div>
-  );
+/** Same idea for grid items (or list items), staggered by index so a row reveals one after another. */
+function RevealItem({ children, className, i = 0, as = 'div' }: { children: ReactNode; className?: string; i?: number; as?: 'div' | 'li' }) {
+  const { ref, mounted, visible } = useReveal<HTMLElement>(i * 60);
+  return createElement(as, { ref, className, style: revealStyle(mounted, visible, 20, i * 60) }, children);
 }
 
 export default function ProjectDetail({ name, details, bdata, meta }: {
@@ -108,15 +131,7 @@ export default function ProjectDetail({ name, details, bdata, meta }: {
         <Reveal className="pd-section">
           <ul className="pd-summary-list">
             {details.summary.map((s, i) => (
-              <motion.li
-                key={i}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.5, delay: i * 0.08, ease: 'easeOut' }}
-              >
-                {s}
-              </motion.li>
+              <RevealItem key={i} i={i} as="li">{s}</RevealItem>
             ))}
           </ul>
         </Reveal>
