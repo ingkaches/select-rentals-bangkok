@@ -200,6 +200,9 @@ export default function ProjectDetail({ name, details, bdata, meta }: {
       {details.facilities?.length && (
         <Reveal className="pd-section">
           <h2 className="pd-h2">{t('facilities')}</h2>
+          {details.facilitiesOverviewImageId && (
+            <PdImage imageId={details.facilitiesOverviewImageId} alt={t('facilities')} className="pd-banner-img" />
+          )}
           <div className="pd-item-grid">
             {details.facilities.map((f, i) => (
               <RevealItem key={i} i={i} className="pd-item-card">

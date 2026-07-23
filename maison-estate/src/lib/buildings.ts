@@ -156,6 +156,7 @@ const XT_PHAYATHAI_IMG = {
   meetingRoom:     '1N-29392z1U9p4m-KYGkQ0dSc4OPprsV8', // "Meeting-room"
   communalRoom:    '1b2zfk8bVXJaXRMxle4p7DUH_FJQRUuRX', // "Communual-room"
   playground:      '1DjpZO_wSLdINKJZXTysbSoRteMxVVDCj', // renamed "playground" (was lounge-pod)
+  facilitiesOverview: '16kuMA1B10RwrKt0L-7hw3U_bhn97y13N', // "Facilitities-overview"
 };
 
 export const BUILDING_DETAILS: Record<string, Partial<Record<Locale, BuildingProjectDetails>>> = {
@@ -198,6 +199,7 @@ export const BUILDING_DETAILS: Record<string, Partial<Record<Locale, BuildingPro
         { label: '2 Bedrooms S', sizeRange: '61.00 – 74.75 ตร.ม.' },
         { label: '2 Bedrooms M', sizeRange: '82.25 – 101.00 ตร.ม.' },
       ],
+      facilitiesOverviewImageId: XT_PHAYATHAI_IMG.facilitiesOverview,
       facilities: [
         { name: 'Lobby',           imageId: XT_PHAYATHAI_IMG.lobby,           description: 'พื้นที่ต้อนรับขนาดใหญ่ ดีไซน์หรูหราพร้อมโคมไฟระย้าเป็นจุดเด่น' },
         { name: 'Co-Working Space', imageId: XT_PHAYATHAI_IMG.coWorking,      description: 'พื้นที่ทำงานและพักผ่อนพร้อม Wi-Fi รองรับการประชุมออนไลน์' },
@@ -263,6 +265,7 @@ export const BUILDING_DETAILS: Record<string, Partial<Record<Locale, BuildingPro
         { label: '2 Bedrooms S', sizeRange: '61.00–74.75 sqm' },
         { label: '2 Bedrooms M', sizeRange: '82.25–101.00 sqm' },
       ],
+      facilitiesOverviewImageId: XT_PHAYATHAI_IMG.facilitiesOverview,
       facilities: [
         { name: 'Lobby',           imageId: XT_PHAYATHAI_IMG.lobby,           description: 'A grand welcome area featuring an elegant chandelier centerpiece.' },
         { name: 'Co-Working Space', imageId: XT_PHAYATHAI_IMG.coWorking,      description: 'A work-and-relax space with Wi-Fi, ready for online meetings.' },
@@ -328,6 +331,7 @@ export const BUILDING_DETAILS: Record<string, Partial<Record<Locale, BuildingPro
         { label: '2居室 S', sizeRange: '61.00–74.75平方米' },
         { label: '2居室 M', sizeRange: '82.25–101.00平方米' },
       ],
+      facilitiesOverviewImageId: XT_PHAYATHAI_IMG.facilitiesOverview,
       facilities: [
         { name: 'Lobby',           imageId: XT_PHAYATHAI_IMG.lobby,           description: '宽敞的迎宾大堂，以典雅吊灯为视觉焦点。' },
         { name: 'Co-Working Space', imageId: XT_PHAYATHAI_IMG.coWorking,      description: '配备Wi-Fi的工作休闲空间，适合线上会议。' },

@@ -69,6 +69,8 @@ export interface BuildingProjectDetails {
   design?:   { description: string; floorBreakdown?: FloorBreakdownItem[]; imageId?: string };
   unitTypes?: UnitTypeInfo[];
   unitHighlights?: string[];
+  /** Google Drive file ID for a floor-by-floor facilities overview banner, shown above the facility cards. */
+  facilitiesOverviewImageId?: string;
   facilities?: NamedItem[];
   innovations?: NamedItem[];
 }
